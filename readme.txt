@@ -4,7 +4,7 @@ Tags: admin theme, dark mode, wordpress admin, admin panel, backend theme, custo
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
