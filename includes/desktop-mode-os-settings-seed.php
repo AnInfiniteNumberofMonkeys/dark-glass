@@ -2,59 +2,69 @@
 /**
  * Infinite Monkeys Dark Glass — cross-site OS Settings transport.
  *
- * Desktop Mode's OS Settings live entirely client-side in
- * localStorage['desktop-mode-os-settings'] (see
- * assets/js/desktop-mode-os-settings-defaults.js for the full write-up
- * of that mechanism, including why there's no server-side option or
- * filter to hook instead). localStorage is scoped per browser origin,
- * so a fresh WordPress install — even with Dark Glass active — starts
- * with an empty key, and Desktop Mode falls back to its own shipped
- * DEFAULTS the first time OsSettings constructs.
+ * Desktop Mode's OS Settings have TWO stores, not one:
  *
- * This seeds that key, ONE TIME PER BROWSER, with the actual OS
- * Settings snapshot captured live from bricks.infinitemonkeys.ca (via
- * localStorage.getItem('desktop-mode-os-settings') on that site) — so
- * installing Dark Glass on any new site effectively "transports" that
- * configuration to the new install, with no manual configuration or
- * "Save as default" click needed there.
+ *   1. localStorage['desktop-mode-os-settings'] — client-side, for
+ *      instant read-back on paint. Per-browser, per-origin.
+ *   2. User meta 'desktop_mode_os_settings' (see Desktop Mode's own
+ *      includes/os-settings.php) — the DURABLE source of truth,
+ *      fetched via `GET /wp-json/desktop-mode/v1/os-settings` shortly
+ *      after every page load and used to overwrite whatever's in
+ *      localStorage. Desktop Mode's own file header says it plainly:
+ *      "user meta is the durable source of truth."
  *
- * Also seeds imdg-os-settings-defaults (the baseline read by
- * desktop-mode-os-settings-defaults.js's Reset interception) with the
- * same snapshot, so "Reset to defaults" on a brand-new site immediately
- * restores this transported baseline too, rather than Desktop Mode's
- * own defaults, without the admin needing to click "Save as default"
- * again on every new site.
+ *   This second store is why an earlier version of this file (which
+ *   only seeded localStorage) failed on a genuinely fresh WordPress
+ *   install: our localStorage seed landed fine, but moments later
+ *   Desktop Mode's REST sync fetched this brand-new user's (empty)
+ *   meta, got Desktop Mode's own built-in defaults back, and
+ *   overwrote our seeded localStorage value with those — every
+ *   single page load, since the user meta stayed empty forever
+ *   (nothing had ever saved it). Confirmed live: localStorage held
+ *   our values right after the inline seed script ran, then reverted
+ *   to Desktop Mode's factory wallpaper/gradient by the next reload.
  *
- * Both writes are deliberately guarded to only fire if the respective
- * key is completely empty (first-ever visit to wp-admin in that
- * browser for that site's origin) — this never overwrites an existing
- * customization, whether it came from Desktop Mode's own UI, a prior
- * "Save as default" click, or a prior run of this same seed.
+ * So this file now seeds BOTH stores:
+ *   - User meta, via `desktop_mode_save_os_settings()` (Desktop Mode's
+ *     own sanitizer — keeps us schema-compatible even if a future
+ *     Desktop Mode version adds fields we don't know about), hooked at
+ *     `admin_init`. This is the real fix: once meta is seeded, Desktop
+ *     Mode's own REST sync returns OUR values instead of its defaults,
+ *     so it stops fighting the localStorage seed below.
+ *   - localStorage, via an inline script at `admin_head` priority 0 (as
+ *     early as WordPress allows), purely so the very first paint
+ *     doesn't flash Desktop Mode's default wallpaper before the REST
+ *     fetch resolves. Also seeds imdg-os-settings-defaults, the
+ *     baseline desktop-mode-os-settings-defaults.js's Reset
+ *     interception reads from, so "Reset to defaults" on a brand-new
+ *     site restores this transported baseline immediately too.
  *
- * Must run before Desktop Mode's own script reads localStorage at
- * construction, so this is an inline script hooked at admin_head
- * priority 0 — as early in <head> as WordPress allows, ahead of every
- * enqueued script regardless of whether Desktop Mode loads its own in
- * the head or the footer.
+ * Both the user-meta write and both localStorage writes are guarded to
+ * only fire when that particular store is still empty — this never
+ * overwrites a real customization, however it got there (Desktop
+ * Mode's own UI, a prior "Save as default" click, or a prior run of
+ * this same seed).
  *
- * To update the transported baseline after further tweaking OS Settings
- * on the source site: re-capture localStorage['desktop-mode-os-settings']
- * there and replace the $seed array below.
+ * The values below were captured live from bricks.infinitemonkeys.ca
+ * (localStorage.getItem('desktop-mode-os-settings') there). To update
+ * the transported baseline after further tweaking OS Settings on the
+ * source site, re-capture that value and replace the $seed array in
+ * both functions below (kept in sync manually — see
+ * imdg_os_settings_seed_payload()).
  *
  * Never touches the Desktop Mode plugin's own files.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-add_action( 'admin_head', function () {
-
-	// Nothing to seed if Desktop Mode isn't even installed here.
-	if ( ! defined( 'DESKTOP_MODE_VERSION' ) ) {
-		return;
-	}
-
-	// Captured live from bricks.infinitemonkeys.ca — see file header.
-	$seed = array(
+/**
+ * The transported baseline, shared by both the user-meta seed and the
+ * localStorage seed below so they can never drift apart.
+ *
+ * @return array
+ */
+function imdg_os_settings_seed_payload() {
+	return array(
 		'wallpaper'                   => 'custom-gradient',
 		'accent'                      => 'wp-blue',
 		'dockSize'                    => 'default',
@@ -72,7 +82,7 @@ add_action( 'admin_head', function () {
 			'angle' => 135,
 		),
 		'customImage'                 => null,
-		'wallpaperSettings'           => new stdClass(),
+		'wallpaperSettings'           => array(),
 		'libraryHdOnly'               => true,
 		'ai'                          => array( 'enabled' => false ),
 		'heartbeatRate'               => 60,
@@ -95,10 +105,57 @@ add_action( 'admin_head', function () {
 			'desktop-mode-recycle-bin'                                            => 'dock',
 		),
 		'dockOrder'                   => array(),
-		'dockPromotedPositions'       => new stdClass(),
+		'dockPromotedPositions'       => array(),
 	);
+}
 
-	$seed_json = wp_json_encode( $seed );
+/**
+ * Seeds the DURABLE store: Desktop Mode's own user meta. This is what
+ * actually fixes cross-site transport — see the file header for why
+ * localStorage alone isn't enough.
+ *
+ * Hooked at admin_init (not admin_head) since this is a pure server-
+ * side write with no output-ordering constraint — it only has to run
+ * before the browser's REST fetch, which is a separate later request,
+ * so any point in this page's lifecycle is early enough.
+ */
+add_action( 'admin_init', function () {
+
+	if ( ! defined( 'DESKTOP_MODE_VERSION' ) || ! function_exists( 'desktop_mode_save_os_settings' ) ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+	if ( $user_id <= 0 ) {
+		return;
+	}
+
+	$meta_key = defined( 'DESKTOP_MODE_OS_SETTINGS_META_KEY' ) ? DESKTOP_MODE_OS_SETTINGS_META_KEY : 'desktop_mode_os_settings';
+
+	// Only seed a user who has never had this saved — real customizations
+	// (by this user, on this site) always win.
+	if ( ! empty( get_user_meta( $user_id, $meta_key, true ) ) ) {
+		return;
+	}
+
+	// desktop_mode_save_os_settings() runs this through Desktop Mode's own
+	// sanitizer, so we stay schema-compatible even if a future Desktop
+	// Mode version adds fields this file doesn't know about.
+	desktop_mode_save_os_settings( $user_id, imdg_os_settings_seed_payload() );
+
+}, 20 );
+
+/**
+ * Seeds localStorage purely for instant first paint — see the file
+ * header. Without the user-meta seed above, this alone doesn't stick.
+ */
+add_action( 'admin_head', function () {
+
+	if ( ! defined( 'DESKTOP_MODE_VERSION' ) ) {
+		return;
+	}
+
+	$seed_json = wp_json_encode( imdg_os_settings_seed_payload() );
 
 	?>
 	<script>
