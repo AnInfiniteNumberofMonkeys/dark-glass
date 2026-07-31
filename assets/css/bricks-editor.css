@@ -1,0 +1,505 @@
+:root {
+--highlight-color: #FFD64F;
+--faded-color: #AD9543;
+--faded-more-color: #5A5436;
+--core-ui-input-active: #fff !important;
+--dark-color: #000;
+}
+
+/* BUG with pinned panel layering */
+#bricks-panel-element #bricks-pinned-section {
+	z-index: 2001 !important;
+}
+
+/* WYSIWYG panel */
+div.mce-edit-area, div.mce-panel {
+    border: 1px solid #5e5e6b !important;
+    border-radius: 10px !important;
+    background: #25252a !important;
+}
+
+
+/* Re-position Bricks Boost shortcut bar */
+#bricks-element-shortcuts-bar {
+    display: flex  !important;
+    right: unset !important;
+    grid-column: 2 / 3;
+    width: 51px !important;
+    border-right: 1px solid #555;
+}
+
+body #bricks-structure {
+    margin-right: 0 !important;
+    display: grid;
+    grid-template-columns: calc(100% - 50px) 50px;
+    grid-template-rows: auto auto auto 1fr;
+}
+
+body #bricks-structure #bricks-panel-header, body.at-has-shortcuts-sidebar #bricks-structure main.panel-content {
+    grid-column: 1/2;
+}
+
+body #bricks-structure main.panel-content {
+    grid-row: 3 / -1;
+}
+
+/* Shortcuts bar formatting tweaks */
+.brxbo-bar-separator {
+    background: #555 !important;
+    width: 100%  !important;
+}
+
+.brxbo-bar-item[data-element-name="heading"] svg {
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+}
+
+
+/* More prominent beginning of pinned layout panel */
+#bricks-panel-element #bricks-pinned-section .pinned-groups-container {
+    border-top: 5px solid var(--builder-color-accent);
+}
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like, .CodeMirror pre.CodeMirror-line * {
+    font-family: monospace !important;
+}
+
+#bricks-panel-element #bricks-pinned-section {
+    bottom: 0;
+}
+
+[data-control=checkbox] input[type=checkbox]:checked:before {
+    background-color: #FFD64F !important;
+}
+
+#bricks-structure .element.active>.structure-item>.title input, #bricks-structure .element.active>.structure-item>.title .name {
+    color: inherit !important;
+}
+
+/* Highlight selected node */
+#bricks-structure .toggle {
+    background: unset;
+}
+
+#bricks-structure .structure-item {
+    background: unset;
+}
+
+#bricks-structure .element.active>.structure-item, #bricks-structure .element.dragging>.structure-item {
+    background-color: var(--highlight-color);
+}
+
+#bricks-structure .element.component>.structure-item .title, #bricks-structure .element.component>.structure-item>.actions {
+    color: var(--builder-color-component) !important;
+}
+
+#bricks-structure .element.active>.structure-item>.title input, #bricks-structure .element.active>.structure-item>.title .name, #bricks-structure .element.active>.structure-item {
+    color: var(--dark-color);
+}
+
+#bricks-structure .element.active>.structure-item .toggle {
+    color: var(--builder-color);
+}
+
+#bricks-structure .element.active>.structure-item ::selection {
+    background-color: #212121;
+    color: #fff;
+}
+
+#bricks-structure .element.selected>.structure-item .title .name {
+    var(--builder-color-info) !important;
+}
+
+/* Highlight all child elements */
+#bricks-structure .panel-content li.active {
+    background-color: var(--faded-more-color);
+    border-radius: var(--builder-border-radius);
+}
+
+#bricks-structure .toggle {
+	background: none !important;
+}
+
+#bricks-structure .element.active .bricks-structure-list .element, #bricks-structure .element.dragging .bricks-structure-list .element {
+    background-color: var(--faded-more-color);
+}
+
+#bricks-structure .element.active .element:before {
+    z-index: -1;
+}
+
+#bricks-structure .element.active .bricks-structure-list .structure-item:hover {
+    background-color: var(--faded-color);
+}
+
+#bricks-structure .element.active .bricks-structure-list .structure-item:hover > .title, #bricks-structure .element.active .bricks-structure-list .structure-item:hover > .title i {
+    color: var(--dark-color);
+}
+
+
+/* Structure item  icons when structure item is hovered */
+#bricks-structure  .element.active>.structure-item:hover .actions, #bricks-structure .element.active>.structure-item:hover .ti-link:before {
+    color: var(--builder-color-accent);
+}
+
+/* Move preview panel to far right */
+#bricks-preview {
+    order: 1;
+}
+
+#bricks-structure {
+    padding-left: 0 !important;
+}
+
+
+/* Position structure panel shortcut bar to left of preview panel */
+.brxce-panel-shortcut__wrapper {
+    right: unset !important;
+    width: 51px !important;
+}
+
+body[data-has-shortcuts-sidebar="true"] #bricks-structure .brxce-panel-shortcut__wrapper li {
+    width: 40px;
+}
+
+/* Remove coloured border around structure panel contents */
+#bricks-structure .bricks-structure-list {
+    box-shadow: none !important;
+}
+
+/* Fix overlapping structure panel down arrow */
+#bricks-structure .toggle {
+    left: -20px !important;
+}
+
+/* Don't display View Admin As menu */
+#vaa_toolbar {
+    display: none;
+}
+
+/* Elements panel shortcut button has-setting indicator */
+.brxce-panel-shortcut__container li.has-settings:before {
+    border-left: 6px solid var(--highlight-color) !important;
+    opacity: 1 !important;
+}
+
+/* Make sure link icon is visible even if node is selected */
+#bricks-structure .element.active>.structure-item .ti-link:before, #bricks-structure .element.dragging>.structure-item .ti-link:before {
+	color: #000 !important;
+}
+
+
+/* Don't colour active shortcut item yellow */
+body.brxc-has-panel-shortcuts #bricks-panel-element > .brxce-panel-shortcut__wrapper li.active i {
+    color: #fff !important;
+}
+
+/* Fix ID setting indicator dots */
+.bricks-panel-controls .control-group-title.has-class-styles::before, .bricks-panel-controls .control-group-title.has-id-styles::before {
+    left: 12px !important;
+}
+
+/* --- Turn off 0.5 opacity of element states svgs --- */
+#bricks-structure .structure-item .element-states svg {
+	opacity: 1;
+}
+
+/* --- Prominent Has Setting Indicators --- */
+.bricks-panel-controls .has-setting {
+    left: -10px;
+    width: 6px !important;
+    transition: background-color 0.1s;
+    transform: none !important;
+}
+
+/* Elements panel control group has-setting indicator */
+.control-group-title .has-setting {
+    left: 0 !important;
+    background-color: var(--highlight-color) !important;
+    height: 48px !important;
+    width: 8px !important;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+/* Elements panel control group reset button */
+.control-group-title .has-setting .reset {
+    left: 10px !important;
+}
+
+/* "x" reset button */
+.bricks-panel-controls .has-setting .reset {
+    padding: 6px;
+    transition: transform 200ms ease-out;
+    z-index: 9999999;
+}
+
+.bricks-panel-controls .has-setting .reset:hover {
+	transform: scale(2);
+}
+
+/* Control group title */
+.bricks-panel-controls .control-group.open .control-group-title {
+	background-color: var(--builder-bg-3);
+	font-weight: 600;
+	letter-spacing: 2px;
+}
+
+/*Toolbar icon hover */
+#bricks-toolbar li:focus-visible, #bricks-toolbar li:hover {
+   color: var(--highlight-color) !important;
+}
+
+/* Toolbar icon breakpoint has-settings indicator */
+#bricks-toolbar li.has-settings.active>span:after, #bricks-toolbar li.has-settings:hover>span:after {
+    background-color: var(--faded-color) !important;
+}
+
+/* Elements panel breakpoint has-settings indicator */
+.bricks-panel-controls .control-group-title .brxc-group-icon:hover, .bricks-panel-controls .control-group-title .brxc-group-icon.active, #brxcClassManagerOverlay .brxc-group-icon.active, #brxcGridUIOverlay .brxc-group-icon.active {
+    color: #000 !important;
+}
+.bricks-panel-controls .control-group-title .brxc-group-icon.active, #brxcClassManagerOverlay .brxc-group-icon.active, #brxcGridUIOverlay .brxc-group-icon.active {
+    background-color: var(--highlight-color) !important;
+}
+
+/* MCE editor icons */
+[data-control=editor] .mce-toolbar .mce-btn-group .mce-btn:active, [data-control=editor] .mce-toolbar .mce-btn-group .mce-btn:focus, [data-control=editor] .mce-toolbar .mce-btn-group .mce-btn:hover, [data-control=editor] .quicktags-toolbar .button:active, [data-control=editor] .quicktags-toolbar .button:focus, [data-control=editor] .quicktags-toolbar .button:hover {
+    border-color: var(--highlight-color) !important;
+}
+
+/* Code fields */
+.controls [data-control="code"] .CodeMirror {
+    background-color: #fff !important;
+}
+
+#bricks-toolbar .save .bricks-svg-wrapper:before {
+    opacity: 0.5;
+}
+
+.brx-body #bricks-toolbar li:focus-visible, #bricks-toolbar li:hover {
+    color: #fff !important;
+    background: var(--builder-bg-3) !important;
+}
+
+/* Make Save button more noticable when unsaved changes */
+#bricks-toolbar .save:has(.has-unsaved-changes) {
+    background-color: var(--highlight-color);
+    transform: scale(1.3);
+    top: 7px;
+    right: 9px;
+   animation: .4s jump ease infinite alternate;
+}
+
+div.mce-edit-area, div.mce-panel {
+	border-color: var(--builder-gray-6) !important;
+}
+
+div.wp-link-input input {
+	border: 1px solid var(--builder-gray-5);
+	color: var(--builder-gray-6);
+}
+
+div.wp-link-input label {
+	color: var(--builder-gray-6);
+}
+.bricks-popup {
+	background-color: rgba(0,0,0,0.9);
+}
+
+
+@keyframes jump {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.4);
+  }
+}
+
+#bricks-toolbar .save .has-unsaved-changes {
+    color: #000;
+}
+
+#bricks-toolbar .save:has(.has-unsaved-changes) .bricks-svg-wrapper:before {
+    opacity: 1;
+}
+
+/* Fix for elements panel 2nd level not opening */
+#bricks-structure {
+    z-index: 999 !important;
+}
+
+/* Prominent element actions button highlight */
+#bricks-panel-header .actions li.highlight {
+    background-color: var(--highlight-color) !important;
+    color: #212121 !important;
+}
+
+/* Make individual condition or interaction headers clickable */
+[data-control=repeater] .repeater-header input {
+    pointer-events: none;
+}
+
+/* Make it easier to see control popups */
+.bricks-control-popup {
+    background-color: var(--builder-bg-2) !important;
+    border: 2px solid var(--builder-bg-3);
+}
+
+/* More visible SVGs */
+.bricks-panel .bricks-control-preview.svg {
+    background-color: #fff !important;
+    position: static !important;
+}
+
+/* Fields in control popup */
+.bricks-panel .bricks-control-popup input:not([type="range"]) {
+    background-color: var(--builder-bg);
+}
+
+/* More visible fields */
+.brx-body .bricks-panel .bricks-control-popup input:not([type="range"]) {
+    background-color: var(--builder-bg) !important;
+}
+
+.bricks-panel .bricks-control-popup .input, .bricks-panel .bricks-control-popup select, .bricks-panel .bricks-control-popup textarea, .bricks-panel .bricks-control-popup .bricks-control-preview {
+    background-color: var(--builder-bg) !important;
+}
+
+.brx-body .bricks-panel .bricks-control-popup .control div[data-control="spacing"][data-type="spacing"]>.handles input {
+    background-color: transparent !important;
+}
+
+/* Disable element min dimensions in builder */
+:where(.brx-draggable.brx-empty), :where(.brx-draggable:empty) {
+    min-height: 20px;
+    min-width: 20px;
+}
+
+/* More prominent indicators if margin/padding field linking is on */
+.variables-ui:has(.link-toggles .link-opposites.active) .handle.top input, .variables-ui:has(.link-toggles .link-opposites.active) .handle.bottom input {
+    border: 2px solid var(--highlight-color);
+}
+
+.variables-ui:has(.link-toggles .link-opposites.active) .handle.left input, .variables-ui:has(.link-toggles .link-opposites.active) .handle.right input {
+    border: 2px solid var(--faded-more-color);
+}
+
+.variables-ui:has(.link-toggles .link-all.active) .handle input {
+    border: 2px solid var(--highlight-color);
+}
+
+
+/* Make code editor boxes taller by default */
+[data-control=code].expand .CodeMirror {
+    height: 600px !important;
+}
+
+
+
+
+
+/*** AT FIXES ****/
+
+.bricks-panel-controls .control-group-title .has-setting {
+	left: 9px;
+}
+.bricks-panel-controls .has-setting:hover {
+	background-color: transparent;
+}
+.bricks-panel-controls .has-setting .indicator {
+	display: none;
+}
+
+#autocomplete-list {
+    height: auto;
+}
+
+ul.controls li[data-controlkey="classConverterSeparator"], ul.controls li[data-controlkey="classConverterComponent"], #brxcKeyBoardShortcuts {
+	display: none !important;
+}
+
+[data-control="spacing"] .handle.right .autocomplete-items.bricks-control-popup {
+    min-width: 100% !important;
+}
+
+.colorManager, .CSSVariableManager { 
+	display: none !important;
+}
+
+#bricks-popup.templates li.bricks-layout-item {
+    padding: 10px !important;
+    border: 1px solid var(--builder-border-color) !important;
+}
+
+.brxc-has-panel-shortcuts #brxc-class-context-menu.show {
+	z-index: 9999 !important;	
+}
+
+.mce-container > iframe {
+    min-height: 1024px !important;
+}
+
+.bricks-panel .button span, .bricks-panel button span {
+    display: inline !important;
+}
+
+#brxc-main-at-menu.show {
+    z-index: 9999 !important;
+}
+
+[data-control="spacing"] .handle.left .autocomplete-items.bricks-control-popup, [data-control="spacing"] .handle.right .autocomplete-items.bricks-control-popup {
+    min-width: 0 !important;
+    max-width: fit-content;
+}
+
+#bricks-panel-controls-search {
+	display: none;
+}
+
+#brxcSuperPowerCSSAIpromptContainer {
+    display: none;
+}
+
+.plain-classes-icon {
+    display: none;
+}
+
+#bricks-panel-header input {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.mce-menu-item {
+	color: #eaeaea;
+}
+
+body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables>input {
+  padding-inline-end: 0 !important;
+}
+
+/* Extra bottom padding in controls panel so last control isn't cramped against the bottom edge */
+.regular-controls-wrapper {
+    padding-bottom: 500px !important;
+}
+
+/* MCE dropdown menu (WYSIWYG editor toolbar menus) legibility on dark theme */
+.mce-menu .mce-menu-item.mce-active.mce-menu-item-normal, .mce-menu .mce-menu-item.mce-active.mce-menu-item-preview, .mce-menu .mce-menu-item.mce-selected, .mce-menu .mce-menu-item:focus, .mce-menu .mce-menu-item:hover {
+    background: var(--builder-color-accent);
+    color: #000;
+}
+
+.mce-container, .mce-container *, .mce-widget, .mce-widget * {
+    color: #fff;
+}
+
+.mce-menu-item .mce-caret {
+      border-left: 4px solid #fff;
+}
+
+.mce-menu-item:hover *, .mce-menu-item.mce-selected *, .mce-menu-item:focus * {
+    color: #000;
+}

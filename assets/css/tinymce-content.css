@@ -1,0 +1,37 @@
+/*
+ * TinyMCE content styles
+ * ──────────────────────────────────────────────────────────────────────────────
+ * These styles are injected into TinyMCE iframe documents. Because iframes
+ * run in a separate browsing context, CSS custom properties defined on the
+ * main admin page's :root are NOT available here. The variables used in this
+ * file are re-declared below so that there is still a single source of truth
+ * within this file if you need to adjust colours.
+ *
+ * Loaded via:
+ *   - tiny_mce_before_init filter  (classic editor, on page load)
+ *   - tinymce-inject.js             (ACF and other dynamically rendered fields)
+ */
+
+:root {
+    --tinymce-bg:      transparent;
+    --tinymce-text:    #ffffff;
+    --tinymce-link:    #acb7cdcf;
+    --tinymce-heading: #ffffff;
+}
+
+body#tinymce,
+.block-editor-iframe__body {
+    background: var(--tinymce-bg) !important;
+    color: var(--tinymce-text) !important;
+}
+
+body#tinymce a {
+    color: var(--tinymce-link);
+}
+
+body#tinymce p,
+body#tinymce h1,
+body#tinymce h2,
+body#tinymce h3 {
+    color: var(--tinymce-heading);
+}
