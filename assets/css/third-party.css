@@ -4077,3 +4077,7 @@ body.desktop-mode-chromeless.imdg-window-unfocused .bricks-admin-inner .box-wrap
 .alternate, .striped>tbody>:nth-child(odd), ul.striped>:nth-child(odd) {
 	background: var(--color-background-row-alt);
 }
+
+.imgr-tags-reference .imgr-tags-group-header {
+	  background: var(--color-background-hover);
+}
