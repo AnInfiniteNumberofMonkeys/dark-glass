@@ -1980,8 +1980,9 @@ body.plugin-editor-php #wpbody-content {
 }
 
 .subsubsub {
-    margin: 0;
+	margin: 0 0 8px 0;
     width: 100%;
+    color: var(--color-foreground);
 }
 
 .subsubsub a .count, .subsubsub a.current .count {
