@@ -803,10 +803,6 @@ body.acf-admin-page #poststuff {
 	color: var(--color-foreground) !important;
 }
 
-#wsf-layout-editor {
-	width: calc(var(--wsf-admin-layout-editor-width) - 60px) !important;
-}
-
 body:not(.desktop-mode-chromeless) #wsf-loader {
   top: 61px !important;
 }
@@ -1437,6 +1433,91 @@ input[type=checkbox].wsf-field {
 
 #wsf-form .wsf-group-tabs > li > a > .wsf-group-label > input[type=text][readonly] {
 	color: var(--color-muted-foreground) !important;
+}
+
+#wsf-admin-header.wsf-admin-header {
+	background: none !important;
+	border-color: var(--color-border) !important;
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button, body.toplevel_page_ws-form .button, body.ws-form_page_ws-form-add .button, body.admin_page_ws-form-edit .button, body.ws-form_page_ws-form-submit .button, body.ws-form_page_ws-form-migrate .button, body.ws-form_page_ws-form-settings .button, body.ws-form_page_ws-form-style .button, body.ws-form_page_ws-form-style-add .button, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button {
+	border-color: var(--color-muted-foreground) !important;
+  	color: var(--color-muted-foreground) !important;
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:hover, body.toplevel_page_ws-form .button:hover, body.toplevel_page_ws-form .button:focus, body.ws-form_page_ws-form-add .button:hover, body.ws-form_page_ws-form-add .button:focus, body.admin_page_ws-form-edit .button:hover, body.admin_page_ws-form-edit .button:focus, body.ws-form_page_ws-form-submit .button:hover, body.ws-form_page_ws-form-submit .button:focus, body.ws-form_page_ws-form-migrate .button:hover, body.ws-form_page_ws-form-migrate .button:focus, body.ws-form_page_ws-form-settings .button:hover, body.ws-form_page_ws-form-settings .button:focus, body.ws-form_page_ws-form-style .button:hover, body.ws-form_page_ws-form-style .button:focus, body.ws-form_page_ws-form-style-add .button:hover, body.ws-form_page_ws-form-style-add .button:focus, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:hover, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:focus {
+	border-color: var(--color-white) !important;
+  	color: var(--color-white) !important;
+	background: var(--color-white-trans-10) !important;
+}
+
+#wsf-wrapper a:where(:not(.button):not(.button-primary):not(.wsf-button):not(.wsf-preview):not(.wsf-settings-nav-item):not(.wsf-settings-section-item):not(.wsf-sidebar-primary-nav-item):not(.wsf-sidebar-tabs-item)), #wsf-layout-editor a:where(:not(.button):not(.button-primary):not(.wsf-button):not(.wsf-preview):not(.wsf-settings-nav-item):not(.wsf-settings-section-item):not(.wsf-sidebar-primary-nav-item):not(.wsf-sidebar-tabs-item)), #wsf-sidebars a:where(:not(.button):not(.button-primary):not(.wsf-button):not(.wsf-preview):not(.wsf-settings-nav-item):not(.wsf-settings-section-item):not(.wsf-sidebar-primary-nav-item):not(.wsf-sidebar-tabs-item)) {
+	color: var(--color-primary) !important;
+}
+
+progress.wsf-progress[value] {
+	background-color: var(--color-subtle) !important;
+}
+
+progress.wsf-progress[value]::-webkit-progress-bar {
+	background-color: var(--color-subtle) !important;
+}
+progress.wsf-progress[value]::-webkit-progress-value {
+	background-color: var(--color-subtle) !important;
+}
+
+progress.wsf-progress[value]::-moz-progress-bar {
+	background-color: var(--color-subtle) !important;
+}
+
+.wsf-submit-unread > span {
+	margin: 0 0 0 3px !important;
+	height: 17px !important;
+}
+
+th.manage-column a span {
+	color: var(--color-white) !important;
+}
+
+.subsubsub li a.current {
+	color: var(--color-white) !important;
+}
+
+#wsf-sidebars.wsf-sidebars-rail, #wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav {
+	background: none !important;
+	border-color: var(--color-border) !important;
+	  padding: 6px !important;
+}
+
+#wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-item {
+	color: var(--color-foreground) !important;
+	border-radius: 50px !important;
+	  max-height: 33px;
+	padding: 8px !important;
+}
+
+#wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-item.wsf-sidebar-primary-nav-item-active, #wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-item.wsf-editing {
+	color: var(--color-white) !important;
+	background: var(--color-primary) !important;
+}
+
+#wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav::after {
+	display: none;
+}
+
+#wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-expand, #wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-contract, #wsf-sidebars.wsf-sidebars-rail .wsf-sidebar-primary-nav-close {
+	color: var(--color-foreground) !important;
+	  padding: 8px !important;
+}
+
+#wsf-sidebars.wsf-sidebars-rail > .wsf-sidebar-resize {
+	background: var(--color-muted) !important;
+	border-color: var(--color-muted) !important;
+}
+
+.wsf-sidebar-resize.wsf-sidebar-resize-active {
+	background: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;	
 }
 
 
