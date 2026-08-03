@@ -1445,6 +1445,18 @@ input[type=checkbox].wsf-field {
   	color: var(--color-muted-foreground) !important;
 }
 
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary {
+	background: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;
+	color: #fff !important;
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary:hover {
+	background: var(--color-accent) !important;
+	border-color: var(--color-accent) !important;
+}
+
+
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:hover, body.toplevel_page_ws-form .button:hover, body.toplevel_page_ws-form .button:focus, body.ws-form_page_ws-form-add .button:hover, body.ws-form_page_ws-form-add .button:focus, body.admin_page_ws-form-edit .button:hover, body.admin_page_ws-form-edit .button:focus, body.ws-form_page_ws-form-submit .button:hover, body.ws-form_page_ws-form-submit .button:focus, body.ws-form_page_ws-form-migrate .button:hover, body.ws-form_page_ws-form-migrate .button:focus, body.ws-form_page_ws-form-settings .button:hover, body.ws-form_page_ws-form-settings .button:focus, body.ws-form_page_ws-form-style .button:hover, body.ws-form_page_ws-form-style .button:focus, body.ws-form_page_ws-form-style-add .button:hover, body.ws-form_page_ws-form-style-add .button:focus, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:hover, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button:focus {
 	border-color: var(--color-white) !important;
   	color: var(--color-white) !important;
@@ -1519,6 +1531,12 @@ th.manage-column a span {
 	background: var(--color-primary) !important;
 	border-color: var(--color-primary) !important;	
 }
+
+
+#wsf-form-list-table .subsubsub a.current {
+	color: var(--color-white) !important;
+}
+
 
 
 /*****************************/
