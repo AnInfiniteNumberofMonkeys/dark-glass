@@ -912,9 +912,9 @@ button.wsf-button svg path, input[type=button].wsf-button svg path, input[type=s
 	background: var(--color-muted) !important;
 }
 
-#wsf-sidebars .wsf-sidebar-tabs {
-	border: none !important;
-	background: var(--color-white-trans-5) !important;
+#wpbody-content #wsf-sidebars .wsf-sidebar-tabs {
+  border-color: var(--color-border);
+  background: none !important;
 }
 
 #wsf-sidebars .wsf-sidebar-tabs > li.ui-state-active > a, #wsf-sidebars .wsf-sidebar-tabs > li:hover > a {
@@ -924,6 +924,10 @@ button.wsf-button svg path, input[type=button].wsf-button svg path, input[type=s
 
 #wsf-sidebars .wsf-sidebar-tabs > li > a {
 	color: var(--color-foreground) !important;
+}
+
+.wsf-sidebar-footer {
+	border-top: 1px solid var(--color-background) !important;
 }
 
 body.admin_page_ws-form-edit #wsf-sidebars .wsf-sidebar .wsf-sidebar-tabs-panel {
@@ -1523,7 +1527,7 @@ th.manage-column a span {
 }
 
 #wsf-sidebars.wsf-sidebars-rail > .wsf-sidebar-resize {
-	background: var(--color-muted) !important;
+	background: var(--color-background-alt) !important;
 	border-color: var(--color-muted) !important;
 }
 
@@ -1531,7 +1535,6 @@ th.manage-column a span {
 	background: var(--color-primary) !important;
 	border-color: var(--color-primary) !important;	
 }
-
 
 #wsf-form-list-table .subsubsub a.current {
 	color: var(--color-white) !important;
@@ -1541,7 +1544,21 @@ th.manage-column a span {
 	line-height: 26px !important;
 }
 
+[data-wsf-tooltip][data-wsf-tooltip=left]::before {
+  border-color: transparent transparent transparent var(--color-accent);
+}
 
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li svg text {
+	fill: var(--color-primary);
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:hover svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:hover svg text, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:focus svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:focus svg text {
+	fill: var(--color-accent);
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-logo svg {
+	filter: saturate(0) brightness(4);
+}
 
 
 /*****************************/
