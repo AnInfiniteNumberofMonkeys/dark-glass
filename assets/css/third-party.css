@@ -1537,6 +1537,11 @@ th.manage-column a span {
 	color: var(--color-white) !important;
 }
 
+#wsf-sidebars .wsf-sidebar-footer .button {
+	line-height: 26px !important;
+}
+
+
 
 
 /*****************************/
