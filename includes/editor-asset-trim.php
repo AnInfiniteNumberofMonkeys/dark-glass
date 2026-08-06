@@ -155,9 +155,17 @@ add_filter( 'register_block_type_args', function ( $args, $name ) {
 $imdg_dequeue_handles = function () {
 	$in_bricks_builder = function_exists( 'bricks_is_builder' ) && bricks_is_builder();
 
-	// Bricks core -- keep bricks-admin / bricks-gutenberg out of the plain editor.
+	// Bricks core -- keep bricks-admin / bricks-gutenberg out of the plain editor
+	// ONLY. bricks-admin.css/js is loaded by Bricks on EVERY single wp-admin
+	// page with zero gating -- it powers Bricks' OWN admin screens (Templates
+	// list thumbnail sizing, the loading-spinner state, the import
+	// file-chooser visibility toggle, etc). Dequeuing it broadly broke the
+	// Templates list page. Scoped to a real post/page edit screen only, so it
+	// never touches Bricks' own admin pages.
+	$screen_obj = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	$on_post_edit_screen = $screen_obj && 'post' === $screen_obj->base;
 	$bricks_handles = [];
-	if ( ! $in_bricks_builder ) {
+	if ( $on_post_edit_screen && ! $in_bricks_builder ) {
 		$bricks_handles = [
 			'bricks-admin', 'bricks-admin-rtl', 'bricks-gutenberg',
 			// Only relevant if Bricks' "Components in Block Editor" setting is ever turned on:
