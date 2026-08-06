@@ -326,4 +326,104 @@ add_filter( 'desktop_mode_shell_config', function ( $config ) {
 // store with no protection against re-registration -- so we re-register
 // each unwanted id with an empty script/style handle right after Desktop
 // Mode's own widget/window files have already registered them. A resolved
-// script/style payload for an empty
+// script/style payload for an empty handle is empty, so nothing loads,
+// regardless of which of the several sync paths asks for it. Hooked on
+// init (priority 20) to run after Desktop Mode's own top-level
+// require_once calls (which run during normal plugin loading, before
+// init fires).
+
+add_action( 'init', function () {
+	if ( ! function_exists( 'desktop_mode_register_widget' ) || ! function_exists( 'desktop_mode_register_window' ) ) {
+		return;
+	}
+
+	$unwanted_widgets = [
+		'desktop-mode/drafts'          => __( 'Drafts (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/focus-timer'     => __( 'Focus Timer (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/heartbeat'       => __( 'Heartbeat (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/jazz-quote'      => __( 'Jazz Quote (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/post-stats'      => __( 'Post Stats (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/recent-comments' => __( 'Recent Comments (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/site-views'      => __( 'Site Views (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode/starter'         => __( 'Starter Widget (disabled)', 'infinite-monkeys-dark-glass' ),
+	];
+	foreach ( $unwanted_widgets as $id => $label ) {
+		desktop_mode_register_widget( $id, [
+			'label'  => $label,
+			'script' => '',
+		] );
+	}
+
+	$noop_template = static function () {};
+	$unwanted_windows = [
+		'desktop-mode-content-graph' => __( 'Content Graph (disabled)', 'infinite-monkeys-dark-glass' ),
+		'desktop-mode-my-wordpress'  => __( 'My WordPress (disabled)', 'infinite-monkeys-dark-glass' ),
+	];
+	foreach ( $unwanted_windows as $id => $title ) {
+		desktop_mode_register_window( $id, [
+			'title'     => $title,
+			'template'  => $noop_template,
+			'script'    => '',
+			'style'     => '',
+			'placement' => 'none',
+		] );
+	}
+}, 20 );
+// ── Desktop Mode: neutralize the Living Tree wallpaper the same way ────────
+// Same eager-load-the-whole-catalog issue as the widgets/windows above --
+// living-tree-wallpaper.min.js loads regardless of which wallpaper is
+// actually selected (confirmed: this site's active wallpaper is
+// 'custom-gradient', not 'wp-living-tree'). Canvas wallpapers require a
+// non-empty `script` handle by validation, so instead of blanking it (which
+// desktop_mode_register_wallpaper() would reject), we re-register as a
+// plain 'css' type with a static value -- valid without a script, and the
+// picker entry still works if anyone ever selects it, it just won't animate.
+
+add_action( 'init', function () {
+	if ( ! function_exists( 'desktop_mode_register_wallpaper' ) ) {
+		return;
+	}
+	desktop_mode_register_wallpaper( 'wp-living-tree', [
+		'label' => __( 'Living Tree (disabled)', 'infinite-monkeys-dark-glass' ),
+		'type'  => 'css',
+		'value' => '#1a1a1a',
+	] );
+}, 20 );
+// ── WS Form: dequeue-by-handle safety net for the plain block editor ───────
+// Belt-and-suspenders alongside the filter-based approach above. Skips the
+// Bricks builder entirely (WS Form's rendering engine needs to load there),
+// and skips WS Form's own admin pages. Handle pattern confirmed from
+// ws-form-pro/public/class-ws-form-public.php: enqueue_internal_js()/
+// enqueue_internal_css() build the handle as "ws-form-{$script}" where
+// $script is the same name used in the wsf_enqueue_js_*/wsf_enqueue_css_*
+// filter suffix (e.g. 'captcha' -> 'ws-form-captcha').
+
+add_action( 'wp_enqueue_scripts', function () {
+	$on_ws_form_page = isset( $_GET['page'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'ws-form' ) === 0;
+	if ( $on_ws_form_page ) {
+		return; // WS Form's own Forms/Add Form/Edit Form/Styles/Settings screens need everything.
+	}
+
+	if ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ) {
+		return; // WS Form forms in the Bricks canvas need the real rendering engine -- don't block JS here.
+	}
+
+	if ( ! is_admin() ) {
+		return; // Never touch a genuine front-end visitor's page.
+	}
+
+	$wsf_js_names = [
+		'common', 'public', 'sortable', 'select2', 'input_mask', 'loader', 'custom',
+		'captcha', 'checkbox', 'select', 'radio', 'tab', 'tel', 'intl_tel_input',
+		'color', 'color_picker', 'consent', 'datetime', 'date_translate', 'datetime_picker',
+		'file', 'dropzonejs', 'geo', 'google_map', 'google_address', 'google_route',
+		'legal', 'media_capture', 'password', 'password_strength', 'progress', 'rating',
+		'signature', 'signature_pad', 'textarea', 'validate', 'wp_editor', 'wp_html_editor',
+		'analytics', 'calc', 'cascade', 'conditional', 'ecommerce', 'section-repeatable',
+		'section_repeatable', 'tracking',
+	];
+	foreach ( $wsf_js_names as $name ) {
+		wp_dequeue_script( 'ws-form-' . $name );
+		wp_deregister_script( 'ws-form-' . $name );
+	}
+}, PHP_INT_MAX );
