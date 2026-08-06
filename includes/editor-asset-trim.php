@@ -244,7 +244,17 @@ $imdg_dequeue_by_path = function () {
 	];
 	if ( ! $in_bricks_builder ) {
 		$target_dirs[] = '/plugins/bricksextras/';
-		$target_dirs[] = '/plugins/bricks-advanced-themer/';
+		// Scoped to /assets/ specifically, NOT the whole plugin root -- Bricks
+		// Advanced Themer bundles its own copy of ACF Pro under
+		// /plugins/bricks-advanced-themer/plugins/acf-pro/, and on sites where
+		// that's the only ACF instance active, ACF_PATH resolves there. The
+		// broader target was dequeuing ACF's own admin CSS/JS as collateral
+		// damage (confirmed live: ACF_PATH === bricks-advanced-themer's bundled
+		// copy, broken field-group-editor styling traced to this). The actual
+		// backend/builder/Gutenberg-sync CSS we're trimming all lives under
+		// assets/css/, so narrowing here fixes ACF without losing the intended
+		// trim.
+		$target_dirs[] = '/plugins/bricks-advanced-themer/assets/';
 	}
 
 	foreach ( [ $wp_styles, $wp_scripts ] as $registry ) {
