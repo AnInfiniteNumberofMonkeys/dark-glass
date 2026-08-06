@@ -7,7 +7,16 @@
  * post type and regardless of whether the loaded features are actually used
  * on that post. None of this affects the real Bricks builder (each block
  * below bails out via bricks_is_builder() where relevant), and none of it
- * touches the frontend.
+ * touches the frontend (everything runs only in wp-admin / the block editor).
+ *
+ * IMPORTANT: every dequeue in this file runs at priority PHP_INT_MAX on
+ * THREE hooks -- admin_enqueue_scripts, enqueue_block_assets, and
+ * enqueue_block_editor_assets -- because different plugins enqueue their
+ * unwanted assets via different hooks and at wildly different priorities
+ * (observed: default 10, 20, 30, even 9999). Running last on all three,
+ * rather than guessing one hook/priority per plugin, is what makes this
+ * reliable across plugin updates. Handles are both dequeued AND
+ * deregistered, in case anything else references them as a dependency.
  *
  * @package Infinite_Monkeys_Dark_Glass
  */
@@ -25,14 +34,45 @@ defined( 'ABSPATH' ) || exit;
 // Bricks builder, where WS Form's own Bricks integration deliberately needs
 // this bundle for live element previews.
 
-add_action( 'enqueue_block_assets', function () {
-	if ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ) {
-		return;
+// WS Form's Bricks integration (includes/third-party/bricks/bricks.php) is
+// required on `init` at priority 11 and immediately fires its own enqueue
+// call synchronously -- NOT on enqueue_block_assets, which is far too late
+// to matter (confirmed live: the old enqueue_block_assets-based filters had
+// zero effect in the Bricks builder because WS Form had already finished
+// enqueueing by the time they registered). Registering on init at priority
+// 10 -- one tick before WS Form's own require -- is what actually works.
+//
+// These are the SAME global filters a real front-end form uses to decide
+// what it needs (e.g. an actual captcha field), so this only ever runs in
+// is_admin() or bricks_is_builder() contexts -- never on a genuine visitor
+// page load, or real forms on the live site would break.
+//
+// JS field-type modules: forced off in the plain block editor ONLY. WS Form
+// forms render via JS hydration (a JSON config gets read client-side to
+// build the actual field markup), so blocking JS in the Bricks canvas broke
+// rendering entirely, not just interactivity -- reverted after confirming
+// live. Left at WS Form's own default (on) inside the Bricks builder.
+//
+// CSS field-type styling: forced off in the plain block editor (nothing
+// Bricks-rendered to visually match there), left alone inside the Bricks
+// builder so forms still look correct while editing.
+
+add_action( 'init', function () {
+	$in_bricks_builder = function_exists( 'bricks_is_builder' ) && bricks_is_builder();
+	$on_ws_form_page   = isset( $_GET['page'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'ws-form' ) === 0;
+
+	if ( $on_ws_form_page ) {
+		return; // WS Form's own Forms/Add Form/Edit Form/Styles/Settings screens need everything.
 	}
 
-	$wsf_filters = [
-		'wsf_enqueue_js_public', 'wsf_enqueue_js_sortable', 'wsf_enqueue_js_select2',
-		'wsf_enqueue_js_input_mask', 'wsf_enqueue_js_captcha', 'wsf_enqueue_js_checkbox',
+	if ( ! is_admin() && ! $in_bricks_builder ) {
+		return; // Genuine front-end request -- never touch these filters here.
+	}
+
+	$wsf_js_filters = [
+		'wsf_enqueue_js_common', 'wsf_enqueue_js_public', 'wsf_enqueue_js_sortable', 'wsf_enqueue_js_select2',
+		'wsf_enqueue_js_input_mask', 'wsf_enqueue_js_loader', 'wsf_enqueue_js_custom',
+		'wsf_enqueue_js_captcha', 'wsf_enqueue_js_checkbox',
 		'wsf_enqueue_js_select', 'wsf_enqueue_js_radio', 'wsf_enqueue_js_tab', 'wsf_enqueue_js_tel',
 		'wsf_enqueue_js_intl_tel_input', 'wsf_enqueue_js_color', 'wsf_enqueue_js_color_picker',
 		'wsf_enqueue_js_consent', 'wsf_enqueue_js_datetime', 'wsf_enqueue_js_date_translate',
@@ -44,8 +84,21 @@ add_action( 'enqueue_block_assets', function () {
 		'wsf_enqueue_js_textarea', 'wsf_enqueue_js_validate', 'wsf_enqueue_js_wp_editor',
 		'wsf_enqueue_js_wp_html_editor', 'wsf_enqueue_js_analytics', 'wsf_enqueue_js_calc',
 		'wsf_enqueue_js_cascade', 'wsf_enqueue_js_conditional', 'wsf_enqueue_js_ecommerce',
-		'wsf_enqueue_js_section-repeatable', 'wsf_enqueue_js_tracking',
+		'wsf_enqueue_js_section-repeatable', 'wsf_enqueue_js_section_repeatable', 'wsf_enqueue_js_tracking',
+	];
+	if ( ! $in_bricks_builder ) {
+		foreach ( $wsf_js_filters as $filter ) {
+			add_filter( $filter, '__return_false', 100000 );
+		}
+	}
+
+	if ( $in_bricks_builder ) {
+		return; // Leave JS+CSS filters at default (on) -- WS Form forms in the canvas need the real rendering engine, not just styling.
+	}
+
+	$wsf_css_filters = [
 		'wsf_enqueue_css_skin', 'wsf_enqueue_css_style', 'wsf_enqueue_css_layout',
+		'wsf_enqueue_css_loader', 'wsf_enqueue_css_custom',
 		'wsf_enqueue_css_base', 'wsf_enqueue_css_button', 'wsf_enqueue_css_checkbox',
 		'wsf_enqueue_css_color', 'wsf_enqueue_css_number', 'wsf_enqueue_css_radio',
 		'wsf_enqueue_css_select', 'wsf_enqueue_css_tab', 'wsf_enqueue_css_tel',
@@ -55,25 +108,136 @@ add_action( 'enqueue_block_assets', function () {
 		'wsf_enqueue_css_range', 'wsf_enqueue_css_signature', 'wsf_enqueue_css_summary',
 		'wsf_enqueue_css_validate',
 	];
-
-	foreach ( $wsf_filters as $filter ) {
+	foreach ( $wsf_css_filters as $filter ) {
 		add_filter( $filter, '__return_false', 100000 );
 	}
-}, 5 );
+}, 10 );
 
-// ── Bricks Extras + Bricks Advanced Themer: drop their block-editor assets ──
-// Both plugins load CSS/JS into the plain block editor unconditionally.
-// Dequeue by matching each registered asset's source path back to its plugin
-// folder rather than hard-coding handle names, which are an implementation
-// detail. Skipped inside the real Bricks builder.
+// ── WooCommerce: strip block asset properties at registration time ────────
+// The block editor's iframe canvas is populated by WordPress core's
+// _wp_get_iframed_editor_assets() (wp-includes/block-editor.php), which
+// independently loops EVERY registered block type and force-enqueues its
+// editor_style_handles -- completely outside any dequeue-able action. The
+// only way to stop this is to make sure that property is empty at
+// registration time. Scoped to is_admin() + woocommerce/* only, so frontend
+// rendering of any WooCommerce block already placed anywhere is untouched.
+// This is separate from the path-based dequeue below, which handles
+// WooCommerce's own enqueue_editor_assets() bypass on the outer admin page
+// -- both are needed.
 
-add_action( 'enqueue_block_assets', function () {
-	if ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ) {
-		return;
+add_filter( 'register_block_type_args', function ( $args, $name ) {
+	if ( ! is_admin() || strpos( (string) $name, 'woocommerce/' ) !== 0 ) {
+		return $args;
 	}
 
+	foreach ( [
+		'editor_script_handles',
+		'script_handles',
+		'view_script_handles',
+		'view_script_module_ids',
+		'editor_style_handles',
+		'style_handles',
+		'view_style_handles',
+	] as $key ) {
+		if ( isset( $args[ $key ] ) ) {
+			$args[ $key ] = [];
+		}
+	}
+
+	return $args;
+}, 20, 2 );
+
+// ── Run-last pass: handle-based dequeues ────────────────────────────────
+// Registered at priority PHP_INT_MAX on all three hooks so it always runs
+// after whatever enqueued the handle, regardless of that plugin's own
+// hook/priority. Both dequeues AND deregisters each handle.
+
+$imdg_dequeue_handles = function () {
+	$in_bricks_builder = function_exists( 'bricks_is_builder' ) && bricks_is_builder();
+
+	// Bricks core -- keep bricks-admin / bricks-gutenberg out of the plain editor.
+	$bricks_handles = [];
+	if ( ! $in_bricks_builder ) {
+		$bricks_handles = [
+			'bricks-admin', 'bricks-admin-rtl', 'bricks-gutenberg',
+			// Only relevant if Bricks' "Components in Block Editor" setting is ever turned on:
+			'bricks-frontend-gutenberg', 'bricks-font-awesome-6', 'bricks-font-awesome-6-brands',
+			'bricks-ionicons', 'bricks-themify-icons', 'bricks-scripts',
+			'bricks-gutenberg-components', 'bricks-gutenberg-icon-fonts-bridge',
+		];
+	}
+
+	// Desktop Mode: dashboard widgets (registries/widgets.php) + the two native
+	// windows (Content Graph, My WordPress) singled out for removal.
+	$dm_handles = [
+		'desktop-mode-drafts-widget',
+		'desktop-mode-focus-timer-widget',
+		'desktop-mode-heartbeat-widget',
+		'desktop-mode-jazz-quote-widget',
+		'desktop-mode-post-stats-widget',
+		'desktop-mode-comments-widget',
+		'desktop-mode-site-views-widget',
+		'desktop-mode-starter-widget',
+		'desktop-mode-living-tree-wallpaper',
+		'desktop-mode-content-graph',
+		'desktop-mode-my-wordpress',
+	];
+
+	// WS Form: the two deliberately-unconditional admin CSS files (separate
+	// from the field-module bundle handled above via filters). Left alone on
+	// WS Form's own admin pages -- 'ws-form-wp' specifically styles the 'Add
+	// Form' feature itself, so dequeuing it there broke the Add Form screen.
+	$on_ws_form_page  = isset( $_GET['page'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'ws-form' ) === 0;
+	$ws_form_handles  = $on_ws_form_page ? [] : [ 'ws-form-template', 'ws-form-wp' ];
+
+	// WooCommerce: bundled Jetpack asset-data script, unconditional everywhere.
+	$other_handles = [ 'jetpack-script-data' ];
+
+	$all_handles = array_merge( $bricks_handles, $dm_handles, $ws_form_handles, $other_handles );
+
+	foreach ( $all_handles as $handle ) {
+		wp_dequeue_style( $handle );
+		wp_dequeue_script( $handle );
+		wp_deregister_style( $handle );
+		wp_deregister_script( $handle );
+	}
+
+	// EmailKit: unconditional global admin CSS, left alone on EmailKit's own
+	// settings pages (slug starts with "emailkit").
+	$on_emailkit_page = isset( $_GET['page'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'emailkit' ) === 0;
+	if ( ! $on_emailkit_page ) {
+		wp_dequeue_style( 'emailkit-admin-style' );
+		wp_deregister_style( 'emailkit-admin-style' );
+		wp_dequeue_script( 'emailkit-admin-wc-js' );
+		wp_deregister_script( 'emailkit-admin-wc-js' );
+	}
+};
+add_action( 'admin_enqueue_scripts', $imdg_dequeue_handles, PHP_INT_MAX );
+add_action( 'enqueue_block_assets', $imdg_dequeue_handles, PHP_INT_MAX );
+add_action( 'enqueue_block_editor_assets', $imdg_dequeue_handles, PHP_INT_MAX );
+
+// ── Run-last pass: path-based dequeues ──────────────────────────────────
+// Dequeues by matching each registered asset's source path back to a plugin
+// folder, rather than hard-coding handle names (an implementation detail
+// that changes on update, and in WooCommerce's case, numbers in the
+// hundreds). Scoped to specific subfolders, not whole plugins, so e.g. the
+// WooCommerce Product Data metabox (a different folder entirely) is never
+// touched -- only its Blocks package is. Skipped inside the real Bricks
+// builder for the Bricks-related targets.
+
+$imdg_dequeue_by_path = function () {
 	global $wp_styles, $wp_scripts;
-	$target_plugin_dirs = [ '/plugins/bricksextras/', '/plugins/bricks-advanced-themer/' ];
+
+	$in_bricks_builder = function_exists( 'bricks_is_builder' ) && bricks_is_builder();
+
+	$target_dirs = [
+		'/plugins/seo-by-rank-math/includes/modules/schema/blocks/toc/', // TOC block only -- schema.css lives elsewhere and is untouched.
+		'/plugins/woocommerce/assets/client/blocks/',                    // WooCommerce Blocks package only -- not the whole plugin.
+	];
+	if ( ! $in_bricks_builder ) {
+		$target_dirs[] = '/plugins/bricksextras/';
+		$target_dirs[] = '/plugins/bricks-advanced-themer/';
+	}
 
 	foreach ( [ $wp_styles, $wp_scripts ] as $registry ) {
 		if ( ! $registry instanceof WP_Dependencies ) {
@@ -84,7 +248,7 @@ add_action( 'enqueue_block_assets', function () {
 			if ( ! $src ) {
 				continue;
 			}
-			foreach ( $target_plugin_dirs as $dir ) {
+			foreach ( $target_dirs as $dir ) {
 				if ( strpos( $src, $dir ) !== false ) {
 					if ( $registry === $wp_styles ) {
 						wp_dequeue_style( $handle );
@@ -95,79 +259,71 @@ add_action( 'enqueue_block_assets', function () {
 			}
 		}
 	}
-}, 30 );
+};
+add_action( 'admin_enqueue_scripts', $imdg_dequeue_by_path, PHP_INT_MAX );
+add_action( 'enqueue_block_assets', $imdg_dequeue_by_path, PHP_INT_MAX );
+add_action( 'enqueue_block_editor_assets', $imdg_dequeue_by_path, PHP_INT_MAX );
+// ── Desktop Mode: the widget/window JS files aren't PHP-enqueued at all ────
+// Confirmed by testing: no amount of wp_dequeue_script/wp_deregister_script
+// on any hook/priority stops widget-drafts.min.js, widget-starter.min.js,
+// widget-focus-timer.min.js, etc. -- because they were never in WordPress's
+// PHP-side script queue to begin with. The desktop-mode shell script reads
+// a JSON config (serverWidgets / nativeWindows) localized via
+// wp_localize_script( 'desktop-mode', 'desktopModeConfig', $config ) and
+// injects <script> tags itself, client-side, entirely outside wp_scripts().
+// Desktop Mode ships a documented filter on that exact config --
+// desktop_mode_shell_config (includes/render/assets.php) -- so we strip our
+// unwanted entries out of serverWidgets/nativeWindows before it's ever sent
+// to the browser. This is the only place these can actually be stopped.
 
-// ── Rank Math: drop only the Table of Contents block's editor CSS ──────────
-// Path-scoped to modules/schema/blocks/toc/ specifically, so schema.css (a
-// sibling folder that powers the Schema metabox) is never touched.
-
-add_action( 'enqueue_block_assets', function () {
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	global $wp_styles;
-	$target = '/plugins/seo-by-rank-math/includes/modules/schema/blocks/toc/';
-
-	foreach ( (array) $wp_styles->queue as $handle ) {
-		$src = isset( $wp_styles->registered[ $handle ]->src ) ? $wp_styles->registered[ $handle ]->src : '';
-		if ( $src && strpos( $src, $target ) !== false ) {
-			wp_dequeue_style( $handle );
-		}
-	}
-}, 30 );
-
-// ── Bricks core: keep bricks-admin / bricks-gutenberg out of the plain editor ──
-// Bricks hooks admin_enqueue_scripts (every wp-admin screen) and
-// enqueue_block_assets unconditionally for any post type it supports, whether
-// or not that specific post is built with Bricks. Skipped inside the real
-// Bricks builder.
-
-add_action( 'admin_enqueue_scripts', function () {
-	if ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ) {
-		return;
-	}
-	wp_dequeue_style( 'bricks-admin' );
-	wp_dequeue_style( 'bricks-admin-rtl' );
-	wp_dequeue_script( 'bricks-admin' );
-}, 20 );
-
-add_action( 'enqueue_block_assets', function () {
-	if ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() ) {
-		return;
-	}
-	wp_dequeue_script( 'bricks-gutenberg' );
-
-	// Only relevant if Bricks' "Components in Block Editor" setting is ever turned on:
-	wp_dequeue_style( 'bricks-frontend-gutenberg' );
-	wp_dequeue_style( 'bricks-font-awesome-6' );
-	wp_dequeue_style( 'bricks-font-awesome-6-brands' );
-	wp_dequeue_style( 'bricks-ionicons' );
-	wp_dequeue_style( 'bricks-themify-icons' );
-	wp_dequeue_script( 'bricks-scripts' );
-	wp_dequeue_script( 'bricks-gutenberg-components' );
-	wp_dequeue_script( 'bricks-gutenberg-icon-fonts-bridge' );
-}, 20 );
-
-// ── Desktop Mode: never load these specific dashboard widget scripts ────────
-// Registered by registries/widgets.php, which force-enqueues every registered
-// widget's script on every Desktop Mode shell page (admin_enqueue_scripts,
-// priority 20) so widgets are ready without a dynamic-load roundtrip. There
-// is no per-widget opt-out, so we dequeue by handle one tick later.
-
-add_action( 'admin_enqueue_scripts', function () {
-	$handles = [
-		'desktop-mode-drafts-widget',
-		'desktop-mode-focus-timer-widget',
-		'desktop-mode-heartbeat-widget',
-		'desktop-mode-jazz-quote-widget',
-		'desktop-mode-post-stats-widget',
-		'desktop-mode-comments-widget',
-		'desktop-mode-site-views-widget',
-		'desktop-mode-starter-widget',
-		'desktop-mode-living-tree-wallpaper',
+add_filter( 'desktop_mode_shell_config', function ( $config ) {
+	$unwanted_widget_ids = [
+		'desktop-mode/drafts',
+		'desktop-mode/focus-timer',
+		'desktop-mode/heartbeat',
+		'desktop-mode/jazz-quote',
+		'desktop-mode/post-stats',
+		'desktop-mode/recent-comments',
+		'desktop-mode/site-views',
+		'desktop-mode/starter',
 	];
-	foreach ( $handles as $handle ) {
-		wp_dequeue_script( $handle );
+	if ( ! empty( $config['serverWidgets'] ) && is_array( $config['serverWidgets'] ) ) {
+		$config['serverWidgets'] = array_values( array_filter(
+			$config['serverWidgets'],
+			static function ( $widget ) use ( $unwanted_widget_ids ) {
+				return empty( $widget['id'] ) || ! in_array( $widget['id'], $unwanted_widget_ids, true );
+			}
+		) );
 	}
-}, 21 );
+
+	$unwanted_window_ids = [
+		'desktop-mode-content-graph',
+		'desktop-mode-my-wordpress',
+	];
+	if ( ! empty( $config['nativeWindows'] ) && is_array( $config['nativeWindows'] ) ) {
+		$config['nativeWindows'] = array_values( array_filter(
+			$config['nativeWindows'],
+			static function ( $window ) use ( $unwanted_window_ids ) {
+				return empty( $window['id'] ) || ! in_array( $window['id'], $unwanted_window_ids, true );
+			}
+		) );
+	}
+
+	return $config;
+} );
+// ── Desktop Mode: neutralize widgets/windows at the registry, not the payload ──
+// Confirmed by inspecting window.desktopModeConfig live: the
+// desktop_mode_shell_config filter above IS applied to the initial page
+// load, but Desktop Mode's "live refresh" system (chromeless-bridge.php,
+// wp.desktop.refreshMenu()) re-fetches desktop_mode_build_menu_payload()
+// directly from the registry -- several call sites, none going through that
+// filter -- and overwrites the parent shell's state shortly after boot.
+// That's why dequeuing/filtering downstream never stuck.
+//
+// The only place that reliably reaches every consumer is the registry
+// itself. desktop_mode_register_widget() / desktop_mode_register_window()
+// have no "unregister" API, but the registry is a plain "last call wins"
+// store with no protection against re-registration -- so we re-register
+// each unwanted id with an empty script/style handle right after Desktop
+// Mode's own widget/window files have already registered them. A resolved
+// script/style payload for an empty
