@@ -17,7 +17,9 @@
     --color-border: var(--color-white-trans-10);
     --color-border-muted: var(--color-white-trans-5);
     --color-subtle: #b09dc40d;
-    --color-muted: rgba(172, 183, 205, 0.2);	
+    --color-muted: rgba(172, 183, 205, 0.2);
+    --color-input: #ba8bc440;
+    --color-input-bg: #ffffff0d;	
 }
 
 /* BUG with pinned panel layering */
@@ -772,5 +774,21 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 }
 
 #happyfiles-resizer {
+	border-color: var(--color-border);
+}
+
+
+#happyfiles-search-folders input {
+  background: var(--color-input);
+  border-radius: 6px;
+  border-color: var(--color-border);
+  color: var(--color-white);
+}
+
+.happyfiles-notification {
+	background-color: var(--color-subtle);
+}
+
+.happyfiles-mounted.media-menu #happyfiles-sidebar {
 	border-color: var(--color-border);
 }
