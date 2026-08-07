@@ -1,9 +1,21 @@
 :root {
---highlight-color: #FFD64F;
---faded-color: #AD9543;
---faded-more-color: #5A5436;
---core-ui-input-active: #fff !important;
---dark-color: #000;
+	--highlight-color: #FFD64F;
+	--faded-color: #AD9543;
+	--faded-more-color: #5A5436;
+	--core-ui-input-active: #fff !important;
+	--dark-color: #000;
+	
+	--color-background: #1a2123;	
+    --color-primary: #8c00ff;
+    --color-white: #ffffff;
+    --color-white-trans-5: rgba(255,255,255,.05);
+    --color-white-trans-10: rgba(255,255,255,.1);
+    --color-white-trans-50: rgba(255,255,255,.5);
+    --color-white-trans-80: rgba(255,255,255,.8);
+    --color-accent: #d700ff;
+    --color-foreground: #acb7cdcf;
+    --color-border: var(--color-white-trans-10);
+    --color-border-muted: var(--color-white-trans-5);	
 }
 
 /* BUG with pinned panel layering */
@@ -518,7 +530,8 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 
 .media-modal-content {
     border-radius: 20px;
-    border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border) !important;
+  background: var(--color-background);
 }
 
 #wp-media-modal .media-modal-content {
