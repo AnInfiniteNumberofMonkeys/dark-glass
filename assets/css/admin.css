@@ -4064,8 +4064,9 @@ body.js.block-editor-page #wpcontent {
 /*** 18. MEDIA                                                   */
 /*****************************************************************/
 
-#wp-media-modal .media-toolbar {
+#wp-media-modal .media-toolbar, .media-frame-content .media-toolbar {
     background: none !important;
+	padding: 0;
 }
 
 .media-frame a, .view-switch a.current:before {
@@ -4118,10 +4119,6 @@ body.js.block-editor-page #wpcontent {
 
 .media-frame-title {
     top: 10px;
-}
-
-.media-frame-content {
-    top: 120px;
 }
 
 .media-modal-content .media-frame select.attachment-filters {
