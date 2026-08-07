@@ -770,3 +770,7 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 	background-color: var(--color-primary);
 	color: var(--color-white);
 }
+
+#happyfiles-resizer {
+	border-color: var(--color-border);
+}
