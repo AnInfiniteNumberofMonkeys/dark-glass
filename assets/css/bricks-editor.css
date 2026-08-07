@@ -5,7 +5,9 @@
 	--core-ui-input-active: #fff !important;
 	--dark-color: #000;
 	
-	--color-background: #1a2123;	
+	--color-background: #1a2123;
+	--color-background-alt: #201e22;
+	--color-background-trans-50: rgba(26,33,35,.5);	
     --color-primary: #8c00ff;
     --color-white: #ffffff;
     --color-white-trans-5: rgba(255,255,255,.05);
@@ -19,7 +21,9 @@
     --color-subtle: #b09dc40d;
     --color-muted: rgba(172, 183, 205, 0.2);
     --color-input: #ba8bc440;
-    --color-input-bg: #ffffff0d;	
+    --color-input-bg: #ffffff0d;
+    --radius-md: 0.6rem;
+    --radius-lg: 1rem;	
 }
 
 /* BUG with pinned panel layering */
@@ -632,7 +636,7 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 .wp-core-ui .attachment {
     color: var(--color-foreground);
     border: 2px solid transparent;
-    padding: 6px;
+    padding: 7px;
 }
 
 .wp-core-ui .attachment.details:focus, .wp-core-ui .attachment:focus, .wp-core-ui .selected.attachment:focus {
@@ -669,11 +673,15 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
   line-height: 1.2;
   max-height: 33%;
   box-shadow: none;
-  border-bottom-left-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
   font-weight: normal;
 }
 
+.wp-core-ui .attachment .thumbnail img {
+  height: 100%;
+  object-fit: cover;
+}
 
 .media-sidebar {
     background: var(--color-background);
@@ -713,6 +721,19 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 .wp-core-ui .attachment .filename div {
 	line-height: 1.2;
   	font-size: 10px;
+}
+
+#media-attachment-date-filters, #media-search-input {
+  background: var(--color-input-bg);
+  color: var(--color-foreground);
+	border-radius: 6px;
+	border: 1px solid var(--color-border);
+}
+
+#wp-media-modal .media-button-select {
+	color: #fff !important;
+	background: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;
 }
 
 /*****************************/
@@ -791,4 +812,10 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 
 .happyfiles-mounted.media-menu #happyfiles-sidebar {
 	border-color: var(--color-border);
+}
+
+#happyfiles-quick-inspector {
+  background: var(--color-background-alt);
+  padding: 6px;
+  border-radius: var(--radius-md);	
 }
