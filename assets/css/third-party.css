@@ -3682,11 +3682,6 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
     border-color: var(--color-accent);
 }
 
-#happyfiles-sidebar .folder .count {
-    background: var(--color-bkgrd-highlight) !important;
-    border-radius: 4px;
-}
-
 #happyfiles-sidebar .folder:hover > .count, #happyfiles-sidebar .folder.context .count, #happyfiles-sidebar .folder.open .count {
     background: var(--color-accent) !important;
 }
@@ -3703,48 +3698,16 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
     color: var(--color-foreground);
 }
 
-.happyfiles-mounted.media-menu #happyfiles-sidebar {
-    border-color: var(--color-border-light);
-    border-top: none;
-}
-
-#happyfiles-sidebar .folders.default {
-    border-color: var(--color-border-light);
-}
-
 #happyfiles-search-folders {
     background: none;
     padding: 0;
     border: none;
 }
 
-#happyfiles-sidebar .icon {
-    background-color: var(--color-button-bkgrd);
-    color: var(--color-white);
-}
-
-.happyfiles-context-menu {
-    background-color: var(--color-bkgrd-0);
-    border-radius: 12px;
-    color: var(--color-foreground);
-}
-
 .happyfiles-context-menu li {
     border-color: var(--color-border);
 }
 
-.happyfiles-context-menu li:hover {
-    background-color: var(--color-button-bkgrd-hover);
-    color: var(--color-white);
-}
-
-#happyfiles-uploading-progress {
-    background: var(--color-bkgrd-1);
-}
-
-#happyfiles-resizer {
-    border-color: var(--color-border-light);
-}
 
 /*****************************/
 /*** Bricks Builder **********/
