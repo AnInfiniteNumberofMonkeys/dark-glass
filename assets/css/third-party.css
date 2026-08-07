@@ -3708,6 +3708,16 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
     border-color: var(--color-border);
 }
 
+#happyfiles-sidebar .icon {
+	background-color: var(--color-subtle);
+	border: 1px solid var(--color-border-muted);
+}
+
+#happyfiles-sidebar .folder .count {
+	background-color: var(--color-primary);
+	color: var(--color-white);
+}
+
 
 /*****************************/
 /*** Bricks Builder **********/
