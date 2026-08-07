@@ -3722,6 +3722,28 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
 	border-color: var(--color-border);
 }
 
+
+#happyfiles-search-folders input {
+  background: var(--color-input);
+  border-radius: 6px;
+  border-color: var(--color-border);
+  color: var(--color-white);
+}
+
+.happyfiles-notification {
+	background-color: var(--color-subtle);
+}
+
+.happyfiles-mounted.media-menu #happyfiles-sidebar {
+	border-color: var(--color-border);
+}
+
+#happyfiles-quick-inspector {
+  background: var(--color-background-alt);
+  padding: 6px;
+  border-radius: var(--radius-md);	
+}
+
 /*****************************/
 /*** Bricks Builder **********/
 /*****************************/
