@@ -4064,11 +4064,6 @@ body.js.block-editor-page #wpcontent {
 /*** 18. MEDIA                                                   */
 /*****************************************************************/
 
-.media-toolbar {
-    border: none;
-    background: var(--color-table-bkgrd) !important;
-}
-
 #wp-media-modal .media-toolbar {
     background: none !important;
 }
