@@ -503,3 +503,197 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 .mce-menu-item:hover *, .mce-menu-item.mce-selected *, .mce-menu-item:focus * {
     color: #000;
 }
+
+
+
+/* Media selector dialog */
+
+#wp-media-modal .media-toolbar {
+    background: none !important;
+}
+
+.media-frame a, .view-switch a.current:before {
+    color: var(--color-accent);
+}
+
+.media-modal-content {
+    border-radius: 20px;
+    border: 2px solid var(--color-border);
+}
+
+#wp-media-modal .media-modal-content {
+    border: none;
+}
+
+.media-modal {
+    outline: none;
+}
+
+.media-modal-close {
+    color: var(--color-foreground);
+}
+
+.media-modal-close:active, .media-modal-close:hover {
+    color: var(--color-white);
+}
+
+.media-frame-router {
+    top: 72px;
+}
+
+.media-router .media-menu-item {
+    color: var(--color-foreground);
+    border-radius: 8px;
+}
+
+.media-router .media-menu-item:active, .media-router .media-menu-item:hover {
+    color: var(--color-accent);
+}
+
+.media-router .active, .media-router .media-menu-item.active:last-child {
+    border-color: var(--color-primary);
+    color: var(--color-white);
+    background: var(--color-primary);
+}
+
+#wp-media-modal .media-frame-toolbar .media-toolbar {
+    border-color: var(--color-border);
+}
+
+.media-frame-title {
+    top: 10px;
+}
+
+.media-frame-content {
+    top: 120px;
+}
+
+.media-modal-content .media-frame select.attachment-filters {
+    border-radius: 4px;
+}
+
+.media-menu {
+    background: none;
+    border-color: var(--color-border);
+    padding-top: 0;
+}
+
+.media-frame-menu {
+    margin-top: 14px;
+}
+
+.media-modal-content .media-frame-menu-heading, #menu-item-insert {
+	display:none;
+}
+
+.media-frame-menu .media-menu-item {
+    color: var(--color-foreground);
+}
+
+.media-menu .active, .media-menu .active:hover, .media-frame-menu .media-menu-item:hover {
+    color: var(--color-primary);
+}
+
+.media-menu .media-menu-item:hover {
+    background: none;
+}
+
+.media-menu .media-menu-item:focus, .media-menu .media-menu-item:active {
+    color: var(--color-accent);
+    box-shadow: none;
+}
+
+.media-router .media-menu-item:focus {
+    box-shadow: none;
+}
+
+.media-frame-content {
+    background: none;
+    border-top: none;
+}
+
+.wp-core-ui .attachment {
+    color: var(--color-foreground);
+    border: 2px solid transparent;
+    padding: 6px;
+}
+
+.wp-core-ui .attachment.details:focus, .wp-core-ui .attachment:focus, .wp-core-ui .selected.attachment:focus {
+    box-shadow: none;
+    border: 2px solid var(--color-accent);
+}
+
+.wp-core-ui .attachment-preview {
+    background: var(--color-muted);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.wp-core-ui .attachment .filename {
+    background: var(--color-background);
+    box-shadow: none;
+    border-top: 1px solid var(--color-border);
+}
+
+.wp-core-ui .attachment.details {
+    box-shadow: none;
+}
+
+.wp-core-ui .attachment.details .check, .wp-core-ui .attachment.selected .check:focus, .wp-core-ui .media-frame.mode-grid .attachment.selected .check, .wp-core-ui .selected.attachment {
+    background-color: var(--color-primary);
+    box-shadow: none;
+    border-radius: 16px;
+}
+
+.wp-core-ui .attachment:not(:has(.filename))::after {
+  background-color: var(--color-background-trans-50);
+  color: var(--color-foreground);
+  line-height: 1.2;
+  max-height: 33%;
+  box-shadow: none;
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+  font-weight: normal;
+}
+
+
+.media-sidebar {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    border-color: var(--color-border);
+}
+
+.attachment-info .filename, .attachment-info {
+    color: var(--color-foreground);
+}
+
+.attachment-info {
+    border-color: var(--color-border-muted);
+}
+
+.edit-attachment-frame .attachment-info {
+    background: var(--color-bkgrd-highlight);
+}
+
+.media-frame {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.media-modal-content * {
+    color: var(--color-foreground);
+}
+
+#media-frame-title h1 {
+    color: var(--color-white);
+}
+
+.more-loaded .attachment:not(.found-media) {
+	background: none;
+}
+
+.wp-core-ui .attachment .filename div {
+	line-height: 1.2;
+  	font-size: 10px;
+}
