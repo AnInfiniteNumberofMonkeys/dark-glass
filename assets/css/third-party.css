@@ -3718,6 +3718,9 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
 	color: var(--color-white);
 }
 
+#happyfiles-resizer {
+	border-color: var(--color-border);
+}
 
 /*****************************/
 /*** Bricks Builder **********/
