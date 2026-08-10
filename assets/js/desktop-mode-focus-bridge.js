@@ -28,8 +28,8 @@
 
 	var MESSAGE_TYPE = 'imdg-window-focus';
 
-	// ── Chromeless iframe role ──────────────────────────────────────
-	if ( window.self !== window.top && document.body.classList.contains( 'desktop-mode-chromeless' ) ) {
+	// ── Chromeless iframe role ─────────────────────────────────────────
+	if ( window.self !== window.top && document.body.classList.contains( 'os-chromeless' ) ) {
 		window.addEventListener( 'message', function ( event ) {
 			if ( event.origin !== window.location.origin ) {
 				return;
@@ -48,8 +48,8 @@
 		return;
 	}
 
-	// ── Parent shell role ───────────────────────────────────────────
-	if ( ! document.body.classList.contains( 'desktop-mode-active' ) ) {
+	// ── Parent shell role ───────────────────────────────────────────────
+	if ( ! document.body.classList.contains( 'os-active' ) ) {
 		return;
 	}
 
@@ -58,7 +58,7 @@
 		if ( ! iframe || ! iframe.contentWindow ) {
 			return;
 		}
-		var focused = win.classList.contains( 'desktop-mode-window--focused' );
+		var focused = win.classList.contains( 'os-window--focused' );
 		try {
 			iframe.contentWindow.postMessage(
 				{ type: MESSAGE_TYPE, focused: focused },
@@ -99,11 +99,11 @@
 		if ( root.nodeType !== 1 ) {
 			return;
 		}
-		if ( root.classList && root.classList.contains( 'desktop-mode-window' ) ) {
+		if ( root.classList && root.classList.contains( 'os-window' ) ) {
 			watchWindow( root );
 		}
 		if ( root.querySelectorAll ) {
-			var found = root.querySelectorAll( '.desktop-mode-window' );
+			var found = root.querySelectorAll( '.os-window' );
 			for ( var i = 0; i < found.length; i++ ) {
 				watchWindow( found[ i ] );
 			}
