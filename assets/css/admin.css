@@ -265,7 +265,7 @@ body:not(.os-chromeless) #wpwrap::after {
      * once the Desktop Mode plugin ships native mobile support.
      * ============================================================
      */
-
+ 
     /*
      * Confirmed via an actual iOS Safari Timeline recording: 7 composite
      * operations logged, each individually taking 5-6 SECONDS to
@@ -286,25 +286,25 @@ body:not(.os-chromeless) #wpwrap::after {
     body:not(.os-chromeless) #wpwrap::after {
         display: none;
     }
-
-    .desktop-mode-window--focused {
+ 
+    .os-window--focused {
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
     }
-
+ 
     /*
      * Removes transparency from windows on mobile/touch — overriding
-     * the shared --desktop-mode-window-bg variable here means every
+     * the shared --os-window-bg variable here means every
      * consumer (the window itself, its iframe's fallback background)
      * picks up a fully opaque color in one place, rather than needing
      * to override each rule that references it individually. A solid
      * background also avoids the ongoing cost of compositing a
      * translucent layer over whatever's behind it.
      */
-    body.desktop-mode-active .desktop-mode-shell {
-        --desktop-mode-window-bg: var(--color-background);
+    body.os-active .os-shell {
+        --os-window-bg: var(--color-background);
     }
-
+ 
     /*
      * !important required: WP core's own admin-bar responsive CSS
      * (loaded separately, outside this theme) has its own #wpadminbar
@@ -328,44 +328,44 @@ body:not(.os-chromeless) #wpwrap::after {
      * now-hidden admin bar, leaving a blank gap. !important required:
      * this is very likely set via inline style by the shell's own
      * positioning JS (matching the pattern already confirmed for
-     * #wpadminbar and .desktop-mode-window elsewhere in this file),
+     * #wpadminbar and .os-window elsewhere in this file),
      * which a plain external rule loses to regardless of specificity.
      */
-    .desktop-mode-shell {
+    .os-shell {
         inset-block-start: 0 !important;
     }
-
+ 
     /*
      * No usable mobile interaction model for this yet either.
      */
-    .desktop-mode-widgets__add {
+    .os-widgets__add {
         display: none !important;
     }
-
+ 
     /*
      * Window controls (minimize / maximize / "enter fullscreen") don't
      * have a usable mobile interaction model in Desktop Mode yet —
      * hiding them, keeping only Close. Confirmed live classnames:
      * --minimize, --maximize, --focus-tab (the "enter fullscreen" one).
      */
-    .desktop-mode-window__btn--minimize,
-    .desktop-mode-window__btn--maximize,
-    .desktop-mode-window__btn--focus-tab {
+    .os-window__btn--minimize,
+    .os-window__btn--maximize,
+    .os-window__btn--focus-tab {
         display: none !important;
     }
-
+ 
     /*
-     * .desktop-mode-dock__pinned lives inside the side dock
-     * (#desktop-mode-side-dock), not the bottom app dock
-     * (#desktop-mode-dock) styled further below — confirmed live these
+     * .os-dock__pinned lives inside the side dock
+     * (#os-side-dock), not the bottom app dock
+     * (#os-dock) styled further below — confirmed live these
      * are two separate elements despite the similar naming.
      */
-    .desktop-mode-dock__pinned {
+    .os-dock__pinned {
         display: none !important;
     }
-
+ 
     /*
-     * #desktop-mode-dock (confirmed live, distinct from the side dock
+     * #os-dock (confirmed live, distinct from the side dock
      * above) is normally a centered, fixed-width floating pill
      * (width auto-sized to content, centered via left:0;right:0 with
      * auto margins, bottom:12px, border-radius:18px). Restyled here to
@@ -377,7 +377,7 @@ body:not(.os-chromeless) #wpwrap::after {
      * wins over width in CSS), which is what was causing the dock to
      * render narrower than its parent despite width:100vw being set.
      */
-    #desktop-mode-dock {
+    #os-dock {
         width: 100vw !important;
         max-width: 100vw !important;
         left: 0 !important;
@@ -389,7 +389,7 @@ body:not(.os-chromeless) #wpwrap::after {
         border-right: none !important;
         border-bottom: none !important;
     }
-
+ 
     /*
      * Windows always open at an arbitrary desktop-sized position/size
      * via inline style (left/top/width/height set directly by Desktop
@@ -401,7 +401,7 @@ body:not(.os-chromeless) #wpwrap::after {
      * reduced by the bottom dock's own height (confirmed live: ~46px)
      * so windows never sit underneath/overlap it.
      */
-    .desktop-mode-window {
+    .os-window {
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
@@ -410,8 +410,8 @@ body:not(.os-chromeless) #wpwrap::after {
         border: none !important;
     }
 }
-
-.desktop-mode-dock__item[data-system-id="desktop-mode-games"] {
+ 
+.os-dock__item[data-system-id="desktop-mode-games"] {
 	display: none;
 }
 
@@ -4256,45 +4256,45 @@ body.js.block-editor-page #wpcontent {
 /*****************************************************************/
 /*** 19. DESKTOP MODE — SHELL CHROME                             */
 /*****************************************************************/
-
+ 
 /*
- * Desktop Mode's own variables.css redeclares --desktop-mode-titlebar-bg-focused
+ * Desktop Mode's own variables.css redeclares --os-titlebar-bg-focused
  * AND --wp-admin-theme-color inside per-color-scheme blocks scoped to
- * .desktop-mode-shell[data-desktop-mode-scheme="..."], which outranks a
- * plain .desktop-mode-shell selector — and outranks our global :root
- * --wp-admin-theme-color override too. body.desktop-mode-active is added
+ * .os-shell[data-os-scheme="..."], which outranks a
+ * plain .os-shell selector — and outranks our global :root
+ * --wp-admin-theme-color override too. body.os-active is added
  * by the plugin whenever the shell is rendered, so anchoring there gives
  * this rule enough specificity to win regardless of which WP color
  * scheme the user has selected — no !important needed.
  */
-body.desktop-mode-active .desktop-mode-shell {
-    --desktop-mode-titlebar-bg-focused: var(--color-primary);
+body.os-active .os-shell {
+    --os-titlebar-bg-focused: var(--color-primary);
     --wp-admin-theme-color: var(--color-accent);
-    --desktop-mode-window-bg: #1a2123b3;
-    --desktop-mode-window-border: rgba(255, 255, 255, 0.2);
-    --desktop-mode-window-radius: var(--radius-md);
-    --desktop-mode-tabs-bg: #251e3a;
-    --desktop-mode-tabs-color: #fff;
-    --desktop-mode-titlebar-bg: #6a5f8f;
-    --desktop-mode-titlebar-color: #fbfafd;
+    --os-window-bg: #1a2123b3;
+    --os-window-border: rgba(255, 255, 255, 0.2);
+    --os-window-radius: var(--radius-md);
+    --os-tabs-bg: #251e3a;
+    --os-tabs-color: #fff;
+    --os-titlebar-bg: #6a5f8f;
+    --os-titlebar-color: #fbfafd;
 }
-
+ 
 /*
  * Every element gets a pointer cursor while Desktop Mode is active —
  * an intentional, blanket OS-like feel rather than the usual
  * only-on-interactive-elements convention. !important is required here:
  * Desktop Mode's own desktop.css has this EXACT selector
- * (body.desktop-mode-active, body.desktop-mode-active *) setting
+ * (body.os-active, body.os-active *) setting
  * cursor: default, and it happens to load after ours in the page, so
  * on a pure specificity tie its rule wins. Since there's no selector
  * to out-specify (it's identical to ours), !important is the correct
  * tool rather than a fragile ordering trick.
  */
-body.desktop-mode-active,
-body.desktop-mode-active * {
+body.os-active,
+body.os-active * {
     cursor: pointer !important;
 }
-
+ 
 /*
  * Native windows (Posts/Pages/Users/Plugins) were inheriting that same
  * blanket pointer cursor into EVERY element, including plain background
@@ -4302,33 +4302,33 @@ body.desktop-mode-active * {
  * though our light-DOM selector can't directly SELECT elements inside a
  * shadow root, its computed value still flows in via inheritance from
  * the shadow host (confirmed live: a plain, non-interactive <td> deep
- * inside wpd-table's shadow root showed "pointer" purely from this).
+ * inside os-table's shadow root showed "pointer" purely from this).
  * Resetting to default here, then re-enabling pointer only on genuinely
  * clickable light-DOM elements/hosts, restores normal behavior — the
  * reset value inherits into shadow trees the same way the pointer value
- * did. wpd-table is deliberately left off the "always pointer" list
+ * did. os-table is deliberately left off the "always pointer" list
  * since it's a mixed container (most of it isn't clickable); its actual
  * clickable bits (buttons, action links, the row expander) get pointer
  * via desktop-mode-shadow-styles.js instead, since a light-DOM selector
  * can't reach inside to selectively target just those.
  */
-body.desktop-mode-active .desktop-mode-window__body--native,
-body.desktop-mode-active .desktop-mode-window__body--native * {
+body.os-active .os-window__body--native,
+body.os-active .os-window__body--native * {
     cursor: default !important;
 }
-
-body.desktop-mode-active .desktop-mode-window__body--native button,
-body.desktop-mode-active .desktop-mode-window__body--native a,
-body.desktop-mode-active .desktop-mode-window__body--native select,
-body.desktop-mode-active .desktop-mode-window__body--native input,
-body.desktop-mode-active .desktop-mode-window__body--native label,
-body.desktop-mode-active .desktop-mode-window__body--native [role="button"],
-body.desktop-mode-active .desktop-mode-window__body--native wpd-button,
-body.desktop-mode-active .desktop-mode-window__body--native wpd-tab,
-body.desktop-mode-active .desktop-mode-window__body--native wpd-segment {
+ 
+body.os-active .os-window__body--native button,
+body.os-active .os-window__body--native a,
+body.os-active .os-window__body--native select,
+body.os-active .os-window__body--native input,
+body.os-active .os-window__body--native label,
+body.os-active .os-window__body--native [role="button"],
+body.os-active .os-window__body--native os-button,
+body.os-active .os-window__body--native os-tab,
+body.os-active .os-window__body--native os-segment {
     cursor: pointer !important;
 }
-
+ 
 /*
  * Chromeless window bodies (the content rendered inside each window's
  * iframe) skip the theme's own radial-glow background entirely — the
@@ -4345,52 +4345,52 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']).os-ch
 .os-chromeless {
     background: none;
 }
-
+ 
 /*
  * --desktop-mode-fx-darken-brightness / -saturate are declared directly on
- * .desktop-mode-window itself (not :root, not per-scheme), so overriding
+ * .os-window itself (not :root, not per-scheme), so overriding
  * them needs the same specificity trick as above. The border-width bump
  * lives in the same scope since it targets the same element.
  */
-body.desktop-mode-active .desktop-mode-window {
+body.os-active .os-window {
     --desktop-mode-fx-darken-brightness: 0.7;
     --desktop-mode-fx-darken-saturate: 0.8;
-    border: 3px solid var(--desktop-mode-window-border);
+    border: 3px solid var(--os-window-border);
 }
-
+ 
 /*
  * Frosted-glass focused window: works together with the semi-transparent
- * --desktop-mode-window-bg set above (an opaque background would hide
+ * --os-window-bg set above (an opaque background would hide
  * the blur entirely, since backdrop-filter only affects what's visible
  * THROUGH the element, not the element's own painted background).
  */
-.desktop-mode-window--focused {
+.os-window--focused {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
-
+ 
 /*
  * Tab strip — flat plum fill, scroll-fade mask removed entirely (mask-image
  * AND its -webkit- prefixed twin, both set to none so no edge fade renders
  * even on older Chromium-based browsers that only honor the prefixed form).
  */
-body.desktop-mode-active nav.desktop-mode-window__tabs {
+body.os-active nav.os-window__tabs {
     background: var(--color-muted);
     mask-image: none;
     -webkit-mask-image: none;
     padding: 8px 16px;
 }
-
+ 
 /*
  * Confirmed live: the tab strip persists in the DOM with zero children
  * (no whitespace text nodes either) when a window has only one
  * destination — e.g. WPCodeBox 2. Without this, the 8px vertical
  * padding alone still renders a visible empty bar.
  */
-body.desktop-mode-active .desktop-mode-window__tabs:empty {
+body.os-active .os-window__tabs:empty {
     display: none;
 }
-
+ 
 /*
  * Individual tabs — active tab renders as a filled pill (accent bg,
  * fully rounded, no underline) instead of the plugin's default
@@ -4398,8 +4398,8 @@ body.desktop-mode-active .desktop-mode-window__tabs:empty {
  * base tab's border-bottom AND the plugin's border-bottom-color rule
  * since it's a full shorthand at higher specificity.
  */
-body.desktop-mode-active .desktop-mode-window__tab {
-    color: var(--desktop-mode-tabs-color, #fff);
+body.os-active .os-window__tab {
+    color: var(--os-tabs-color, #fff);
     /*
      * Desktop Mode's own window-chrome.css fixes height: 32px on this
      * element with box-sizing: border-box, which absorbs vertical
@@ -4410,25 +4410,25 @@ body.desktop-mode-active .desktop-mode-window__tab {
     height: auto;
     padding: 8px 16px;
 }
-
-body.desktop-mode-active .desktop-mode-window__tab:hover {
+ 
+body.os-active .os-window__tab:hover {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50px;
 }
-
-body.desktop-mode-active .desktop-mode-window__tab--active {
+ 
+body.os-active .os-window__tab--active {
     color: #fff;
     border: none;
     background: var(--color-accent);
     border-radius: 50px;
 }
-
+ 
 /*
  * Unfocused windows were still showing the translucent glass effect
  * with no blur to go with it (backdrop-filter only applies to the
  * focused window), reading as a flat, slightly-off wash rather than
  * a deliberate opaque look. The <iframe> element's own fallback
- * background is var(--desktop-mode-window-bg) — the same translucent
+ * background is var(--os-window-bg) — the same translucent
  * tint as focused windows — which shows through wherever the iframe's
  * OWN document content is transparent (which is most of it, by design,
  * both generally and via the Bricks-specific overrides below). Pinning
@@ -4436,37 +4436,37 @@ body.desktop-mode-active .desktop-mode-window__tab--active {
  * unfocused windows a properly opaque look instead.
  *
  * Corrected to :not(--focused) here — the selector as given
- * (.desktop-mode-window--focused ...) would target focused windows,
+ * (.os-window--focused ...) would target focused windows,
  * which already look correct; unfocused was the one needing this.
  */
-body.desktop-mode-active .desktop-mode-window:not(.desktop-mode-window--focused) .desktop-mode-window__iframe {
+body.os-active .os-window:not(.os-window--focused) .os-window__iframe {
     background: var(--color-background);
 }
-
+ 
 /*
- * .desktop-mode-window__menu-panel is a class on <wpd-menu> itself (the
+ * .os-window__menu-panel is a class on <os-menu> itself (the
  * host element, in light DOM) — not inside its shadow root — so this is
  * a legitimate override. Per the Shadow DOM styling model, page-authored
  * styles targeting the host element win over the component's own
  * internal :host{} rule, regardless of specificity, so no !important
  * or extra scoping is needed here either.
  *
- * NOTE: .wpd-menu-item__check, its ::after checkmark, and the internal
- * <button> live inside <wpd-menu-item>'s shadow root with no exposed
+ * NOTE: .os-menu-item__check, its ::after checkmark, and the internal
+ * <button> live inside <os-menu-item>'s shadow root with no exposed
  * ::part() hooks — they cannot be styled from this stylesheet at all.
  * The checkbox's checked-state fill and icon color already inherit our
  * --wp-admin-theme-color override from above, since custom properties
  * (unlike selectors) do cross shadow boundaries.
  */
-.desktop-mode-window__menu-panel {
+.os-window__menu-panel {
     background: var(--color-background);
     color: var(--color-foreground);
 }
-
+ 
 /*****************************************************************/
 /*** NATIVE WINDOWS (Posts / Pages / Users / Plugins)            */
 /*****************************************************************/
-
+ 
 /*
  * .desktop-mode-posts (shared by the Posts, Pages, AND Users native
  * windows — Users reuses this same component) and .desktop-mode-plugins
@@ -4477,156 +4477,156 @@ body.desktop-mode-active .desktop-mode-window:not(.desktop-mode-window--focused)
  * already transparent), but both get the text-color fix since both
  * default to dark, hard-to-read-on-dark-glass text.
  */
-body.desktop-mode-active .desktop-mode-posts,
-body.desktop-mode-active .desktop-mode-plugins {
+body.os-active .desktop-mode-posts,
+body.os-active .desktop-mode-plugins {
     background: none;
     color: var(--color-foreground);
 }
-
+ 
 /*
  * Not independently re-verified live this session (couldn't reliably
  * reproduce the upload-card UI via automated clicks), but every other
  * element in the same "Add Plugin" browse view is confirmed light-DOM
  * directly inside .desktop-mode-plugins, so this should be too.
  */
-body.desktop-mode-active .desktop-mode-plugins__upload-card {
+body.os-active .os-plugins__upload-card {
     border: 1px solid var(--color-border-muted);
     background: var(--color-background-alt);
 }
-
-body.desktop-mode-active .desktop-mode-plugins__upload-card,
-body.desktop-mode-active .desktop-mode-plugins__upload-card *:not(button):not(wpd-button) {
+ 
+body.os-active .os-plugins__upload-card,
+body.os-active .os-plugins__upload-card *:not(button):not(os-button) {
     color: var(--color-foreground);
 }
-
-body.desktop-mode-active .desktop-mode-plugins__card {
+ 
+body.os-active .os-plugins__card {
     border: 1px solid var(--color-border);
     background: var(--color-subtle);
 }
-
-body.desktop-mode-active .desktop-mode-plugins__card-desc {
+ 
+body.os-active .os-plugins__card-desc {
     color: var(--color-foreground);
 }
-
-body.desktop-mode-active .desktop-mode-plugins__star .dashicons-star-empty {
+ 
+body.os-active .os-plugins__star .dashicons-star-empty {
     color: var(--color-muted-foreground);
 }
-
+ 
 /*
- * wpd-table exposes ::part() hooks (table, header-row, filter-row,
+ * os-table exposes ::part() hooks (table, header-row, filter-row,
  * row, scroll) — a real CSS API, no shadow injection needed. Matches
  * the same header/row/hover treatment as .wp-list-table elsewhere.
  */
-wpd-table::part(header-row) th {
+os-table::part(header-row) th {
     background-color: var(--color-dark-background);
 }
-
-wpd-table::part(row) {
+ 
+os-table::part(row) {
     border-bottom: 1px solid var(--color-border-muted);
     transition: background 150ms ease-out;
 }
-
-wpd-table::part(row):hover {
+ 
+os-table::part(row):hover {
     background: var(--color-background-hover) !important;
 }
-
+ 
 /*
- * wpd-button also exposes a ::part(button) hook. Styled per its
+ * os-button also exposes a ::part(button) hook. Styled per its
  * variant attribute (primary / ghost / danger, confirmed by
  * inspecting live instances) to match our existing button conventions.
  */
-wpd-button::part(button) {
+os-button::part(button) {
     border-radius: 5px;
     transition: var(--transition-common);
 }
-
-wpd-button[variant="primary"]::part(button) {
+ 
+os-button[variant="primary"]::part(button) {
     background: var(--color-primary);
     color: var(--color-white);
 }
-
-wpd-button[variant="primary"]::part(button):hover {
+ 
+os-button[variant="primary"]::part(button):hover {
     background: var(--color-accent);
 }
-
-wpd-button[variant="secondary"]::part(button) {
+ 
+os-button[variant="secondary"]::part(button) {
     background: var(--color-diffused);
     color: var(--color-white);
 }
-
-wpd-button[variant="ghost"]::part(button) {
+ 
+os-button[variant="ghost"]::part(button) {
     background: transparent;
     color: var(--color-foreground);
     border: 1px solid var(--color-border);
 }
-
-wpd-button[variant="ghost"]::part(button):hover {
+ 
+os-button[variant="ghost"]::part(button):hover {
     background: var(--color-background-hover);
     color: var(--color-white);
 }
-
-wpd-button[variant="danger"]::part(button) {
+ 
+os-button[variant="danger"]::part(button) {
     background: transparent;
     color: var(--color-error);
     border: 1px solid var(--color-error);
 }
-
-wpd-button[variant="danger"]::part(button):hover {
+ 
+os-button[variant="danger"]::part(button):hover {
     background: var(--color-error);
     color: var(--color-white);
 }
-
+ 
 /*
- * wpd-tabs is the host element for a generic tab-strip component used
+ * os-tabs is the host element for a generic tab-strip component used
  * INSIDE native windows (e.g. "All posts / Categories / Tags") — a
- * different component from .desktop-mode-window__tabs (the window
+ * different component from .os-window__tabs (the window
  * chrome's own tab strip, styled earlier in this section). Styling the
  * host element directly from here needs no specificity tricks:
  * page-authored styles targeting a custom element always win over its
- * own internal :host{} rule. The individual <wpd-tab> buttons have no
+ * own internal :host{} rule. The individual <os-tab> buttons have no
  * ::part() hook, so those are handled via shadow injection instead —
  * see desktop-mode-shadow-styles.js.
  */
-wpd-tabs {
+os-tabs {
     display: flex;
     gap: 4px;
     background: var(--color-muted);
     padding: 8px 16px;
     border-bottom: none !important;
 }
-
+ 
 /*
  * Users reuses the same .desktop-mode-posts component as Posts/Pages,
- * but ships its own more specific light-DOM padding rule for wpd-tabs
+ * but ships its own more specific light-DOM padding rule for os-tabs
  * (a normal page-level CSS conflict, not a :host-vs-outer-style one
  * like most of this section — confirmed live the plain rule above
  * loses here), hence !important rather than a plain override.
  */
-.desktop-mode-users wpd-tabs {
+.desktop-mode-users os-tabs {
     padding: 8px 16px !important;
 }
-
+ 
 /*
- * .desktop-mode-posts__toolbar (shared by Posts/Pages/Users) ships its
+ * .os-posts__toolbar (shared by Posts/Pages/Users) ships its
  * own opaque light-mode background, unlike .desktop-mode-plugins__
  * toolbar which was already transparent — confirmed live side by side.
  */
-.desktop-mode-posts__toolbar {
+.os-posts__toolbar {
     background: none !important;
 }
-
-.desktop-mode-posts__pager,
-.desktop-mode-posts__pager * {
+ 
+.os-posts__pager,
+.os-posts__pager * {
     background: none !important;
     color: var(--color-foreground) !important;
 }
-
-.desktop-mode-posts__pager {
+ 
+.os-posts__pager {
     border-top: 1px solid var(--color-border) !important;
 }
-
+ 
 /*
- * wpd-table also exposes ::part(table), letting us clear its own opaque
+ * os-table also exposes ::part(table), letting us clear its own opaque
  * white background directly (confirmed live: this part sits behind
  * the header-row/row parts and was painting solid white regardless of
  * how transparent the rows themselves were). accent-color is a
@@ -4636,45 +4636,45 @@ wpd-tabs {
  * border color have no ::part() hook though, so those live in
  * desktop-mode-shadow-styles.js instead.
  */
-wpd-table {
+os-table {
     accent-color: var(--color-accent);
 }
-
-wpd-table::part(table) {
+ 
+os-table::part(table) {
     background: none;
 }
-
-wpd-table::part(scroll) {
+ 
+os-table::part(scroll) {
     background: none;
 }
-
+ 
 /*
  * "Edit user" window (opened by clicking a user in the Users table).
- * Confirmed light-DOM: .desktop-mode-user-edit-window itself carried
+ * Confirmed light-DOM: .os-user-edit-window itself carried
  * its own hardcoded dark text color, same pattern as .desktop-mode-
  * posts. Input labels are handled separately per field type in
  * desktop-mode-shadow-styles.js (each lives inside its own component's
  * shadow root with no exposed hook), so they're excluded here via
  * :not() to keep them on --color-muted-foreground instead.
  */
-body.desktop-mode-active .desktop-mode-user-edit-window,
-body.desktop-mode-active .desktop-mode-user-edit-window *:not(wpd-text-field):not(wpd-select):not(wpd-textarea) {
+body.os-active .os-user-edit-window,
+body.os-active .os-user-edit-window *:not(os-text-field):not(os-select):not(os-textarea) {
     color: var(--color-foreground) !important;
 }
-
-body.desktop-mode-active .desktop-mode-user-edit-window * {
+ 
+body.os-active .os-user-edit-window * {
     border-color: var(--color-border) !important;
 }
-
+ 
 /*
  * First direct child of the edit-user sidebar (the avatar/name block)
  * ships its own opaque light-mode background, same pattern as the
- * .desktop-mode-posts__toolbar fix above.
+ * .os-posts__toolbar fix above.
  */
-body.desktop-mode-active aside.desktop-mode-users__edit-aside > div:first-child {
+body.os-active .os-users__edit-panel > div:first-child {
     background: none !important;
 }
-
+ 
 /*
  * .desktop-mode-recycle-bin ships the same light-mode-oriented styling
  * baked in as .desktop-mode-posts/.desktop-mode-plugins — opaque white
@@ -4683,16 +4683,16 @@ body.desktop-mode-active aside.desktop-mode-users__edit-aside > div:first-child 
  * live, hence the broad descendant selector for color rather than
  * relying on inheritance from the root alone.
  */
-body.desktop-mode-active .desktop-mode-recycle-bin,
-body.desktop-mode-active .desktop-mode-recycle-bin * {
+body.os-active .desktop-mode-recycle-bin,
+body.os-active .desktop-mode-recycle-bin * {
     color: var(--color-foreground);
 }
-
-body.desktop-mode-active .desktop-mode-recycle-bin,
-body.desktop-mode-active .desktop-mode-recycle-bin__toolbar {
+ 
+body.os-active .desktop-mode-recycle-bin,
+body.os-active .os-recycle-bin__toolbar {
     background: none;
 }
-
+ 
 .os-window--focused .os-window__titlebar, .os-window__tabs {
 	background-color: #482d62;
 }
