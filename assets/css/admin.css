@@ -4692,3 +4692,7 @@ body.desktop-mode-active .desktop-mode-recycle-bin,
 body.desktop-mode-active .desktop-mode-recycle-bin__toolbar {
     background: none;
 }
+
+.os-window--focused .os-window__titlebar, .os-window__tabs {
+	background-color: #482d62;
+}
