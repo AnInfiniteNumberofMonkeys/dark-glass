@@ -121,7 +121,7 @@ function imdg_os_settings_seed_payload() {
  */
 add_action( 'admin_init', function () {
 
-	if ( ! defined( 'DESKTOP_MODE_VERSION' ) || ! function_exists( 'desktop_mode_save_os_settings' ) ) {
+	if ( ! defined( 'OPENSTATION_VERSION' ) || ! function_exists( 'openstation_save_os_settings' ) ) {
 		return;
 	}
 
@@ -130,7 +130,7 @@ add_action( 'admin_init', function () {
 		return;
 	}
 
-	$meta_key = defined( 'DESKTOP_MODE_OS_SETTINGS_META_KEY' ) ? DESKTOP_MODE_OS_SETTINGS_META_KEY : 'desktop_mode_os_settings';
+	$meta_key = defined( 'OPENSTATION_OS_SETTINGS_META_KEY' ) ? OPENSTATION_OS_SETTINGS_META_KEY : 'desktop_mode_os_settings';
 
 	// Only seed a user who has never had this saved — real customizations
 	// (by this user, on this site) always win.
@@ -141,7 +141,7 @@ add_action( 'admin_init', function () {
 	// desktop_mode_save_os_settings() runs this through Desktop Mode's own
 	// sanitizer, so we stay schema-compatible even if a future Desktop
 	// Mode version adds fields this file doesn't know about.
-	desktop_mode_save_os_settings( $user_id, imdg_os_settings_seed_payload() );
+	openstation_save_os_settings( $user_id, imdg_os_settings_seed_payload() );
 
 }, 20 );
 
@@ -151,7 +151,7 @@ add_action( 'admin_init', function () {
  */
 add_action( 'admin_head', function () {
 
-	if ( ! defined( 'DESKTOP_MODE_VERSION' ) ) {
+	if ( ! defined( 'OPENSTATION_VERSION' ) ) {
 		return;
 	}
 
