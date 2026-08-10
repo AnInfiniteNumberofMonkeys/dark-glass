@@ -59,7 +59,7 @@
 	 * happen, document.body is guaranteed to exist.
 	 */
 	document.addEventListener( 'click', function ( e ) {
-		if ( ! document.body || ! document.body.classList.contains( 'desktop-mode-chromeless' ) ) {
+		if ( ! document.body || ! document.body.classList.contains( 'os-chromeless' ) ) {
 			return;
 		}
 		if ( e.defaultPrevented ) {
