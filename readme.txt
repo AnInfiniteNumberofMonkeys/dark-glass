@@ -74,6 +74,9 @@ The Customizer has partial coverage. Most core controls are styled; edge cases m
 
 == Changelog ==
 
+= 1.4.1 = 
+Compatibility with OpenStation (formerly Desktop Mode)
+
 = 1.2.5 =
 Switched the update mechanism from a self-hosted JSON manifest
 (infinitemonkeys.ca/wp-content/uploads/dark-glass/infinite-monkeys-dark-glass.json)
