@@ -4696,3 +4696,7 @@ body.desktop-mode-active .desktop-mode-recycle-bin__toolbar {
 .os-window--focused .os-window__titlebar, .os-window__tabs {
 	background-color: #482d62;
 }
+
+body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-show-desktop-active .os-dock[ data-os-dock-placement="right" ], body.os-show-desktop-active .os-dock[ data-os-dock-placement="bottom" ] {
+	box-shadow: none;
+}
