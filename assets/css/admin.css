@@ -4700,3 +4700,7 @@ body.desktop-mode-active .desktop-mode-recycle-bin__toolbar {
 body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-show-desktop-active .os-dock[ data-os-dock-placement="right" ], body.os-show-desktop-active .os-dock[ data-os-dock-placement="bottom" ] {
 	box-shadow: none;
 }
+
+.os-window__tab {
+	margin-bottom: 0;
+}
