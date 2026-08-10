@@ -56,16 +56,16 @@
 	'use strict';
 
 	// Only relevant inside the Desktop Mode shell.
-	if ( ! document.body.classList.contains( 'desktop-mode-active' ) ) {
+	if ( ! document.body.classList.contains( 'os-active' ) ) {
 		return;
 	}
 
 	var TAG_CSS = {
-		'WPD-MENU-ITEM': [
-			'.wpd-menu-item__check {',
+		'OS-MENU-ITEM': [
+			'.os-menu-item__check {',
 			'    border: 1.5px solid rgba(255,255,255,0.4) !important;',
 			'}',
-			':host([checked]) .wpd-menu-item__check::after {',
+			':host([checked]) .os-menu-item__check::after {',
 			'    left: 5px !important;',
 			'}',
 			'button:hover,',
@@ -74,7 +74,7 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-TAB': [
+		'OS-TAB': [
 			'button {',
 			'    color: var(--color-foreground) !important;',
 			'    padding: 8px 16px !important;',
@@ -91,13 +91,13 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-SAVE-STATUS': [
-			':host([phase="saved"]) .wpd-save-status__indicator {',
+		'OS-SAVE-STATUS': [
+			':host([phase="saved"]) .os-save-status__indicator {',
 			'    background: var(--color-accent) !important;',
 			'}'
 		].join( '\n' ),
 
-		'WPD-SEGMENT': [
+		'OS-SEGMENT': [
 			'button {',
 			'    color: var(--color-foreground) !important;',
 			'}',
@@ -107,26 +107,26 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-TEXT-FIELD': [
-			'.wpd-text-field__label {',
+		'OS-TEXT-FIELD': [
+			'.os-text-field__label {',
 			'    color: var(--color-muted-foreground) !important;',
 			'}',
-			'.wpd-text-field__input {',
+			'.os-text-field__input {',
 			'    border: 2px solid var(--color-border) !important;',
 			'    border-radius: 5px !important;',
 			'    color: var(--color-foreground) !important;',
 			'}',
-			'.wpd-text-field__input:hover {',
+			'.os-text-field__input:hover {',
 			'    border-color: var(--color-primary) !important;',
 			'}',
-			'.wpd-text-field__input:focus {',
+			'.os-text-field__input:focus {',
 			'    border-color: var(--color-primary) !important;',
 			'    box-shadow: none !important;',
 			'}'
 		].join( '\n' ),
 
-		'WPD-SELECT': [
-			'.wpd-select__label {',
+		'OS-SELECT': [
+			'.os-select__label {',
 			'    color: var(--color-muted-foreground) !important;',
 			'}',
 			'select {',
@@ -140,8 +140,8 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-TEXTAREA': [
-			'.wpd-textarea__label {',
+		'OS-TEXTAREA': [
+			'.os-textarea__label {',
 			'    color: var(--color-muted-foreground) !important;',
 			'}',
 			'textarea {',
@@ -158,7 +158,7 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-BUTTON': [
+		'OS-BUTTON': [
 			'button {',
 			'    border-radius: 5px !important;',
 			'    transition: var(--transition-common) !important;',
@@ -194,14 +194,14 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-CHIP': [
-			'.wpd-chip {',
+		'OS-CHIP': [
+			'.os-chip {',
 			'    background: var(--color-muted) !important;',
 			'    color: var(--color-foreground) !important;',
 			'}'
 		].join( '\n' ),
 
-		'WPD-CARD': [
+		'OS-CARD': [
 			':host([compact]) {',
 			'    background: var(--color-background) !important;',
 			'}',
@@ -214,13 +214,13 @@
 			 * as :host([compact]) above, rather than as a WPD-TABLE descendant
 			 * selector (which can't reach across the shadow boundary).
 			 */
-			':host(.desktop-mode-plugins__detail-changelog-entry) {',
+			':host(.os-plugins__detail-changelog-entry) {',
 			'    background: var(--color-background) !important;',
 			'    border-color: var(--color-border) !important;',
 			'}'
 		].join( '\n' ),
 
-		'WPD-RATING-SUMMARY': [
+		'OS-RATING-SUMMARY': [
 			'.summary-card {',
 			'    background: var(--color-background) !important;',
 			'}',
@@ -232,23 +232,23 @@
 			'}'
 		].join( '\n' ),
 
-		'WPD-CRUMB-CHAIN': [
+		'OS-CRUMB-CHAIN': [
 			/*
 			 * .wpd-crumb is NOT its own custom element — confirmed live by
 			 * instantiating <wpd-crumb-chain> and inspecting its shadow
 			 * root: it renders plain <span class="wpd-crumb"> children
 			 * (with --first/--middle/--last modifiers) directly inside
-			 * this shadow root, alongside .wpd-crumb__label. So this is
+			 * this shadow root, alongside .os-crumb__label. So this is
 			 * styled here as a plain class, same pattern as the plugin
 			 * detail panel's plain-element classes inside WPD-TABLE below.
 			 */
-			'.wpd-crumb {',
+			'.os-crumb {',
 			'    background: var(--color-subtle) !important;',
 			'    color: var(--color-foreground) !important;',
 			'}'
 		].join( '\n' ),
 
-		'WPD-TABLE': [
+		'OS-TABLE': [
 			'th,',
 			'td {',
 			'    background: none !important;',
@@ -274,19 +274,19 @@
 			 * (<wpd-chip>) with its own shadow root — see that entry
 			 * above instead; confirmed live via getRootNode().host.
 			 */
-			'.desktop-mode-plugins__detail-hero,',
-			'.desktop-mode-plugins__detail-tabs-wrap {',
+			'.os-plugins__detail-hero,',
+			'.os-plugins__detail-tabs-wrap {',
 			'    background: none !important;',
 			'}',
-			'.desktop-mode-plugins__detail-byline,',
-			'.desktop-mode-plugins__detail-title {',
+			'.os-plugins__detail-byline,',
+			'.os-plugins__detail-title {',
 			'    color: var(--color-foreground) !important;',
 			'}',
-			'.desktop-mode-plugins__detail-faq-item {',
+			'.os-plugins__detail-faq-item {',
 			'    background: var(--color-background) !important;',
 			'    border-color: var(--color-border) !important;',
 			'}',
-			'.desktop-mode-plugins__detail-faq-q:hover {',
+			'.os-plugins__detail-faq-q:hover {',
 			'    background: var(--color-white-trans-5) !important;',
 			'}',
 			'a[data-wp-action] {',
@@ -327,7 +327,7 @@
 			 * light-DOM wpd-tabs rule in this file can't reach, since it's
 			 * nested inside wpd-table's own shadow root.
 			 */
-			'wpd-tabs {',
+			'os-tabs {',
 			'    border-bottom: none !important;',
 			'}',
 			/*
