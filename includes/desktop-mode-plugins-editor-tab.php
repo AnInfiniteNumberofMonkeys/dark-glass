@@ -56,11 +56,11 @@ function imdg_plugins_window_editor_tab_visible() {
  * @return string
  */
 function imdg_plugins_window_editor_tab_panel_html() {
-	$src = add_query_arg( 'desktop_mode_chromeless', '1', admin_url( 'plugin-editor.php' ) );
+	$src = add_query_arg( 'openstation_chromeless', '1', admin_url( 'plugin-editor.php' ) );
 
 	ob_start();
 	?>
-	<wpd-tabpanel for="editor" class="desktop-mode-plugins__panel">
+	<os-tabpanel for="editor" class="os-plugins__panel">
 		<div class="desktop-mode-plugins__editor" data-desktop-mode-plugins-editor-host style="height:100%;display:flex;">
 			<iframe
 				src="<?php echo esc_url( $src ); ?>"
@@ -68,7 +68,7 @@ function imdg_plugins_window_editor_tab_panel_html() {
 				style="flex:1;width:100%;height:100%;min-height:520px;border:0;background:transparent;"
 			></iframe>
 		</div>
-	</wpd-tabpanel>
+	</os-tabpanel>
 	<?php
 	return (string) ob_get_clean();
 }
@@ -92,26 +92,26 @@ function imdg_add_editor_tab_to_plugins_window( $html ) {
 	if ( ! imdg_plugins_window_editor_tab_visible() ) {
 		return $html;
 	}
-	if ( false === strpos( $html, 'data-desktop-mode-plugins-tabs' ) || false === strpos( $html, '</wpd-tabs>' ) ) {
+	if ( false === strpos( $html, 'data-os-plugins-tabs' ) || false === strpos( $html, '</os-tabs>' ) ) {
 		return $html;
 	}
 
 	// Add the tab button as the last child of the existing <wpd-tabs> strip.
-	$tab_button = '<wpd-tab value="editor">' . esc_html__( 'Plugin Editor', 'infinite-monkeys-dark-glass' ) . '</wpd-tab>';
-	$html       = str_replace( '</wpd-tabs>', $tab_button . '</wpd-tabs>', $html );
+	$tab_button = '<os-tab value="editor">' . esc_html__( 'Plugin Editor', 'infinite-monkeys-dark-glass' ) . '</os-tab>';
+	$html       = str_replace( '</os-tabs>', $tab_button . '</os-tabs>', $html );
 
 	// Add the matching panel right before the detail flyout (or at the end
 	// of the markup if the flyout hook isn't there for some reason).
 	$panel = imdg_plugins_window_editor_tab_panel_html();
-	if ( false !== strpos( $html, '<wpd-flyout' ) ) {
-		$html = str_replace( '<wpd-flyout', $panel . '<wpd-flyout', $html );
+	if ( false !== strpos( $html, '<os-flyout' ) ) {
+		$html = str_replace( '<os-flyout', $panel . '<os-flyout', $html );
 	} else {
 		$html .= $panel;
 	}
 
 	return $html;
 }
-add_filter( 'desktop_mode_plugins_window_template_html', 'imdg_add_editor_tab_to_plugins_window' );
+add_filter( 'openstation_plugins_window_template_html', 'imdg_add_editor_tab_to_plugins_window' );
 
 /**
  * Allows `<iframe>` inside native-window template HTML.
@@ -150,7 +150,7 @@ function imdg_allow_iframe_in_native_windows( $allowed ) {
 	}
 	return $allowed;
 }
-add_filter( 'desktop_mode_native_window_allowed_html', 'imdg_allow_iframe_in_native_windows' );
+add_filter( 'openstation_native_window_allowed_html', 'imdg_allow_iframe_in_native_windows' );
 
 /**
  * Fixes CodeMirror's line/gutter overlap in the Plugin Editor tab.
@@ -173,12 +173,12 @@ add_filter( 'desktop_mode_native_window_allowed_html', 'imdg_allow_iframe_in_nat
  * @since 1.1.6
  */
 function imdg_plugins_window_editor_tab_refresh_script() {
-	if ( function_exists( 'desktop_mode_is_chromeless_request' ) && desktop_mode_is_chromeless_request() ) {
+	if ( function_exists( 'openstation_is_chromeless_request' ) && openstation_is_chromeless_request() ) {
 		// Don't print this on plugin-editor.php's own admin_footer when it
 		// renders standalone inside the iframe — it has nothing to find.
 		return;
 	}
-	if ( function_exists( 'desktop_mode_is_enabled' ) && ! desktop_mode_is_enabled() ) {
+	if ( function_exists( 'openstation_is_enabled' ) && ! openstation_is_enabled() ) {
 		return;
 	}
 	if ( ! imdg_plugins_window_editor_tab_visible() ) {
@@ -229,7 +229,7 @@ function imdg_plugins_window_editor_tab_refresh_script() {
 	}
 
 	function checkPanels() {
-		document.querySelectorAll( 'wpd-tabpanel[for="editor"]' ).forEach( function ( panel ) {
+		document.querySelectorAll( 'os-tabpanel[for="editor"]' ).forEach( function ( panel ) {
 			if ( ! panel.hasAttribute( 'hidden' ) ) {
 				refreshEditorIframe( panel );
 			}
@@ -253,10 +253,10 @@ function imdg_plugins_window_editor_tab_refresh_script() {
 		if ( e.origin !== window.location.origin ) {
 			return;
 		}
-		if ( ! e.data || e.data.type !== 'desktop-mode-iframe-admin-link' || ! e.data.url ) {
+		if ( ! e.data || e.data.type !== 'os-iframe-admin-link' || ! e.data.url ) {
 			return;
 		}
-		document.querySelectorAll( 'wpd-tabpanel[for="editor"] iframe' ).forEach( function ( ifr ) {
+		document.querySelectorAll( 'os-tabpanel[for="editor"] iframe' ).forEach( function ( ifr ) {
 			if ( e.source === ifr.contentWindow ) {
 				ifr.src = e.data.url;
 			}
