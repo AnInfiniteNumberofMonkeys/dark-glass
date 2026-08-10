@@ -52,20 +52,20 @@
 	'use strict';
 
 	// Only relevant inside the Desktop Mode shell.
-	if ( ! document.body.classList.contains( 'desktop-mode-active' ) ) {
+	if ( ! document.body.classList.contains( 'os-active' ) ) {
 		return;
 	}
 
 	var SETTINGS_KEY = 'desktop-mode-os-settings';
 	var BASELINE_KEY = 'imdg-os-settings-defaults';
-	var FOOTER_SELECTOR = '.desktop-mode-os-settings__footer';
+	var FOOTER_SELECTOR = '.os-settings__footer';
 	var SAVE_BUTTON_ATTR = 'data-imdg-save-default';
 	var ORIGINAL_LABEL_ATTR = 'data-imdg-original-label';
 
-	// ── "Save as default" button injection ──────────────────────────
+	// ── "Save as default" button injection ─────────────────────────────
 
 	function makeSaveButton() {
-		var btn = document.createElement( 'wpd-button' );
+		var btn = document.createElement( 'os-button' );
 		btn.setAttribute( 'variant', 'ghost' );
 		btn.setAttribute( SAVE_BUTTON_ATTR, '1' );
 		btn.textContent = 'Save as default';
@@ -133,14 +133,14 @@
 	// Catch the case where the panel is already open when this script runs.
 	scanForFooters( document.body );
 
-	// ── "Reset to defaults" interception ─────────────────────────────
+	// ── "Reset to defaults" interception ─────────────────────────────────
 
 	document.addEventListener( 'click', function ( e ) {
 		var path = typeof e.composedPath === 'function' ? e.composedPath() : [ e.target ];
 		var button = null;
 		for ( var i = 0; i < path.length; i++ ) {
 			var el = path[ i ];
-			if ( el && el.tagName === 'WPD-BUTTON' && el.closest && ! el.hasAttribute( SAVE_BUTTON_ATTR ) &&
+			if ( el && el.tagName === 'OS-BUTTON' && el.closest && ! el.hasAttribute( SAVE_BUTTON_ATTR ) &&
 				el.closest( FOOTER_SELECTOR ) ) {
 				button = el;
 				break;
