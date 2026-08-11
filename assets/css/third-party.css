@@ -1545,15 +1545,15 @@ th.manage-column a span {
 }
 
 [data-wsf-tooltip][data-wsf-tooltip=left]::before {
-  border-color: transparent transparent transparent var(--color-accent);
+  border-color: transparent transparent transparent var(--color-accent) !important;
 }
 
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li svg text {
-	fill: var(--color-primary);
+	fill: var(--color-white) !important;
 }
 
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:hover svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:hover svg text, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:focus svg path, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .wsf-settings.wsf-settings-form li:focus svg text {
-	fill: var(--color-accent);
+	fill: var(--color-accent) !important;
 }
 
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-logo svg {
