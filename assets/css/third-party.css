@@ -1099,7 +1099,7 @@ button.wsf-button, input[type=button].wsf-button, input[type=submit].wsf-button,
 	color: var(--color-foreground) !important;
 }
 
-button.wsf-button.wsf-button-primary, input[type=button].wsf-button.wsf-button-primary, input[type=submit].wsf-button.wsf-button-primary, input[type=reset].wsf-button.wsf-button-primary, a.wsf-button.wsf-button-primary, select.wsf-button.wsf-button-primary {
+button.wsf-button.wsf-button-primary, button.button-primary, input[type=button].wsf-button.wsf-button-primary, input[type=submit].wsf-button.wsf-button-primary, input[type=reset].wsf-button.wsf-button-primary, a.wsf-button.wsf-button-primary, select.wsf-button.wsf-button-primary {
   background-color: var(--color-accent) !important;
 	border-color: var(--color-accent) !important;
 	color: var(--color-white) !important;
