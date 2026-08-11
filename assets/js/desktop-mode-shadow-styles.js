@@ -88,6 +88,21 @@
 			':host([aria-selected="true"]) button {',
 			'    background: var(--color-accent) !important;',
 			'    color: var(--color-white) !important;',
+			'}',
+			/*
+			 * Core Desktop Mode's own button::after rule draws a 2px
+			 * "holo" underline bar under the active/hovered tab label
+			 * (confirmed live in the shadow root's adopted stylesheet:
+			 * `button::after { ... }` plus a
+			 * `:host([aria-selected="true"]) button::after` variant that
+			 * widens it to full width). Our pill background above already
+			 * indicates the active tab, so the underline is redundant —
+			 * kill it everywhere <os-tab> is used (every native window's
+			 * tab bar, plus nested tab groups like the plugin detail
+			 * panel).
+			 */
+			'button::after {',
+			'    display: none !important;',
 			'}'
 		].join( '\n' ),
 
