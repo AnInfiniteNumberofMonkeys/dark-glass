@@ -803,23 +803,23 @@ body.acf-admin-page #poststuff {
 	color: var(--color-foreground) !important;
 }
 
-body:not(.desktop-mode-chromeless) #wsf-loader {
+body:not(.os-chromeless) #wsf-loader {
   top: 61px !important;
 }
 
-body:not(.desktop-mode-chromeless) #wsf-sidebars .wsf-sidebar {
+body:not(.os-chromeless) #wsf-sidebars .wsf-sidebar {
   height: calc(100% - 61px) !important;
   top: 61px !important;
 	border-color: var(--color-border) !important;
 }
 
-body:not(.desktop-mode-chromeless) .admin_page_ws-form-edit #wsf-layout-editor {
+body:not(.os-chromeless) .admin_page_ws-form-edit #wsf-layout-editor {
   height: calc(100% - 61px);
   top: 61px;
   width: calc(100% - var(--sidebar-width) - var(--wsf-admin-sidebar-width) - 40px);
 }
 
-body:not(.desktop-mode-chromeless) .admin_page_ws-form-edit #wpcontent {
+body:not(.os-chromeless) .admin_page_ws-form-edit #wpcontent {
   margin: 0 0 0 280px;
   width: calc(100% - 300px);
 }
@@ -1558,6 +1558,10 @@ th.manage-column a span {
 
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-logo svg {
 	filter: saturate(0) brightness(4);
+}
+
+.wp-media-buttons .wsf-button-add-form {
+	display: none;
 }
 
 
@@ -2667,7 +2671,7 @@ body.woocommerce_page_wc-settings #mainform .subsubsub li {
     width: 100% !important;
   }
 
-  body:not(.desktop-mode-chromeless) .woocommerce-layout__header {
+  body:not(.os-chromeless) .woocommerce-layout__header {
     top: 70px !important;
     box-shadow: 0 0 10px 2px rgb(0, 0, 0, 0.25);
   }
@@ -2676,7 +2680,7 @@ body.woocommerce_page_wc-settings #mainform .subsubsub li {
     padding-left: 0 !important;
   }
 
-  body:not(.desktop-mode-chromeless) .post-type-product #wpbody {
+  body:not(.os-chromeless) .post-type-product #wpbody {
     padding-top: 70px;
     padding-left: 0px !important;
   }
@@ -2871,7 +2875,7 @@ body .jexcel>tbody>tr>.jexcel_row {
   width: calc(100% - 335px) !important;
 }
 
-body.desktop-mode-chromeless #cfw_admin_page_header {
+body.os-chromeless #cfw_admin_page_header {
   top: 12px !important;
   width: calc(100% - 16px) !important;
 }
@@ -3035,11 +3039,11 @@ body.toplevel_page_wpcodebox2 #wpbody {
   overflow: hidden;
 }
 
-body.toplevel_page_wpcodebox2:not(.desktop-mode-chromeless) #wpcontent .editor-container section {
+body.toplevel_page_wpcodebox2:not(.os-chromeless) #wpcontent .editor-container section {
   height: calc(100vh - 120px) !important;
 }
 
-body.toplevel_page_wpcodebox2:not(.desktop-mode-chromeless) .snippet-list-wrap .snippet-list-container-wrap-inner {
+body.toplevel_page_wpcodebox2:not(.os-chromeless) .snippet-list-wrap .snippet-list-container-wrap-inner {
   max-height: calc(100vh - 240px);
 }
 
@@ -3056,14 +3060,14 @@ body.toplevel_page_wpcodebox2:not(.desktop-mode-chromeless) .snippet-list-wrap .
  * #wpcontent itself is finally tall enough to give them something
  * real to inherit from.
  */
-body.desktop-mode-chromeless #wpwrap {
+body.os-chromeless #wpwrap {
 	padding-top: 0;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-body.desktop-mode-chromeless #wpcontent {
+body.os-chromeless #wpcontent {
 	flex: 1 1 auto;
 	height: auto !important;
 	min-height: 0;
@@ -3076,27 +3080,27 @@ body.desktop-mode-chromeless #wpcontent {
  * wrapper) had no height rule at all, so it was still just hugging its
  * own content instead of passing that height on down to #root.
  */
-body.desktop-mode-chromeless #wpbody-content {
+body.os-chromeless #wpbody-content {
 	height: 100%;
 	box-sizing: border-box;
 }
 
-body.desktop-mode-chromeless #root,
-body.desktop-mode-chromeless .App,
-body.desktop-mode-chromeless .snippet-list-wrap,
-body.desktop-mode-chromeless .editor-wrap > div {
+body.os-chromeless #root,
+body.os-chromeless .App,
+body.os-chromeless .snippet-list-wrap,
+body.os-chromeless .editor-wrap > div {
 	height: 100%;
 }
 
-body.desktop-mode-chromeless .editor-container > div > div > section {
+body.os-chromeless .editor-container > div > div > section {
 	height: 100% !important;
 }
 
-body.desktop-mode-chromeless .edit-snippet-wrap {
+body.os-chromeless .edit-snippet-wrap {
 	height: 100%;
 }
 
-body.desktop-mode-chromeless .editor-container {
+body.os-chromeless .editor-container {
 	height: calc(100% - 40px);
 }
 
@@ -3945,11 +3949,11 @@ body.bricks_page_bricks-settings input[type='checkbox']:checked::before {
  * fx-darken dimming that already happens to the rest of an unfocused
  * window.
  */
-body.desktop-mode-chromeless.imdg-window-focused .bricks-admin-inner {
+body.os-chromeless.imdg-window-focused .bricks-admin-inner {
     background: none;
 }
 
-body.desktop-mode-chromeless.imdg-window-unfocused .bricks-admin-inner {
+body.os-chromeless.imdg-window-unfocused .bricks-admin-inner {
     background: #fff;
 }
 
@@ -3961,11 +3965,11 @@ body.desktop-mode-chromeless.imdg-window-unfocused .bricks-admin-inner {
  * real nodes. This is what was still showing as "virtually opaque"
  * even after .bricks-admin-inner itself went fully transparent.
  */
-body.desktop-mode-chromeless.imdg-window-focused .bricks-admin-inner .box-wrapper::after {
+body.os-chromeless.imdg-window-focused .bricks-admin-inner .box-wrapper::after {
     background: none;
 }
 
-body.desktop-mode-chromeless.imdg-window-unfocused .bricks-admin-inner .box-wrapper::after {
+body.os-chromeless.imdg-window-unfocused .bricks-admin-inner .box-wrapper::after {
     background: rgb(245, 246, 247);
 }
 
