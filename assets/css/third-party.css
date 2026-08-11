@@ -2890,6 +2890,17 @@ body.os-chromeless #cfw_admin_page_header {
   width: calc(100% - 16px) !important;
 }
 
+.cfw-tw .bg-white {
+	background: none;
+}
+
+.cfw-tw .bg-blue-500 {
+	background-color: var(--color-primary);
+}
+
+.cfw-tw :is(.divide-gray-200>:not([hidden])~:not([hidden])) {
+	border: none;
+}
 
 /*****************************/
 /*** View Admin As ***********/
