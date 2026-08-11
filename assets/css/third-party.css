@@ -2880,7 +2880,7 @@ body .jexcel>tbody>tr>.jexcel_row {
   padding-top: 75px !important;
 }
 
-#cfw_admin_page_header {
+body:not(.os-chromeless) #cfw_admin_page_header {
   top: 60px !important;
   width: calc(100% - 335px) !important;
 }
