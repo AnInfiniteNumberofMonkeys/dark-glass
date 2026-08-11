@@ -924,6 +924,7 @@ button.wsf-button svg path, input[type=button].wsf-button svg path, input[type=s
 
 #wsf-sidebars .wsf-sidebar-tabs > li > a {
 	color: var(--color-foreground) !important;
+	  padding: 9px 8px 7px 8px !important;
 }
 
 .wsf-sidebar-footer {
@@ -1562,6 +1563,15 @@ th.manage-column a span {
 
 .wp-media-buttons .wsf-button-add-form {
 	display: none;
+}
+
+#wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary:disabled, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary.disabled, #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary[disabled] {
+	background: var(--color-muted) !important;
+  	border-color: var(--color-border-muted) !important;
+}
+
+#wsf-admin-header.wsf-admin-header h1.wsf-admin-header-title {
+	color: var(--color-white) !important;
 }
 
 
