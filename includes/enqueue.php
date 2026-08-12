@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// ── Google Fonts ─────────────────────────────────────────────────────────────
+// ── Google Fonts ─────────────────────────────────────────────────────────
 
 add_action( 'admin_head', function () {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
@@ -32,7 +32,7 @@ add_action( 'admin_enqueue_scripts', function () {
     );
 } );
 
-// ── Admin stylesheets ─────────────────────────────────────────────────────────
+// ── Admin stylesheets ────────────────────────────────────────────────────
 
 add_action( 'admin_enqueue_scripts', function () {
 
@@ -63,7 +63,7 @@ add_action( 'admin_enqueue_scripts', function () {
 
 }, 9999 );
 
-// ── Bricks Builder editor styles ──────────────────────────────────────────────
+// ── Bricks Builder editor styles ─────────────────────────────────────────
 // Loaded only when inside the Bricks builder, not on the front end or admin.
 
 add_action( 'wp_enqueue_scripts', function () {
@@ -72,7 +72,7 @@ add_action( 'wp_enqueue_scripts', function () {
     }
 } );
 
-// ── Admin JavaScript ──────────────────────────────────────────────────────────
+// ── Admin JavaScript ─────────────────────────────────────────────────────
 
 add_action( 'admin_enqueue_scripts', function () {
 
@@ -154,6 +154,18 @@ add_action( 'admin_enqueue_scripts', function () {
         IMDG_PLUGIN_URL . 'assets/js/desktop-mode-focus-bridge.js',
         [],
         file_exists( $desktop_mode_focus_bridge_path ) ? filemtime( $desktop_mode_focus_bridge_path ) : IMDG_VERSION,
+        true // Load in footer
+    );
+
+    // Desktop background click → Overview command (see file header).
+    // Enqueued unconditionally like the other structural fixes above;
+    // self-guards on body.os-active.
+    $desktop_mode_background_overview_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-background-overview.js';
+    wp_enqueue_script(
+        'imdg-desktop-mode-background-overview',
+        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-background-overview.js',
+        [],
+        file_exists( $desktop_mode_background_overview_path ) ? filemtime( $desktop_mode_background_overview_path ) : IMDG_VERSION,
         true // Load in footer
     );
 
