@@ -418,6 +418,13 @@ div.wp-link-input label {
 }
 
 
+.mce-menu .mce-menu-item.mce-active.mce-menu-item-normal, .mce-menu .mce-menu-item.mce-active.mce-menu-item-preview, .mce-menu .mce-menu-item.mce-selected, .mce-menu .mce-menu-item:focus, .mce-menu .mce-menu-item:hover {
+	background: var(--color-primary);
+}
+
+.mce-menu-item {
+	color: var(--color-foreground) !important;
+}
 
 
 
