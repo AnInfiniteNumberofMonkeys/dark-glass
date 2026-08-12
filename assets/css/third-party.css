@@ -2150,7 +2150,11 @@ table.acp-ie-table.acp-ie-enabled.acp-ie-table tr td.acp-ie-editable:hover {
 }
 
 .acp-smartfilters-filter {
-	background: none;
+	background: none !important;
+}
+
+.acp-smartfilters-filter__operator.-highlight {
+	color: var(--color-accent) !important;
 }
 
 /*****************************/
