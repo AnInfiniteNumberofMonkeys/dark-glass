@@ -1814,25 +1814,34 @@ th.manage-column a span {
 }
 
 .svelte-select.-acui.focused {
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .svelte-select.-acui .multi-item-clear {
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
 }
 
-.svelte-select .value-container input, .svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8, input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8 {
+.svelte-select .value-container input, input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8 {
   border: none !important;
   background: none !important;
 }
 
+.svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8 {
+	background: var(--color-input-bg) !important;
+	border: 1px solid var(--color-border) !important;
+}
+
 .svelte-select-list.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8 {
-  background: var(--color-background);
+  background: var(--color-background) !important;
   z-index: 999;
 }
 
 .ac-toggle-v2.svelte-12l3rwe input[type="checkbox"].svelte-12l3rwe:focus+.ac-toggle-v2__toggle__track.svelte-12l3rwe {
   box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-primary) !important; 
+}
+
+.acp-smartfilters-filter__button i {
+	color: var(--color-foreground) !important;
 }
 
 .acu-bg-\[\#F1F5F9\] {
@@ -2140,6 +2149,9 @@ table.acp-ie-table.acp-ie-enabled.acp-ie-table tr td.acp-ie-editable:hover {
 	color: var(--color-foreground);
 }
 
+.acp-smartfilters-filter {
+	background: none;
+}
 
 /*****************************/
 /*** Woocommerce *************/
