@@ -121,6 +121,22 @@ add_action( 'admin_enqueue_scripts', function () {
         true // Load in footer
     );
 
+    // TinyMCE list keyboard shortcuts (Shift+Cmd/Ctrl+B / Shift+Cmd/Ctrl+1).
+    // Covers ACF WYSIWYG fields and the classic editor -- the block-editor
+    // shortcut above (imdg-block-list-shortcut) only works on Gutenberg
+    // blocks, which has no equivalent inside a single TinyMCE field. Binds
+    // via TinyMCE's own AddEditor event so it reaches ACF fields added
+    // dynamically in repeaters/flexible content, not just editors present
+    // at page load.
+    $tinymce_list_shortcuts_path = IMDG_PLUGIN_DIR . 'assets/js/tinymce-list-shortcuts.js';
+    wp_enqueue_script(
+        'imdg-tinymce-list-shortcuts',
+        IMDG_PLUGIN_URL . 'assets/js/tinymce-list-shortcuts.js',
+        [],
+        file_exists( $tinymce_list_shortcuts_path ) ? filemtime( $tinymce_list_shortcuts_path ) : IMDG_VERSION,
+        true // Load in footer
+    );
+
     // Pass the TinyMCE content CSS to the JS injector.
     // The CSS file re-declares the relevant custom properties because injected
     // iframe documents do not inherit :root variables from the parent page.
