@@ -1926,8 +1926,8 @@ body.plugin-editor-php #wpbody-content {
 #wpbody .wrap .imdg-page-title-actions > a.page-title-action, #wpbody .wrap .imdg-page-title-actions > a.page-title-action:active {
     padding: 8px 16px;
     color: var(--color-white) !important;
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
     border-radius: 5px;
 }
 
@@ -1955,9 +1955,9 @@ body.plugin-editor-php #wpbody-content {
 }
 
 .wrap .imdg-page-title-actions > a.page-title-action:hover {
-    background-color: var(--color-muted);
-    border-color: var(--color-muted);
-    transform: scale(1.02);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: scale(1.05);
     box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.3);
     color: var(--color-white);
 }
