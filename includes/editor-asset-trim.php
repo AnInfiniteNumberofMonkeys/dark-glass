@@ -175,18 +175,27 @@ $imdg_dequeue_handles = function () {
 		];
 	}
 
-	// Desktop Mode: dashboard widgets (registries/widgets.php) + the two native
-	// windows (Content Graph, My WordPress) singled out for removal.
+	// OpenStation (formerly Desktop Mode): dashboard widgets (registries/
+	// widgets.php) + native windows (Content Graph, My WordPress, WooCommerce
+	// Customer) singled out for removal. Widget handles were renamed from
+	// desktop-mode-*-widget to os-*-widget in the OpenStation rebrand; window
+	// handles were NOT renamed (confirmed per-file in source). This dequeue
+	// pass is mostly a no-op for the widgets/windows/wallpaper specifically --
+	// they're injected client-side, not through wp_scripts() -- the real fix
+	// for those is the registry-neutralization further down. Kept here as a
+	// harmless backstop for anything that IS server-enqueued normally.
 	$dm_handles = [
-		'desktop-mode-drafts-widget',
-		'desktop-mode-focus-timer-widget',
-		'desktop-mode-heartbeat-widget',
-		'desktop-mode-jazz-quote-widget',
-		'desktop-mode-post-stats-widget',
-		'desktop-mode-comments-widget',
-		'desktop-mode-site-views-widget',
-		'desktop-mode-starter-widget',
-		'desktop-mode-living-tree-wallpaper',
+		'os-drafts-widget',
+		'os-focus-timer-widget',
+		'os-heartbeat-widget',
+		'os-jazz-quote-widget',
+		'os-post-stats-widget',
+		'os-comments-widget',
+		'os-site-views-widget',
+		'os-starter-widget',
+		'os-living-tree-wallpaper',
+		'os-snow-wallpaper',
+		'os-my-wordpress-woocommerce',
 		'desktop-mode-content-graph',
 		'desktop-mode-my-wordpress',
 	];
@@ -294,7 +303,12 @@ add_action( 'enqueue_block_editor_assets', $imdg_dequeue_by_path, PHP_INT_MAX );
 // unwanted entries out of serverWidgets/nativeWindows before it's ever sent
 // to the browser. This is the only place these can actually be stopped.
 
-add_filter( 'desktop_mode_shell_config', function ( $config ) {
+add_filter( 'openstation_shell_config', function ( $config ) {
+	// Renamed from desktop_mode_shell_config when the plugin rebranded to
+	// OpenStation. Function names below were renamed too (desktop_mode_* ->
+	// openstation_*) -- our function_exists() guards silently no-op'd
+	// against the old names after the rebrand, which is why this whole
+	// section stopped working with no errors.
 	$unwanted_widget_ids = [
 		'desktop-mode/drafts',
 		'desktop-mode/focus-timer',
@@ -351,7 +365,7 @@ add_filter( 'desktop_mode_shell_config', function ( $config ) {
 // init fires).
 
 add_action( 'init', function () {
-	if ( ! function_exists( 'desktop_mode_register_widget' ) || ! function_exists( 'desktop_mode_register_window' ) ) {
+	if ( ! function_exists( 'openstation_register_widget' ) || ! function_exists( 'openstation_register_window' ) ) {
 		return;
 	}
 
@@ -366,19 +380,29 @@ add_action( 'init', function () {
 		'desktop-mode/starter'         => __( 'Starter Widget (disabled)', 'infinite-monkeys-dark-glass' ),
 	];
 	foreach ( $unwanted_widgets as $id => $label ) {
-		desktop_mode_register_widget( $id, [
+		openstation_register_widget( $id, [
 			'label'  => $label,
 			'script' => '',
 		] );
 	}
 
 	$noop_template = static function () {};
+	// IDs stayed the same after the OpenStation rebrand for these two, but
+	// registration priorities vary wildly per module (confirmed in source:
+	// content-graph registers at init@20, my-wordpress at init@99, the new
+	// woo-customer window at init@25) -- this whole callback is now
+	// registered at PHP_INT_MAX (see bottom of this block) instead of a
+	// fixed priority, so it always runs after every one of them regardless
+	// of which priority a given module uses.
 	$unwanted_windows = [
 		'desktop-mode-content-graph' => __( 'Content Graph (disabled)', 'infinite-monkeys-dark-glass' ),
 		'desktop-mode-my-wordpress'  => __( 'My WordPress (disabled)', 'infinite-monkeys-dark-glass' ),
+		// New in the OpenStation WooCommerce integration -- the "Customer"
+		// window (my-wordpress-woocommerce.min.js), registered at init@25.
+		'desktop-mode-woo-customer'  => __( 'WooCommerce Customer (disabled)', 'infinite-monkeys-dark-glass' ),
 	];
 	foreach ( $unwanted_windows as $id => $title ) {
-		desktop_mode_register_window( $id, [
+		openstation_register_window( $id, [
 			'title'     => $title,
 			'template'  => $noop_template,
 			'script'    => '',
@@ -386,7 +410,7 @@ add_action( 'init', function () {
 			'placement' => 'none',
 		] );
 	}
-}, 20 );
+}, PHP_INT_MAX );
 // ── Desktop Mode: neutralize the Living Tree wallpaper the same way ────────
 // Same eager-load-the-whole-catalog issue as the widgets/windows above --
 // living-tree-wallpaper.min.js loads regardless of which wallpaper is
@@ -398,15 +422,22 @@ add_action( 'init', function () {
 // picker entry still works if anyone ever selects it, it just won't animate.
 
 add_action( 'init', function () {
-	if ( ! function_exists( 'desktop_mode_register_wallpaper' ) ) {
+	if ( ! function_exists( 'openstation_register_wallpaper' ) ) {
 		return;
 	}
-	desktop_mode_register_wallpaper( 'wp-living-tree', [
-		'label' => __( 'Living Tree (disabled)', 'infinite-monkeys-dark-glass' ),
-		'type'  => 'css',
-		'value' => '#1a1a1a',
-	] );
-}, 20 );
+	// living-tree registers at init@6; snow-wallpaper is a second canvas
+	// wallpaper Eric flagged separately (confirmed neither is the site's
+	// active wallpaper). Registered at PHP_INT_MAX so this always runs last
+	// regardless of either module's own priority.
+	$unwanted_wallpapers = [ 'wp-living-tree', 'wp-snow' ];
+	foreach ( $unwanted_wallpapers as $id ) {
+		openstation_register_wallpaper( $id, [
+			'label' => __( 'Disabled', 'infinite-monkeys-dark-glass' ),
+			'type'  => 'css',
+			'value' => '#1a1a1a',
+		] );
+	}
+}, PHP_INT_MAX );
 // ── WS Form: dequeue-by-handle safety net for the plain block editor ───────
 // Belt-and-suspenders alongside the filter-based approach above. Skips the
 // Bricks builder entirely (WS Form's rendering engine needs to load there),
@@ -443,5 +474,41 @@ add_action( 'wp_enqueue_scripts', function () {
 	foreach ( $wsf_js_names as $name ) {
 		wp_dequeue_script( 'ws-form-' . $name );
 		wp_deregister_script( 'ws-form-' . $name );
+	}
+}, PHP_INT_MAX );
+
+// ── WooCommerce cart/checkout: keep frontend-only scripts out of admin+builder ──
+// WC_Frontend_Scripts (WooCommerce core) and Checkout for WooCommerce's
+// AssetManager both hook wp_enqueue_scripts only -- the standard FRONTEND
+// hook. Since bricks_is_builder() is defined as "NOT is_admin(), with the
+// builder query param" (Bricks intentionally runs its whole canvas outside
+// /wp-admin/), wp_enqueue_scripts fires during a Bricks builder session too,
+// same as any other frontend page load -- so cart-fragments.js and Checkout
+// for WooCommerce's side-cart vendor bundles load there even though nothing
+// in the canvas needs live cart/checkout behaviour. Gated the same way as
+// the WS Form safety net above: only touches is_admin() or bricks_is_builder()
+// contexts, never a genuine front-end visitor's page.
+
+add_action( 'wp_enqueue_scripts', function () {
+	$in_admin_context = is_admin() || ( function_exists( 'bricks_is_builder' ) && bricks_is_builder() );
+	if ( ! $in_admin_context ) {
+		return; // Never touch a genuine front-end visitor's page.
+	}
+
+	// WooCommerce core: mini-cart AJAX refresh script.
+	wp_dequeue_script( 'wc-cart-fragments' );
+	wp_deregister_script( 'wc-cart-fragments' );
+
+	// Checkout for WooCommerce: side-cart feature and its webpack vendor
+	// chunks, matched by plugin folder path rather than guessing chunk
+	// handle names (webpack splitChunks output is an implementation detail).
+	global $wp_scripts;
+	if ( $wp_scripts instanceof WP_Dependencies ) {
+		foreach ( (array) $wp_scripts->queue as $handle ) {
+			$src = isset( $wp_scripts->registered[ $handle ]->src ) ? $wp_scripts->registered[ $handle ]->src : '';
+			if ( $src && strpos( $src, '/plugins/checkout-for-woocommerce/' ) !== false ) {
+				wp_dequeue_script( $handle );
+			}
+		}
 	}
 }, PHP_INT_MAX );
