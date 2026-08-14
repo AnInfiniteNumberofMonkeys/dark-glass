@@ -824,10 +824,6 @@ body:not(.os-chromeless) .admin_page_ws-form-edit #wpcontent {
   width: calc(100% - 300px);
 }
 
-.wsf-submit-unread > span {
- background-color: var(--color-accent) !important;
-}
-
 button.wsf-button.wsf-button-information, input[type=button].wsf-button.wsf-button-information, input[type=submit].wsf-button.wsf-button-information, input[type=reset].wsf-button.wsf-button-information, a.wsf-button.wsf-button-information, select.wsf-button.wsf-button-information, #wsf-header .wsf-button-information[data-action="wsf-publish"] {
 	background-color: var(--color-primary) !important;
 	border-color: var(--color-primary) !important;
@@ -1489,7 +1485,19 @@ progress.wsf-progress[value]::-moz-progress-bar {
 
 .wsf-submit-unread > span {
 	margin: 0 0 0 3px !important;
-	height: 17px !important;
+	height: 18px !important;
+ 	background-color: var(--color-accent) !important;
+	align-items: center;
+	justify-content: center;
+	display: inline-flex;
+	text-align: center;
+	border-radius: 50%;
+  	padding-top: 2px;
+}
+
+.wsf-submit-unread > span .update-count {
+  	font-size: 11px;
+	line-height: 1;
 }
 
 th.manage-column a span {
