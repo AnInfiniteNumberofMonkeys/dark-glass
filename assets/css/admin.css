@@ -235,6 +235,16 @@ body:not(.os-chromeless):not(.os-active) #wpwrap::after {
 }
 
 /*
+ * Minimize has no clear affordance for getting the window back once
+ * minimized in Desktop Mode's current UI, so we hide the control
+ * entirely on every window, at every breakpoint. Keeping Maximize and
+ * Close (the mobile-only hiding of those two remains further below).
+ */
+.os-window__btn--minimize {
+    display: none !important;
+}
+
+/*
  * backdrop-filter and animated, heavily-blurred pseudo-elements are
  * both known to be dramatically more GPU-expensive on iOS Safari than
  * on desktop browsers. The glow blobs above are scoped to
@@ -343,12 +353,12 @@ body:not(.os-chromeless):not(.os-active) #wpwrap::after {
     }
  
     /*
-     * Window controls (minimize / maximize / "enter fullscreen") don't
-     * have a usable mobile interaction model in Desktop Mode yet —
-     * hiding them, keeping only Close. Confirmed live classnames:
-     * --minimize, --maximize, --focus-tab (the "enter fullscreen" one).
+     * Window controls (maximize / "enter fullscreen") don't have a
+     * usable mobile interaction model in Desktop Mode yet — hiding them,
+     * keeping only Close. Minimize is now hidden globally above, so it's
+     * not repeated here. Confirmed live classnames: --maximize,
+     * --focus-tab (the "enter fullscreen" one).
      */
-    .os-window__btn--minimize,
     .os-window__btn--maximize,
     .os-window__btn--focus-tab {
         display: none !important;
