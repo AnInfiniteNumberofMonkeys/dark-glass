@@ -858,7 +858,7 @@ wp-admin-bar-wp-logo-external {
     margin: 0;
     position: relative;
     padding: 1rem 0;
-    background: var(--color-background);
+    background: var(--color-background-trans-50);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
 }
@@ -882,7 +882,8 @@ wp-admin-bar-wp-logo-external {
 }
 
 #adminmenu div.separator {
-    background-color: var(--color-border);
+    background-color: var(--color-border-muted);
+	height: 1px;
 }
 
 #adminmenu a, #adminmenu div.wp-menu-image:before {
