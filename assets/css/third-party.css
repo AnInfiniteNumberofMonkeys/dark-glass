@@ -1493,11 +1493,16 @@ progress.wsf-progress[value]::-moz-progress-bar {
 	text-align: center;
 	border-radius: 50%;
   	padding-top: 2px;
+	width: 18px;
 }
 
 .wsf-submit-unread > span .update-count {
   	font-size: 11px;
 	line-height: 1;
+}
+
+#adminmenu li.toplevel_page_ws-form:hover .update-count {
+	color: var(--color-white) !important;
 }
 
 th.manage-column a span {
