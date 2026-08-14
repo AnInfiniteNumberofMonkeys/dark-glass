@@ -531,7 +531,9 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
     color: #000;
 }
 
-
+body#tinymce a {
+	color: #000 !important;
+}
 
 /* Media selector dialog */
 
