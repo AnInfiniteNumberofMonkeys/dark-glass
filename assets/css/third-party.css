@@ -3837,11 +3837,16 @@ body.bricks_page_bricks-advanced-themer input[type='checkbox'], input[type='radi
 }
 
 #bricks-settings th {
-    border-color: var(--color-border) !important;
+    border-color: var(--color-border-muted) !important;
+	background: none;
 }
 
 #bricks-settings tr {
-    box-shadow: 0 0 0 1px var(--color-border) !important;
+    box-shadow: 0 0 0 1px var(--color-border-muted) !important;
+}
+
+#bricks-settings td {
+	background: none;
 }
 
 #bricks-settings td .separator {
