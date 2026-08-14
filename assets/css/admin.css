@@ -4719,3 +4719,26 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .os-window__tab {
 	margin-bottom: 0;
 }
+
+/*
+ * Hides the OS notch (top-center pill), the Overview and Exit
+ * OpenStation dock icons, and the window-tab plate/divider. All
+ * confirmed live to be plain light-DOM elements, not inside a shadow
+ * root, so a normal selector reaches them — no :host() needed here.
+ * !important guards against load-order ties with Desktop Mode's own
+ * dock.css / notch.css / window-chrome.css, which aren't guaranteed
+ * to load before this stylesheet.
+ */
+#os-notch {
+	display: none !important;
+}
+
+.os-dock__item[data-system-id="os-overview"],
+.os-dock__item[data-system-id="os-exit"] {
+	display: none !important;
+}
+
+.os-window__tabs::before,
+.os-window__tab-plate {
+	display: none !important;
+}
