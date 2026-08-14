@@ -1039,7 +1039,7 @@ body.woocommerce-admin-page li.wp-has-current-submenu::after {
 }
 
 /* Badge counters */
-#adminmenu .awaiting-mod, #adminmenu .menu-counter, #adminmenu .update-plugins, #sidemenu li a span.update-plugins, #adminmenu .update-count {
+#adminmenu .awaiting-mod, #adminmenu .menu-counter, #adminmenu .update-plugins, #sidemenu li a span.update-plugins {
     background-color: var(--color-accent) !important;
     color: var(--color-white);
 }
