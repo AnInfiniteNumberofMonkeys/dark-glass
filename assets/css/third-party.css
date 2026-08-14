@@ -767,6 +767,9 @@ body.acf-admin-page #poststuff {
     border: none;
 }
 
+body.os-chromeless .acf-admin-toolbar {
+	display: none;
+}
 
 /*****************************/
 /* Advanced Themer 3.2+ ******/
