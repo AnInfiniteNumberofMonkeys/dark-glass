@@ -771,6 +771,15 @@ body.os-chromeless .acf-admin-toolbar {
 	display: none;
 }
 
+.ui-autocomplete.wplink-autocomplete {
+	background: var(--color-background);
+}
+
+.ui-autocomplete.wplink-autocomplete li[aria-selected="true"] {
+	color: var(--color-white);
+	background: var(--color-primary);
+}
+
 /*****************************/
 /* Advanced Themer 3.2+ ******/
 /*****************************/
