@@ -1,21 +1,23 @@
 /**
- * Infinite Monkeys Dark Glass — Bricks builder new-tab handoff.
+ * Infinite Monkeys Dark Glass — Bricks builder same-tab handoff.
  *
  * Bricks' visual editor isn't a wp-admin page at all — it loads the
  * actual front-end page/post URL with `?bricks=run` appended. Desktop
  * Mode's entire windowing system is deliberately scoped to `/wp-admin/`
  * URLs only (confirmed by reading its own routing code), so it never
- * attempts to window a Bricks edit link in the first place. Left alone,
- * clicking "Edit with Bricks" navigates the current frame to that
- * front-end URL, which (depending on Bricks' own frame-identity
- * handling) tends to blow away the whole Desktop Mode shell rather than
- * staying contained anywhere.
+ * attempts to window a Bricks edit link in the first place. Left
+ * completely alone, clicking "Edit with Bricks" navigates just the
+ * chromeless content iframe to that front-end URL — Bricks' own
+ * frame-identity handling then inconsistently decides whether to stay
+ * framed or frame-bust up to the top window, which is unreliable.
  *
  * This intercepts any click on a link whose href matches the
  * `?bricks=run` pattern — wherever it appears (Pages/Posts row actions,
- * the post editor's own "Edit with Bricks" button, etc.) — and opens it
- * in a genuinely new browser tab instead, leaving the Desktop Mode shell
- * completely untouched in the original tab.
+ * the post editor's own "Edit with Bricks" button, etc.) — and
+ * deterministically navigates the TOP-LEVEL window (the actual browser
+ * tab) to that URL, escaping the Desktop Mode shell in place rather
+ * than leaving it up to Bricks' own frame-busting behavior or opening a
+ * separate tab.
  *
  * Scoped to chromeless windows only; this pattern only ever appears
  * inside admin page content, never in the parent shell chrome itself.
@@ -79,7 +81,9 @@
 				if ( typeof e.stopImmediatePropagation === 'function' ) {
 					e.stopImmediatePropagation();
 				}
-				window.open( el.href, '_blank' );
+				// Navigate the actual browser tab (top window), not just
+				// this iframe, and not a new tab — same tab, top level.
+				window.top.location.href = el.href;
 				return;
 			}
 			el = el.parentElement;
