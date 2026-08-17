@@ -142,7 +142,7 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']) h1, b
     color: var(--color-foreground);
 }
 
-#wpadminbar #wp-admin-bar-wp-logo .ab-sub-wrapper {
+#wpadminbar #wp-admin-bar-wp-logo .ab-sub-wrapper, #wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
     display: none !important;
 }
 
