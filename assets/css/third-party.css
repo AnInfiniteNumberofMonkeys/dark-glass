@@ -2890,7 +2890,7 @@ td.order_number a {
 	transform: translateX(-10px)
 }
 
-#order_data .order_data_column .address strong {
+#order_data .order_data_column .address strong, #order_data .order_data_column .form-field label {
 	color: var(--color-foreground);
 }
 
