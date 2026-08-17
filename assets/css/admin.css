@@ -142,6 +142,9 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']) h1, b
     color: var(--color-foreground);
 }
 
+#wp-admin-bar-wp-logo {
+    display: none !important;
+}
 
 /* Page background */
 #wpwrap {
