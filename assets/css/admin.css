@@ -4081,7 +4081,7 @@ body.js.block-editor-page #wpcontent {
 
 #wp-media-modal .media-toolbar, .media-frame-content .media-toolbar {
     background: none !important;
-	padding: 0;
+	padding: 16px;
 }
 
 .media-frame a, .view-switch a.current:before {
