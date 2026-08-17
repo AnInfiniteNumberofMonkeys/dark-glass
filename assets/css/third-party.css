@@ -1480,6 +1480,28 @@ input[type=checkbox].wsf-field {
 	color: var(--color-primary) !important;
 }
 
+body.ws-form_page_ws-form-add #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-add #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-add #wsf-wrapper #wsf-template-add-tabs, body.ws-form_page_ws-form-add #poststuff > #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-add #poststuff > #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-add #poststuff > #wsf-wrapper #wsf-template-add-tabs, body.ws-form_page_ws-form-settings #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-settings #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-settings #wsf-wrapper #wsf-template-add-tabs, body.ws-form_page_ws-form-settings #poststuff > #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-settings #poststuff > #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-settings #poststuff > #wsf-wrapper #wsf-template-add-tabs, body.ws-form_page_ws-form-style-add #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-style-add #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-style-add #wsf-wrapper #wsf-template-add-tabs, body.ws-form_page_ws-form-style-add #poststuff > #wsf-wrapper .wsf-settings-nav, body.ws-form_page_ws-form-style-add #poststuff > #wsf-wrapper .wsf-settings-sections, body.ws-form_page_ws-form-style-add #poststuff > #wsf-wrapper #wsf-template-add-tabs {
+	background: none !important;
+}
+
+.wsf-settings-nav {
+	border: none !important;
+}
+
+.wsf-settings-nav-item {
+	color: var(--color-foreground) !important;
+	padding: 8px 14px !important;
+  	border: none !important;
+}
+
+.wsf-settings-nav-item.wsf-settings-nav-item-active {
+	color: var(--color-white) !important;
+	border: none !important;
+	background: var(--color-accent) !important;
+	border-radius: 50px;
+}
+
+
 progress.wsf-progress[value] {
 	background-color: var(--color-subtle) !important;
 }
@@ -1599,6 +1621,9 @@ th.manage-column a span {
 	color: var(--color-white) !important;
 }
 
+#wsf-settings .button.button-primary, #wsf-settings .button.wsf-button-primary, #wsf-settings input[type=button].button.button-primary, #wsf-settings input[type=button].button.wsf-button-primary, #wsf-settings input[type=submit].button.button-primary, #wsf-settings input[type=submit].button.wsf-button-primary, #wsf-settings a.button.button-primary, #wsf-settings a.button.wsf-button-primary, #wsf-settings .wsf-button.button-primary, #wsf-settings .wsf-button.wsf-button-primary, #wsf-settings input[type=button].wsf-button.button-primary, #wsf-settings input[type=button].wsf-button.wsf-button-primary, #wsf-settings input[type=submit].wsf-button.button-primary, #wsf-settings input[type=submit].wsf-button.wsf-button-primary, #wsf-settings a.wsf-button.button-primary, #wsf-settings a.wsf-button.wsf-button-primary {
+	color: var(--color-white) !important;	
+}
 
 /*****************************/
 /*** Admin Columns Pro *******/
