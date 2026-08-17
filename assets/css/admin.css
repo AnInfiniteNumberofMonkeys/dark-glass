@@ -146,6 +146,12 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']) h1, b
     display: none !important;
 }
 
+#wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon {
+	width: 32px;
+	height: 32px;
+	margin: 0 !important;
+}
+
 /* Page background */
 #wpwrap {
 	padding-top: 0;
