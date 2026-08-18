@@ -1525,9 +1525,9 @@ progress.wsf-progress[value]::-moz-progress-bar {
 	justify-content: center;
 	display: inline-flex;
 	text-align: center;
-	border-radius: 50%;
-  	padding-top: 2px;
-	width: 18px;
+  	min-width: 18px;
+  	padding: 2px 4px 0 4px;
+  	border-radius: 18px;
 }
 
 .wsf-submit-unread > span .update-count {
