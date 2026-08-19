@@ -539,6 +539,21 @@ div.wp-link-preview a {
 	color: var(--color-accent);
 }
 
+.ui-autocomplete.wplink-autocomplete {
+  	background-color: var(--color-background-alt);
+  	color: #fff;
+  	border-color: var(--color-border-muted);
+  	cursor: pointer;
+	box-shadow: none;
+}
+
+.mce-toolbar .mce-btn-group .mce-btn.mce-primary {
+	background: var(--color-primary);
+	box-shadow: none;
+	border-color: var(--color-primary);
+}
+
+
 /* Media selector dialog */
 
 #wp-media-modal .media-toolbar {
