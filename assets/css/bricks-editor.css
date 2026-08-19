@@ -26,6 +26,10 @@
     --radius-lg: 1rem;	
 }
 
+.regular-controls-wrapper li[data-controlkey="text"] .input-wrapper input {
+	padding-right: 25px !important;
+}
+
 /* BUG with pinned panel layering */
 #bricks-panel-element #bricks-pinned-section {
 	z-index: 2001 !important;
