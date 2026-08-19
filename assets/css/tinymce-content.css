@@ -35,3 +35,7 @@ body#tinymce h2,
 body#tinymce h3 {
     color: var(--tinymce-heading);
 }
+
+.mce-content-body a[data-mce-selected] {
+	color: #000 !important;
+}
