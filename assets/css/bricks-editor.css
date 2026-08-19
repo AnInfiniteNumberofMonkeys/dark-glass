@@ -535,6 +535,10 @@ body#tinymce a {
 	color: #000 !important;
 }
 
+div.wp-link-preview a {
+	color: var(--color-accent);
+}
+
 /* Media selector dialog */
 
 #wp-media-modal .media-toolbar {
