@@ -142,11 +142,7 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']) h1, b
     color: var(--color-foreground);
 }
 
-#wpadminbar #wp-admin-bar-wp-logo .ab-sub-wrapper, #wpadminbar #wp-admin-bar-wp-logo>.ab-item .ab-icon:before {
-    display: none !important;
-}
-
-#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
+#wpadminbar #wp-admin-bar-site-name > .ab-item {
 	padding: 8px !important;
 }
 
@@ -154,6 +150,10 @@ body:not([data-builder-window='main']):not([data-builder-window='iframe']) h1, b
   width: 32px !important;
   height: 32px !important;
   background: none !important;
+}
+
+#wpadminbar #wp-admin-bar-wp-logo {
+	display: none !important;
 }
 
 /* Page background */
