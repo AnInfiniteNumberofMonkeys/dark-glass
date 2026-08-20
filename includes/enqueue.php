@@ -47,41 +47,6 @@ add_action( 'admin_enqueue_scripts', function () {
 
 } );
 
-// Top admin bar: replace the WordPress logo with this site's own
-// favicon/Site Icon. Applied via JS as an inline style on the icon
-// element -- a plain CSS background-image rule doesn't reliably win here
-// (WP core's own #wpadminbar .ab-icon rule ties on specificity and
-// !important, and source order isn't guaranteed), so this sets it as an
-// inline style instead, which always wins regardless of stylesheet
-// cascade. The URL is per-site data, so it's localized to the script
-// rather than hardcoded in the shared stylesheet. Falls back to hiding
-// the icon entirely (via a plain, reliable CSS rule) on installs with no
-// Site Icon configured, rather than showing an empty box.
-add_action( 'admin_enqueue_scripts', function () {
-
-    $imdg_favicon_url = get_site_icon_url( 64 );
-
-    $desktop_mode_favicon_icon_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-favicon-icon.js';
-    wp_enqueue_script(
-        'imdg-desktop-mode-favicon-icon',
-        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-favicon-icon.js',
-        [],
-        file_exists( $desktop_mode_favicon_icon_path ) ? filemtime( $desktop_mode_favicon_icon_path ) : IMDG_VERSION,
-        true // Load in footer
-    );
-    wp_localize_script( 'imdg-desktop-mode-favicon-icon', 'imdgFaviconIcon', [
-        'url' => $imdg_favicon_url ? esc_url( $imdg_favicon_url ) : '',
-    ] );
-
-    if ( ! $imdg_favicon_url ) {
-        wp_add_inline_style(
-            'imdg-admin',
-            '#wp-admin-bar-wp-logo { display: none !important; }'
-        );
-    }
-
-} );
-
 
 // 3rd-party plugin overrides — hooked at priority 9999 so this stylesheet is
 // enqueued after all plugins have registered their own styles at default
