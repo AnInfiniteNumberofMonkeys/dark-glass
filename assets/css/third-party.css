@@ -1458,6 +1458,11 @@ input[type=checkbox].wsf-field {
   	color: var(--color-muted-foreground) !important;
 }
 
+body.toplevel_page_ws-form .button-primary, body.ws-form_page_ws-form-add .button-primary, body.admin_page_ws-form-edit .button-primary, body.ws-form_page_ws-form-submit .button-primary, body.ws-form_page_ws-form-migrate .button-primary, body.ws-form_page_ws-form-settings .button-primary, body.ws-form_page_ws-form-style .button-primary, body.ws-form_page_ws-form-style-add .button-primary {
+	border-color: var(--color-primary) !important;
+  	color: var(--color-white) !important;
+}
+
 #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary {
 	background: var(--color-primary) !important;
 	border-color: var(--color-primary) !important;
@@ -1623,6 +1628,12 @@ th.manage-column a span {
 
 #wsf-settings .button.button-primary, #wsf-settings .button.wsf-button-primary, #wsf-settings input[type=button].button.button-primary, #wsf-settings input[type=button].button.wsf-button-primary, #wsf-settings input[type=submit].button.button-primary, #wsf-settings input[type=submit].button.wsf-button-primary, #wsf-settings a.button.button-primary, #wsf-settings a.button.wsf-button-primary, #wsf-settings .wsf-button.button-primary, #wsf-settings .wsf-button.wsf-button-primary, #wsf-settings input[type=button].wsf-button.button-primary, #wsf-settings input[type=button].wsf-button.wsf-button-primary, #wsf-settings input[type=submit].wsf-button.button-primary, #wsf-settings input[type=submit].wsf-button.wsf-button-primary, #wsf-settings a.wsf-button.button-primary, #wsf-settings a.wsf-button.wsf-button-primary {
 	color: var(--color-white) !important;	
+}
+
+#wsf-layout-editor #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary:disabled, #wsf-layout-editor #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary.disabled, #wsf-layout-editor #wsf-admin-header.wsf-admin-header .wsf-admin-header-actions .button-primary[disabled] {
+	background: var(--color-muted) !important;
+	border-color: var(--color-border-muted) !important;
+	color: var(--color-foreground) !important;
 }
 
 /*****************************/
