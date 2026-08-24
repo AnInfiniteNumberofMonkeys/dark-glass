@@ -971,8 +971,8 @@ body.admin_page_ws-form-edit #wsf-sidebars .wsf-sidebar .wsf-sidebar-tabs-panel 
 }
 
 #wsf-form .wsf-group-tabs > li.ui-state-active > a {
-	color: var(--color-foreground) !important;
-	background: var(--color-muted) !important;
+  color: var(--color-white) !important;
+  background: var(--color-primary) !important;
 }
 
 .wsf-section > .wsf-section-inner:before {
@@ -1446,6 +1446,14 @@ input[type=checkbox].wsf-field {
 
 #wsf-form .wsf-group-tabs > li > a > .wsf-group-label > input[type=text][readonly] {
 	color: var(--color-muted-foreground) !important;
+	-webkit-text-fill-color: var(--color-muted-foreground) !important;
+	border: none !important;
+	background: none !important;
+}
+
+#wsf-form .wsf-group-tabs > li.ui-state-active.ui-sortable-handle input[type=text][readonly] {
+	color: var(--color-white) !important;
+	-webkit-text-fill-color: var(--color-white) !important;
 }
 
 #wsf-admin-header.wsf-admin-header {
@@ -1634,6 +1642,21 @@ th.manage-column a span {
 	background: var(--color-muted) !important;
 	border-color: var(--color-border-muted) !important;
 	color: var(--color-foreground) !important;
+}
+
+#wsf-form .wsf-group-tabs > li > a {
+	background: none !important;
+	border-color: var(--color-border) !important;
+	border-radius: 50px;
+	padding: 0 12px !important;
+}
+
+#wsf-form .wsf-group-tabs > li > a > .wsf-group-label {
+	border: none;
+}
+
+#wsf-form .wsf-group {
+	border-top: none !important;
 }
 
 /*****************************/
