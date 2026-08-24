@@ -3,7 +3,7 @@
  * Plugin Name:       Infinite Monkeys Dark Glass Admin Theme
  * Plugin URI:        https://infinitemonkeys.ca/wp-admin-theme
  * Description:       A clean, minimalist dark admin theme for WordPress with frosted glass effects and a more modern aesthetic for fellow night owls. Compatible with WP Desktop Mode for those who also value efficiency.
- * Version:           1.5.4
+ * Version:           1.5.5
  * Author:            An Infinite Number of Monkeys
  * Author URI:        https://infinitemonkeys.ca
  * License:           GPL-2.0-or-later
@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ── Plugin constants ────────────────────────────────────────────────────────
-define( 'IMDG_VERSION',    '1.5.4' );
+define( 'IMDG_VERSION',    '1.5.5' );
 define( 'IMDG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'IMDG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
