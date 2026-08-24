@@ -246,12 +246,14 @@ $imdg_dequeue_by_path = function () {
 	global $wp_styles, $wp_scripts;
 
 	$in_bricks_builder = function_exists( 'bricks_is_builder' ) && bricks_is_builder();
+	$screen_obj          = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	$on_post_edit_screen  = $screen_obj && 'post' === $screen_obj->base;
 
 	$target_dirs = [
 		'/plugins/seo-by-rank-math/includes/modules/schema/blocks/toc/', // TOC block only -- schema.css lives elsewhere and is untouched.
 		'/plugins/woocommerce/assets/client/blocks/',                    // WooCommerce Blocks package only -- not the whole plugin.
 	];
-	if ( ! $in_bricks_builder ) {
+	if ( $on_post_edit_screen && ! $in_bricks_builder ) {
 		$target_dirs[] = '/plugins/bricksextras/';
 		// Scoped to /assets/ specifically, NOT the whole plugin root -- Bricks
 		// Advanced Themer bundles its own copy of ACF Pro under
