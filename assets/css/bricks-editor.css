@@ -576,6 +576,11 @@ div.wp-link-input input {
 	border-color: var(--color-border) !important;
 }
 
-.mce-btn {
+.mce-btn, .mce-toolbar .mce-ico, .mce-btn button {
 	color: var(--color-foreground) !important;
+}
+
+.mce-toolbar .mce-btn-group .mce-btn:focus, .mce-toolbar .mce-btn-group .mce-btn:hover, .qt-dfw:focus, .qt-dfw:hover {
+	background: var(--color-white-trans-50) !important;
+	box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--color-white-trans-80) !important;
 }
