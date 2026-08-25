@@ -544,19 +544,32 @@ div.wp-link-preview a {
 }
 
 .ui-autocomplete.wplink-autocomplete {
-  	background-color: var(--color-background-alt);
-  	color: #fff;
-  	border-color: var(--color-border-muted);
+  	background-color: var(--color-background-alt) !important;
+  	color: #fff  !important;
+  	border-color: var(--color-border-muted) !important;
   	cursor: pointer;
-	box-shadow: none;
+	box-shadow: none !important;
 }
 
 .mce-toolbar .mce-btn-group .mce-btn.mce-primary {
-	background: var(--color-primary);
-	box-shadow: none;
-	border-color: var(--color-primary);
+	background: var(--color-primary) !important;
+	box-shadow: none !important;
+	border-color: var(--color-primary) !important;
 }
 
+div.wp-link-input label {
+	color: var(--color-foreground) !important;
+}
+
+div.wp-link-input input {
+	border-color: var(--color-border) !important;
+	color: var(--color-foreground) !important;
+	border-radius: 3px;
+}
+
+.mce-inline-toolbar-grp .mce-btn-group .mce-btn:last-child {
+	color: var(--color-foreground) !important;
+}
 
 /* Media selector dialog */
 
