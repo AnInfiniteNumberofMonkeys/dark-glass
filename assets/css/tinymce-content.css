@@ -38,9 +38,10 @@ body#tinymce h3 {
 
 .mce-content-body a[data-mce-selected] {
 	color: #000 !important;
-	background: var(--color-white-trans-10);
+	background: var(--color-white-trans-10) !important;
+	box-shadow: 0 0 0 1px var(--color-primary) !important;
 }
 
 body#tinymce a {
-	color: var(--color-primary);
+	color: var(--color-primary) !important;
 }
