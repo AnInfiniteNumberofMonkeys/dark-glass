@@ -162,30 +162,30 @@ body #bricks-structure main.panel-content {
 }
 
 
-/* Structure item  icons when structure item is hovered */
-#bricks-structure  .element.active>.structure-item:hover .actions, #bricks-structure .element.active>.structure-item:hover .ti-link:before {
+/* Structure item icons when structure item is hovered */
+/* #bricks-structure  .element.active>.structure-item:hover .actions, #bricks-structure .element.active>.structure-item:hover .ti-link:before {
     color: var(--builder-color-accent);
-}
+} */
 
 /* Move preview panel to far right */
-#bricks-preview {
+/* #bricks-preview {
     order: 1;
-}
+} */
 
-#bricks-structure {
+/* #bricks-structure {
     padding-left: 0 !important;
-}
+} */
 
 
 /* Position structure panel shortcut bar to left of preview panel */
-.brxce-panel-shortcut__wrapper {
+/* .brxce-panel-shortcut__wrapper {
     right: unset !important;
     width: 51px !important;
-}
+} */
 
-body[data-has-shortcuts-sidebar="true"] #bricks-structure .brxce-panel-shortcut__wrapper li {
+/* body[data-has-shortcuts-sidebar="true"] #bricks-structure .brxce-panel-shortcut__wrapper li {
     width: 40px;
-}
+} */
 
 /* Remove coloured border around structure panel contents */
 #bricks-structure .bricks-structure-list {
@@ -298,22 +298,23 @@ body.brxc-has-panel-shortcuts #bricks-panel-element > .brxce-panel-shortcut__wra
     background-color: #fff !important;
 }
 
-#bricks-toolbar .save .bricks-svg-wrapper:before {
-    opacity: 0.5;
-}
 
-.brx-body #bricks-toolbar li:focus-visible, #bricks-toolbar li:hover {
+.brx-body #bricks-toolbar-top li:focus-visible, #bricks-toolbar-top li:hover {
     color: #fff !important;
     background: var(--builder-bg-3) !important;
 }
 
 /* Make Save button more noticable when unsaved changes */
-#bricks-toolbar .save:has(.has-unsaved-changes) {
+#bricks-toolbar-top .save:has(.has-unsaved-changes) {
     background-color: var(--highlight-color);
     transform: scale(1.3);
     top: 7px;
     right: 9px;
    animation: .4s jump ease infinite alternate;
+}
+
+#bricks-toolbar-top .save .bricks-svg-wrapper:before {
+    opacity: 0.5;
 }
 
 div.mce-edit-area, div.mce-panel {
@@ -342,18 +343,18 @@ div.wp-link-input label {
   }
 }
 
-#bricks-toolbar .save .has-unsaved-changes {
+#bricks-toolbar-top .save .has-unsaved-changes {
     color: #000;
 }
 
-#bricks-toolbar .save:has(.has-unsaved-changes) .bricks-svg-wrapper:before {
+#bricks-toolbar-top .save:has(.has-unsaved-changes) .bricks-svg-wrapper:before {
     opacity: 1;
 }
 
 /* Fix for elements panel 2nd level not opening */
-#bricks-structure {
+/* #bricks-structure {
     z-index: 999 !important;
-}
+} */
 
 /* Prominent element actions button highlight */
 #bricks-panel-header .actions li.highlight {
