@@ -1039,7 +1039,7 @@ ul#adminmenu a.wp-has-current-submenu:after, ul#adminmenu>li.current>a.current:a
 
 #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after {
     border: 10px solid transparent;
-    border-right-color: var(--color-border);
+    border-right-color: rgba(255, 255, 255, 0.2);
     right: -2px;
 }
 
