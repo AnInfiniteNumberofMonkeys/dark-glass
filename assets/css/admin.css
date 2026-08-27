@@ -190,9 +190,9 @@ body:not(.os-chromeless):not(.os-active) #wpcontent {
     width: 100% !important;
 }
 
-body:not(.os-chromeless):not(.os-active) #wpbody-content {
+/* body:not(.os-chromeless):not(.os-active) #wpbody-content {
   padding: 62px 30px 30px !important;
-}
+} */
 
 
 body.post-new-php #wp-content-wrap, body.post-type-post #wp-content-wrap {
