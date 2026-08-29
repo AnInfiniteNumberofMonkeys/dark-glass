@@ -18,7 +18,8 @@
 /*** 16. TAGS / TERMS                                            */
 /*** 17. PLUGINS PAGE                                            */
 /*** 18. MEDIA                                                   */
-/*** 19. DESKTOP MODE — SHELL CHROME                             */
+/*** 19. OpenStation — SHELL CHROME                              */
+/*** 20. User profile                                            */
 /*****************************************************************/
 
 /*****************************************************************/
@@ -4755,4 +4756,16 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .os-window__tabs::before,
 .os-window__tab-plate {
 	display: none !important;
+}
+
+
+/*** 20. User profile                                            */
+
+body.profile-php .user-user-login-wrap,
+body.user-edit-php .user-user-login-wrap,
+body.profile-php .user-nickname-wrap,
+body.user-edit-php .user-nickname-wrap,
+body.profile-php .user-url-wrap,
+body.user-edit-php .user-url-wrap {
+    display: none;
 }
