@@ -1757,12 +1757,13 @@ body.plugin-editor-php #wpbody-content {
     border-radius: var(--radius-lg);
 }
 
-.notice-warning {
+.notice-warning, .notice-warning p {
     background: var(--color-warning-alt) !important;
     color: var(--color-warning);
 }
+	
 
-.notice-success {
+.notice-success, .notice-success p {
     background: var(--color-success-alt) !important;
     color: var(--color-success) !important;
 }
@@ -4757,6 +4758,67 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .os-window__tab-plate {
 	display: none !important;
 }
+
+.os-chromeless.themes-php #wpbody-content {
+	background: var(--color-background) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro {
+	background: var(--color-white-trans-5) !important;
+	border-color: var(--color-border) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__eyebrow {
+	color: var(--color-foreground) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro h1 {
+	color: var(--color-white) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__copy > p:last-child {
+	color: var(--color-foreground) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__count {
+	background: var(--color-card) !important;
+	border-color: var(--color-border) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__count strong {
+	color: var(--color-white) !important;
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) > .theme {
+	background: var(--color-card) !important;
+	border-color: var(--color-border) !important;
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) > .theme.active {
+	border-color: var(--color-primary) !important;
+	box-shadow: 0 0 0 1px var(--color-primary), 0 7px 20px rgba(0, 0, 0, 0.08);
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-screenshot, .os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-id-container, .os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-name, .os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme.active .theme-name {
+	background: var(--color-card) !important;
+	color: var(--color-foreground) !important;
+	border: none !important;
+}
+
+.theme-browser .theme .theme-actions .button:not(.button-primary) {
+	color: var(--color-foreground) !important;
+	border-color: var(--color-foreground) !important;
+	background: none !important;
+}
+
+.theme-browser .theme .theme-actions .button:not(.button-primary):hover {
+	color: var(--color-white) !important;
+	border-color: var(--color-white) !important;
+	background: var(--color-background-hover) !important;
+}	
+
+
+
 
 
 /*** 20. User profile                                            */
