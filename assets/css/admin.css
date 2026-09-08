@@ -4346,7 +4346,10 @@ body.os-active * {
 body.os-active .os-window__body--native,
 body.os-active .os-window__body--native * {
     cursor: default !important;
-	margin-bottom: 0;
+}
+
+.os-app-list__toolbar {
+	margin-bottom: 0 !important;
 }
  
 body.os-active .os-window__body--native button,
@@ -4818,8 +4821,18 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 	background: var(--color-background-hover) !important;
 }	
 
+.os-app-list__toolbar-trailing {
+	margin-inline-start: 0 !important;
+}
 
+.os-app-list__toolbar-right {
+  margin-inline-start: auto;
+}
 
+.os-app-list__toolbar-right .os-app-list__bulk-actions {
+	display: flex;
+	column-gap: 12px;
+}
 
 
 /*** 20. User profile                                            */
