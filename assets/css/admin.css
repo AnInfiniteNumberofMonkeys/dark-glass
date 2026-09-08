@@ -4834,7 +4834,10 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 	column-gap: 12px;
 }
 
-
+.wp-list-table.acp-co-enabled .acp-co-dragover {
+	background-color: var(--color-background-20) !important;	
+}
+	
 /*** 20. User profile                                            */
 
 body.profile-php .user-user-login-wrap,
