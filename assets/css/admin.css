@@ -4346,6 +4346,7 @@ body.os-active * {
 body.os-active .os-window__body--native,
 body.os-active .os-window__body--native * {
     cursor: default !important;
+	margin-bottom: 0;
 }
  
 body.os-active .os-window__body--native button,
