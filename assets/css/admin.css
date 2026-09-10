@@ -1496,6 +1496,7 @@ body.woocommerce-admin-page li.wp-has-current-submenu::after {
     border-radius: var(--radius-xl);
     overflow: hidden;
     border-color: var(--color-border);
+	box-shadow: none !important;
 }
 
 .theme-browser .theme .theme-actions {
@@ -1514,6 +1515,7 @@ body.woocommerce-admin-page li.wp-has-current-submenu::after {
 
 .theme-browser .theme .theme-actions .button {
     color: var(--color-white) !important;
+	background: none;
 }
 
 .theme-browser .theme:hover .theme-actions {
@@ -4837,6 +4839,56 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .wp-list-table.acp-co-enabled .acp-co-dragover {
 	background-color: var(--color-background-20) !important;	
 }
+
+.os-chromeless.themes-php #wpbody-content {
+	background: var(--color-background) !important;
+}
+
+.os-chromeless.themes-php .openstation-themes-intro {
+	border-color: var(--color-border);
+	background: var(--color-white-trans-5);
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__eyebrow {
+	color: var(--color-white);
+}
+
+.os-chromeless.themes-php .openstation-themes-intro h1, .os-chromeless.themes-php .openstation-themes-intro__copy > p:last-child, .os-chromeless.themes-php .openstation-themes-intro__count span {
+	color: var(--color-foreground);
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__count {
+	background: var(--color-background-alt);
+	border-color: var(--color-border);
+}
+
+.os-chromeless.themes-php .openstation-themes-intro__count strong {
+	color: var(--color-accent);
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) > .theme {
+	background: var(--color-white-trans-10);
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-screenshot {
+	background: none;
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-id-container {
+	background: var(--color-muted);
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme-name, .os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme.active .theme-name {
+	background: none;
+	color: var(--color-foreground);
+	border: none;
+}
+
+.os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme.active .theme-name span {
+	color: var(--color-primary);
+}
+	
+
 	
 /*** 20. User profile                                            */
 
