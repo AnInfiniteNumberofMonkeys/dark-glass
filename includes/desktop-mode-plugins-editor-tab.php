@@ -1,31 +1,44 @@
 <?php
 /**
- * Adds back the "Plugin File Editor" as a tab in Desktop Mode's native
- * Plugins window.
+ * Adds back the "Plugin Editor" as a tab in OpenStation's Plugins
+ * window.
  *
- * Desktop Mode's native Plugins window (includes/plugins-window/window.php)
- * hand-rolls its own tab strip (Installed / Add Plugin / Desktop Mode
- * plugins) directly in its template callback, instead of deriving it from
- * WordPress's `$submenu['plugins.php']` the way the (iframe-based)
- * Appearance window does. That's why the classic "Plugin Editor" submenu
- * item disappears once the native Plugins window is enabled — it's never
- * one of the three hardcoded tabs.
+ * OpenStation's Plugins window used to be a hand-rolled server
+ * template (includes/plugins-window/window.php), which is how the
+ * original version of this file worked: it spliced a fourth tab
+ * button + panel into that template's raw HTML via the
+ * `openstation_plugins_window_template_html` filter.
  *
- * This splices a fourth tab directly into that hand-rolled markup via the
- * `desktop_mode_plugins_window_template_html` filter Desktop Mode already
- * exposes for exactly this purpose — one flat `<wpd-tabs>` strip, no nested
- * wrapper. (An earlier version of this file used
- * `desktop_mode_register_window_tab()` instead, which is the right tool for
- * windows that don't already roll their own tabs — but on a window that
- * does, it wraps the whole existing template as a second, nested "main" tab
- * and produces two stacked tab bars. This filter-based approach avoids
- * that.)
+ * As of OpenStation 1.1.x the Plugins window was rebuilt as an
+ * "App" (apps/plugins/plugins.os.php + plugins.min.js) — a
+ * client-rendered window with its own first-class tab system
+ * (`App::tab()`). The window no longer produces server-rendered
+ * "template HTML" at all (confirmed live: the dispatch response's
+ * `html` field is empty for this window), so the old filter never
+ * fires any more and the tab silently vanished. The
+ * `openstation_register_window_tab()` registry is *also* a dead end
+ * here: it targets `openstation_native_window_registry()`, and while
+ * every App does get mirrored into that registry (via
+ * `openstation_apps_register_windows()`), its template callback is
+ * just a static spinner div (`openstation_apps_render_template()`)
+ * — the tab-wrapping markup that registry powers is never invoked
+ * for an App window, so tabs registered that way never render.
  *
- * The new tab's content is the real plugin-editor.php screen, loaded in a
- * chromeless iframe — the same technique Desktop Mode itself uses for
- * every classic-admin screen it embeds in a window.
+ * The supported seam for this now is `openstation_apps_loaded`: it
+ * fires once every `.os.php` app file has been loaded and registered,
+ * handing us the live `Registry` object. Pulling the already-
+ * registered 'desktop-mode-plugins' `App` out of it and calling its
+ * own public `->tab()` method mutates that *same* instance (PHP
+ * objects are handles, not copies) — the tab then flows through
+ * `App::manifest()` —> the client config —> the tab strip exactly
+ * like the app's own built-in tabs, and `App::has_view()` /
+ * `App::render()` (see `Runtime::dispatch()`) transparently serve its
+ * content when the client requests `view: "editor"`.
  *
  * @since 1.1.5
+ * @since 1.5.7 Rebuilt for the OpenStation "App" architecture — the
+ *              filter-splice approach stopped working when the
+ *              Plugins window moved off server-rendered templates.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -48,82 +61,76 @@ function imdg_plugins_window_editor_tab_visible() {
 }
 
 /**
- * Builds the `<wpd-tabpanel>` markup for the Plugin Editor tab — a
- * chromeless iframe pointing at the real plugin-editor.php screen.
+ * Renders the Plugin Editor tab's body: a chromeless iframe pointing
+ * at the real plugin-editor.php screen — the same technique
+ * OpenStation itself uses for every classic-admin screen it embeds in
+ * a window. Registered as the tab's `view` callback, so the App
+ * framework calls it with `( State $state, Os $os )` and captures
+ * whatever it echoes (see `App::render()` / `View::capture()`).
  *
- * @since 1.1.5
+ * @since 1.5.7
  *
- * @return string
+ * @param mixed $state Unused — required by the `App::tab()` view signature.
+ * @param mixed $os    Unused — required by the `App::tab()` view signature.
+ * @return void
  */
-function imdg_plugins_window_editor_tab_panel_html() {
+function imdg_plugins_window_editor_tab_view( $state, $os ) {
 	$src = add_query_arg( 'openstation_chromeless', '1', admin_url( 'plugin-editor.php' ) );
-
-	ob_start();
 	?>
-	<os-tabpanel for="editor" class="os-plugins__panel">
-		<div class="desktop-mode-plugins__editor" data-desktop-mode-plugins-editor-host style="height:100%;display:flex;">
-			<iframe
-				src="<?php echo esc_url( $src ); ?>"
-				title="<?php esc_attr_e( 'Plugin Editor', 'infinite-monkeys-dark-glass' ); ?>"
-				style="flex:1;width:100%;height:100%;min-height:520px;border:0;background:transparent;"
-			></iframe>
-		</div>
-	</os-tabpanel>
+	<div class="desktop-mode-plugins__editor" data-desktop-mode-plugins-editor-host style="height:100%;display:flex;">
+		<iframe
+			src="<?php echo esc_url( $src ); ?>"
+			title="<?php esc_attr_e( 'Plugin Editor', 'infinite-monkeys-dark-glass' ); ?>"
+			style="flex:1;width:100%;height:100%;min-height:520px;border:0;background:transparent;"
+		></iframe>
+	</div>
 	<?php
-	return (string) ob_get_clean();
 }
 
 /**
- * Filters the native Plugins window's template HTML to splice in a fourth
- * "Plugin Editor" tab button + panel, alongside the existing hand-rolled
- * Installed / Add Plugin / Desktop Mode plugins tabs.
+ * Registers the Plugin Editor tab on the Plugins app, once every
+ * `.os.php` app file has loaded.
  *
- * Bails out untouched if the expected markup hooks
- * (`data-desktop-mode-plugins-tabs`, `<wpd-flyout`) aren't found, rather
- * than risk inserting into a shape a future Desktop Mode update has
- * changed.
+ * Bails out silently if the app isn't found (an OpenStation update
+ * renaming or restructuring the app id) rather than fatal — the tab
+ * just won't appear, same failure mode as the old filter-based splice
+ * silently no-op'ing when its markup hooks weren't found.
  *
- * @since 1.1.5
+ * @since 1.5.7
  *
- * @param string $html Default template HTML.
- * @return string
+ * @param \OpenStation\App\Registry $registry The live app registry.
+ * @return void
  */
-function imdg_add_editor_tab_to_plugins_window( $html ) {
+function imdg_register_plugins_editor_tab( $registry ) {
 	if ( ! imdg_plugins_window_editor_tab_visible() ) {
-		return $html;
+		return;
 	}
-	if ( false === strpos( $html, 'data-os-plugins-tabs' ) || false === strpos( $html, '</os-tabs>' ) ) {
-		return $html;
+	$app = $registry->get( 'desktop-mode-plugins' );
+	if ( ! $app ) {
+		return;
 	}
-
-	// Add the tab button as the last child of the existing <wpd-tabs> strip.
-	$tab_button = '<os-tab value="editor">' . esc_html__( 'Plugin Editor', 'infinite-monkeys-dark-glass' ) . '</os-tab>';
-	$html       = str_replace( '</os-tabs>', $tab_button . '</os-tabs>', $html );
-
-	// Add the matching panel right before the detail flyout (or at the end
-	// of the markup if the flyout hook isn't there for some reason).
-	$panel = imdg_plugins_window_editor_tab_panel_html();
-	if ( false !== strpos( $html, '<os-flyout' ) ) {
-		$html = str_replace( '<os-flyout', $panel . '<os-flyout', $html );
-	} else {
-		$html .= $panel;
-	}
-
-	return $html;
+	$app->tab(
+		'editor',
+		array(
+			'label'    => __( 'Plugin Editor', 'infinite-monkeys-dark-glass' ),
+			'view'     => 'imdg_plugins_window_editor_tab_view',
+			'position' => 100,
+		)
+	);
 }
-add_filter( 'openstation_plugins_window_template_html', 'imdg_add_editor_tab_to_plugins_window' );
+add_action( 'openstation_apps_loaded', 'imdg_register_plugins_editor_tab' );
 
 /**
  * Allows `<iframe>` inside native-window template HTML.
  *
- * `desktop_mode_kses_native_window_template()` runs every native window's
- * rendered template through `wp_kses()` with a fixed allowlist of tags
- * (built-in HTML elements + every `<wpd-*>` component) — `<iframe>` isn't
- * on it, so the Editor tab's chromeless iframe was being silently stripped
- * before it ever reached the DOM even though the tab itself switched
- * correctly. Desktop Mode exposes this filter for exactly this situation
- * rather than requiring every plugin embedding an iframe to reimplement
- * kses from scratch.
+ * Kept as a defensive measure from the original implementation —
+ * App-rendered tab HTML travels back to the client as JSON (the
+ * dispatch response's `html` field) rather than through
+ * `desktop_mode_kses_native_window_template()`, so this filter may no
+ * longer be load-bearing for THIS tab specifically, but other native
+ * windows (and a future OpenStation version) may still route through
+ * it, and `<iframe>` isn't on the default allowlist there either.
+ * Cheap to keep, safe to keep.
  *
  * @since 1.1.5
  *
@@ -156,18 +163,17 @@ add_filter( 'openstation_native_window_allowed_html', 'imdg_allow_iframe_in_nati
  * Fixes CodeMirror's line/gutter overlap in the Plugin Editor tab.
  *
  * CodeMirror measures character and gutter widths at the moment it
- * initializes. The Editor tab's `<wpd-tabpanel>` starts `hidden`
- * (`display:none`) until the user actually clicks the tab, so
- * plugin-editor.php's own CodeMirror boots inside the iframe while its
- * container has zero width — the gutter ends up sized for a 0px-wide
- * editor and the two never re-sync, so line content overlaps the
- * line-number gutter once the tab becomes visible.
+ * initializes. The Editor tab's panel starts hidden (`display:none`)
+ * until the user actually clicks the tab, so plugin-editor.php's own
+ * CodeMirror boots inside the iframe while its container has zero
+ * width — the gutter ends up sized for a 0px-wide editor and the two
+ * never re-sync, so line content overlaps the line-number gutter once
+ * the tab becomes visible.
  *
- * This adds a small script to the SHELL page (not the sanitized native-
- * window template, which can't carry a `<script>` tag through kses) that
- * watches for the panel's `hidden` attribute being removed and calls
- * CodeMirror's own `.refresh()` on the instance inside the iframe — safe to
- * do since the iframe is same-origin (a `wp-admin/` URL on this site), so
+ * This adds a small script to the SHELL page that watches for the
+ * panel's `hidden` attribute being removed and calls CodeMirror's own
+ * `.refresh()` on the instance inside the iframe — safe to do since
+ * the iframe is same-origin (a wp-admin/ URL on this site), so
  * `iframe.contentDocument` is directly reachable.
  *
  * @since 1.1.6
@@ -213,9 +219,6 @@ function imdg_plugins_window_editor_tab_refresh_script() {
 			} );
 			iframe.dataset.imdgRefreshed = '1';
 		}
-		// Two rAFs (rather than calling synchronously) let the browser
-		// finish laying out the now-visible panel before CodeMirror
-		// re-measures it — a single frame is sometimes not enough.
 		function scheduleRefresh() {
 			window.requestAnimationFrame( function () {
 				window.requestAnimationFrame( doRefresh );
@@ -229,26 +232,20 @@ function imdg_plugins_window_editor_tab_refresh_script() {
 	}
 
 	function checkPanels() {
-		document.querySelectorAll( 'os-tabpanel[for="editor"]' ).forEach( function ( panel ) {
-			if ( ! panel.hasAttribute( 'hidden' ) ) {
-				refreshEditorIframe( panel );
+		// Broad selector on purpose: the exact wrapper element/attribute
+		// the App framework uses for an inactive tab panel isn't part of
+		// its documented contract, so we scan for any iframe whose
+		// nearest hidden-attributed ancestor just became visible, rather
+		// than hard-coding a selector that could silently stop matching
+		// on the next OpenStation update.
+		document.querySelectorAll( '[data-desktop-mode-plugins-editor-host] iframe' ).forEach( function ( iframe ) {
+			var ancestor = iframe.closest( '[hidden]' );
+			if ( ! ancestor ) {
+				refreshEditorIframe( iframe.parentElement );
 			}
 		} );
 	}
 
-	// Desktop Mode's own chromeless-bridge script intercepts every click on
-	// an internal /wp-admin/ link inside ANY chromeless iframe on the page
-	// (regardless of whose iframe it is) and hands the URL to the parent
-	// via postMessage instead of letting the iframe navigate itself — the
-	// shell then decides whether to open a new window or drive an existing
-	// one. That's why clicking a file in the "Plugin Files" sidebar did
-	// nothing: our Editor iframe isn't one of Desktop Mode's own registered
-	// windows, so the shell has no idea what to do with that message and
-	// silently drops it. Since we're effectively standing in as our own
-	// "parent" for this iframe, we listen for that same message ourselves
-	// and drive the iframe's navigation directly — the URL Desktop Mode
-	// hands back already carries the desktop_mode_chromeless=1 flag, so
-	// chromeless styling is preserved automatically.
 	window.addEventListener( 'message', function ( e ) {
 		if ( e.origin !== window.location.origin ) {
 			return;
@@ -256,7 +253,7 @@ function imdg_plugins_window_editor_tab_refresh_script() {
 		if ( ! e.data || e.data.type !== 'os-iframe-admin-link' || ! e.data.url ) {
 			return;
 		}
-		document.querySelectorAll( 'os-tabpanel[for="editor"] iframe' ).forEach( function ( ifr ) {
+		document.querySelectorAll( '[data-desktop-mode-plugins-editor-host] iframe' ).forEach( function ( ifr ) {
 			if ( e.source === ifr.contentWindow ) {
 				ifr.src = e.data.url;
 			}
