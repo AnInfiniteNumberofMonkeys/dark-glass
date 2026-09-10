@@ -4887,6 +4887,14 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .os-chromeless.themes-php .theme-browser .themes:not(.single-theme) .theme.active .theme-name span {
 	color: var(--color-primary);
 }
+
+#wp-window-desktop-mode-plugins .os-window__body > os-stack {
+    --os-ui-stack-padding: 0 !important;
+}
+
+.os-app-list > os-tabs {
+	margin: 0 !important;
+}
 	
 
 	
