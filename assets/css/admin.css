@@ -1765,7 +1765,7 @@ body.plugin-editor-php #wpbody-content {
 }
 	
 
-.notice-success, .notice-success p {
+.notice.notice-success, .notice-success p {
     background: var(--color-success-alt) !important;
     color: var(--color-success) !important;
 }
