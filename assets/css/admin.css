@@ -1759,14 +1759,21 @@ body.plugin-editor-php #wpbody-content {
     border-radius: var(--radius-lg);
 }
 
-.notice-warning, .notice-warning p {
+.notice-warning {
     background: var(--color-warning-alt) !important;
     color: var(--color-warning);
 }
 	
+.notice-warning p {
+    color: var(--color-warning);
+}
 
-.notice.notice-success, .notice-success p {
+.notice.notice-success {
     background: var(--color-success-alt) !important;
+    color: var(--color-success) !important;
+}
+
+.notice-success p {
     color: var(--color-success) !important;
 }
 
