@@ -2953,6 +2953,10 @@ td.order_number a {
 	color: var(--color-foreground);
 }
 
+ul.order_notes li .note_header {
+	background: none !important;
+}
+
 /*****************************/
 /*** Tablepress **************/
 /*****************************/
