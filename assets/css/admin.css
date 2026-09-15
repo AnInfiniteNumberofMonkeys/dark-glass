@@ -2433,6 +2433,16 @@ body.user-edit-php p.submit, body.profile-php p.submit {
 	border: none !important;
 }
 
+.components-button:focus:not(:active) {
+  outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid var(--color-primary);
+}
+
+.components-external-link, .components-button:hover:not(:disabled,[aria-disabled=true]), .components-button[aria-expanded=true] {
+	color: var(--color-primary);
+}
+
+	
+
 /*****************************************************************/
 /*** 11. TABLES & LIST VIEWS                                     */
 /*****************************************************************/
