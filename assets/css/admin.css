@@ -4912,6 +4912,88 @@ body.os-show-desktop-active .os-dock[ data-os-dock-placement="left" ], body.os-s
 .os-app-list > os-tabs {
 	margin: 0 !important;
 }
+
+/*
+ * App Framework windows (Posts/Pages/Users/User Edit/Plugins/Comments,
+ * OpenStation 1.1.8+) can get stuck mid-scroll: confirmed live and
+ * reported upstream (github.com/WordPress/openstation/issues/817).
+ *
+ * Between the window's real scroll container (.os-window__body--native,
+ * which correctly has overflow:auto and a bounded height) and the actual
+ * content sits a chain of nested elements — .os-app, os-tabpanel,
+ * os-stack, .os-app-list/.desktop-mode-plugins — that are flex items
+ * with no min-height set. Their computed min-height defaults to `auto`,
+ * which per the flexbox spec resolves to the content's size instead of 0
+ * whenever the item's own overflow isn't visible-in-both-axes (os-tabpanel
+ * is the confirmed offender: overflow: visible, min-height: auto,
+ * measured at the FULL content height — 5930px in one repro — rather
+ * than shrinking to fit). That leaves nothing but .os-window__body's own
+ * scroll math holding the layout together; Vivaldi's momentum/rubber-band
+ * scrolling appears to re-measure mid-gesture against that undamped
+ * content height and snap scrollTop back ("moves a tiny bit, then
+ * stuck"). Chrome's plainer wheel handling doesn't trigger the same
+ * re-measure, which is why this didn't reproduce there.
+ *
+ * Pinning min-height: 0 down the whole chain is the standard fix for
+ * this exact flexbox default (see .os-app-list__body's own "min-width: 0
+ * is the load-bearing piece" comment in OpenStation's own plugins.css —
+ * same failure mode, other axis). This doesn't touch display/overflow on
+ * any of these, so it shouldn't change layout when everything fits;
+ * it only stops the auto-min-size fallback from overriding the real
+ * scroll container when it doesn't.
+ */
+body.os-active .os-window__body--native .os-app,
+body.os-active .os-window__body--native os-tabpanel,
+body.os-active .os-window__body--native os-tabpanel > os-stack,
+body.os-active .os-window__body--native .os-app-list {
+    min-height: 0 !important;
+}
+
+/*
+ * Plugin Editor tab (this plugin's own — includes/desktop-mode-plugins-
+ * editor-tab.php) was capped at exactly 520px tall, confirmed live via
+ * DevTools: that number is the iframe's own `min-height:520px` inline
+ * style, meant only as a defensive floor. It became the ceiling too
+ * because nothing between the real window body and that iframe actually
+ * has a definite height to hand down:
+ *
+ *   os-window__body--native (real height, 824px in one repro)
+ *     -> os-stack        block-context child, sizes to CONTENT (auto)
+ *       -> os-tabpanel    flex item of os-stack, flex-grow:0 (won't fill it)
+ *         -> .os-app      plain child of os-tabpanel, height:auto
+ *           -> our div    height:100% (inline) — 100% of an auto height
+ *                          resolves as auto too, so it just shrinks to
+ *                          fit the one thing that DOES have a floor: the
+ *                          iframe's min-height:520px.
+ *
+ * Fixed by making that chain hand down a real number instead:
+ *   - os-stack: height:100% of the window body. Safe for every tab —
+ *     os-stack's own overflow is visible, so this can't clip anything;
+ *     it only gives whichever tab is showing something definite to
+ *     size against. (The Installed tab doesn't need this itself — its
+ *     scroll relies on staying free to overflow past the window body,
+ *     which .os-window__body--native's own overflow:auto already
+ *     catches — so the rest of this fix is scoped with :has() to just
+ *     the Editor tab's own os-tabpanel, never the Installed tab's.)
+ *   - That os-tabpanel: flex:1 1 auto so it actually grows to fill
+ *     os-stack, rather than sizing to its own content.
+ *   - Its .os-app: height:100% of that now-definite os-tabpanel.
+ * From there our own div's existing inline height:100% finally has a
+ * real height to be 100% of, and the iframe fills the window instead
+ * of being stuck at its 520px floor.
+ */
+body.os-active .os-window__body--native os-stack {
+    height: 100% !important;
+}
+
+body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+}
+
+body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) > .os-app {
+    height: 100% !important;
+}
 	
 
 	
