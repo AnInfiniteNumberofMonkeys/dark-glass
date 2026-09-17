@@ -1611,10 +1611,6 @@ body.plugin-editor-php #wpbody-content {
     padding-top: 0 !important;
 }
 
-#template .CodeMirror {
-    height: calc(100vh - 408px);
-}
-
 #template .CodeMirror, #template textarea {
     width: calc(100% - 1rem);
     border-color: var(--color-border);
