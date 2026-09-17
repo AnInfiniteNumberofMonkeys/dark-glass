@@ -234,3 +234,22 @@ add_action( 'admin_enqueue_scripts', function () {
     );
 
 } );
+
+// -- Native App Framework window scroll fix -----------------------------
+// Fixes a Vivaldi/macOS-specific bug where hovering <os-table> or the
+// plugin card grid stops the Plugins window from scrolling (confirmed
+// live; reported upstream as github.com/WordPress/openstation/issues/817).
+// See the file header for the full explanation. Enqueued unconditionally
+// like the other structural fixes above; self-guards on body.os-active.
+add_action( 'admin_enqueue_scripts', function () {
+
+    $desktop_mode_table_scroll_fix_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-table-scroll-fix.js';
+    wp_enqueue_script(
+        'imdg-desktop-mode-table-scroll-fix',
+        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-table-scroll-fix.js',
+        [],
+        file_exists( $desktop_mode_table_scroll_fix_path ) ? filemtime( $desktop_mode_table_scroll_fix_path ) : IMDG_VERSION,
+        true // Load in footer
+    );
+
+} );
