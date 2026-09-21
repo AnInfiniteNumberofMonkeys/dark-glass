@@ -3067,6 +3067,9 @@ body.os-chromeless #cfw_admin_page_header {
 .perfmatters-settings-section input[type="checkbox"] {
 	display: none !important;
 }
+.perfmatters-settings-section .perfmatters-subsets input[type="checkbox"] {
+	display: block !important;
+}
 
 #perfmatters-admin .perfmatters-slider {
 	background-color: var(--color-muted);
