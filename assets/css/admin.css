@@ -627,7 +627,7 @@ html.wp-toolbar {
 /*****************************************************************/
 
 #wpadminbar {
-    background: none;
+    background: linear-gradient(90deg, #2B1C44, #1A2123);
     color: var(--color-white-trans-50);
     height: 62px;
     left: calc(var(--sidebar-width) + 2rem);
