@@ -4994,8 +4994,23 @@ body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) {
 body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) > .os-app {
     height: 100% !important;
 }
-	
 
+.os-plugins__eyebrow, .os-plugins__library-intro h2 {
+	display: none;
+}
+
+.os-plugins__library-intro os-button {
+	transform: translateY(-10px);	
+}
+
+.os-posts-desk__eyebrow, .os-posts-desk__hero h2, .os-posts-desk__hero p {
+	display: none;
+}
+
+.os-posts-desk__hero {
+	padding-bottom: 0 !important;
+  	margin-bottom: -48px;
+}
 	
 /*** 20. User profile                                            */
 
