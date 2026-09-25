@@ -5011,6 +5011,10 @@ body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) > .os-
 	padding-bottom: 0 !important;
   	margin-bottom: -48px;
 }
+
+.os-dock__pinned .os-dock__separator {
+	display: none !important;
+}
 	
 /*** 20. User profile                                            */
 
