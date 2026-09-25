@@ -30,11 +30,6 @@
 	padding-right: 25px !important;
 }
 
-/* BUG with pinned panel layering */
-#bricks-panel-element #bricks-pinned-section {
-	z-index: 2001 !important;
-}
-
 /* WYSIWYG panel */
 div.mce-edit-area, div.mce-panel {
     border: 1px solid #5e5e6b !important;
