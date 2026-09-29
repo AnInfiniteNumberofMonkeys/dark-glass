@@ -67,6 +67,7 @@
     --color-white: #ffffff;
     --color-white-trans-5: rgba(255,255,255,.05);
     --color-white-trans-10: rgba(255,255,255,.1);
+    --color-white-trans-20: rgba(255,255,255,.2);
     --color-white-trans-50: rgba(255,255,255,.5);
     --color-white-trans-80: rgba(255,255,255,.8);
     --color-accent: #d700ff;
@@ -3567,6 +3568,15 @@ body.js.block-editor-page #wpcontent {
 .block-editor-link-control__field .components-base-control__label, .block-editor-link-control__tools .components-button.block-editor-link-control__drawer-toggle[aria-expanded=true], .block-editor-link-control__setting .components-base-control__field .components-checkbox-control__label {
 	color: var(--color-foreground);
 }
+
+.block-editor-inserter__search {
+	background: none;
+}
+
+.components-input-control__input::placeholder {
+	color: var(--color-white-trans-20) !important;
+}
+	
 
 
 @media only screen and (min-width: 782px) {
