@@ -3581,7 +3581,10 @@ body.js.block-editor-page #wpcontent {
   background: var(--color-white-trans-5) !important;
   color: var(--color-foreground) !important;
 }
-	
+
+.block-directory-downloadable-blocks-panel {
+	display: none;
+}
 
 
 @media only screen and (min-width: 782px) {
