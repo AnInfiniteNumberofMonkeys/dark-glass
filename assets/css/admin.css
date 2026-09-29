@@ -3576,6 +3576,11 @@ body.js.block-editor-page #wpcontent {
 .components-input-control__input::placeholder {
 	color: var(--color-white-trans-20) !important;
 }
+
+.components-placeholder.components-placeholder {
+  background: var(--color-white-trans-5) !important;
+  color: var(--color-foreground) !important;
+}
 	
 
 
