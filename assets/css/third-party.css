@@ -1652,6 +1652,9 @@ th.manage-column a span {
 #wsf-form .wsf-group {
 	border-top: none !important;
 }
+select.wsf-field:not([multiple]):not([size]).wsf-field-small {
+	padding-right: 14px !important;
+}
 
 /*****************************/
 /*** Admin Columns Pro *******/
