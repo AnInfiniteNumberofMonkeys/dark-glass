@@ -2954,6 +2954,10 @@ ul.order_notes li .note_header {
 	background: none !important;
 }
 
+.woocommerce-marketplace-orders-promo {
+	display: none;
+}
+
 /*****************************/
 /*** Tablepress **************/
 /*****************************/
