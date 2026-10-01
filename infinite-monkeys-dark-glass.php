@@ -25,6 +25,7 @@ require_once IMDG_PLUGIN_DIR . 'includes/enqueue.php';
 require_once IMDG_PLUGIN_DIR . 'includes/editor-styles.php';
 require_once IMDG_PLUGIN_DIR . 'includes/codemirror.php';
 require_once IMDG_PLUGIN_DIR . 'includes/admin-tweaks.php';
+require_once IMDG_PLUGIN_DIR . 'includes/frontend-assets.php';
 require_once IMDG_PLUGIN_DIR . 'includes/bricks-compat.php';
 require_once IMDG_PLUGIN_DIR . 'includes/editor-asset-trim.php';
 require_once IMDG_PLUGIN_DIR . 'includes/profile-sections.php';
