@@ -20,6 +20,8 @@
  *   imdg_defer_scripts          handles always deferred
  *   imdg_defer_scripts_exclude  handles that must stay blocking
  *   imdg_defer_scripts_enabled  return false to turn the feature off
+ *   imdg_keep_jquery_blocking_on_products  return false to defer jQuery on
+ *                               single product pages too (default: blocking)
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -68,7 +70,34 @@ function imdg_scripts_to_defer() {
  * @return string[]
  */
 function imdg_scripts_to_keep_blocking() {
-    return apply_filters( 'imdg_defer_scripts_exclude', array() );
+    $handles = array();
+
+    if ( imdg_keep_jquery_blocking() ) {
+        $handles = array( 'jquery-core', 'jquery-migrate' );
+    }
+
+    return apply_filters( 'imdg_defer_scripts_exclude', $handles );
+}
+
+/**
+ * Whether jQuery stays blocking for this request.
+ *
+ * Bricks attaches its product gallery thumbnail slider handler on
+ * DOMContentLoaded, while WooCommerce initializes the gallery from a jQuery
+ * ready callback. With jQuery deferred, jQuery can already be ready while the
+ * remaining deferred scripts download, so the gallery init fires before Bricks
+ * is listening and the thumbnail slider stays hidden (opacity 0).
+ * A blocking jQuery keeps those ready callbacks after DOMContentLoaded.
+ * Scripts that depend on jQuery are still deferred.
+ *
+ * Return false from imdg_keep_jquery_blocking_on_products to turn this off.
+ *
+ * @return bool
+ */
+function imdg_keep_jquery_blocking() {
+    $is_product = function_exists( 'is_product' ) && is_product();
+
+    return (bool) apply_filters( 'imdg_keep_jquery_blocking_on_products', $is_product );
 }
 
 /**
