@@ -129,19 +129,55 @@ function imonkeys_restrict_image_sizes( $new_sizes ) {
     return $new_sizes;
 }
 
-/* Ensure WPCodebox stylesheets are loaded before Bricks stylesheets */
-add_action( 'template_redirect', function() {
-    ob_start( function( $buffer ) {
-        if ( preg_match_all( '/(<link[^>]+wpcb2-external-style[^>]*>)/i', $buffer, $matches ) ) {
-            // Remove all WPCodebox link tags from wherever they are
-            foreach ( $matches[1] as $link ) {
-                $buffer = str_replace( $link, '', $buffer );
-            }
-            // Reinsert them all together immediately after <head>
-            $all_links = "\n" . implode( "\n", $matches[1] );
-            $buffer    = str_replace( '<head>', '<head>' . $all_links, $buffer );
-        }
-        return $buffer;
-    });
+/**
+ * Keep WPCodeBox external stylesheets ahead of Bricks stylesheets.
+ *
+ * Only <link class="wpcb2-external-style"> tags that sit inside <head> AFTER the
+ * first Bricks stylesheet are moved, and they are inserted immediately before it.
+ * Links printed in the footer (or anywhere after </head>) are left where they are,
+ * and so are links that already come before Bricks.
+ */
+add_action( 'template_redirect', function () {
+    if ( is_feed() || is_robots() || is_trackback() ) {
+        return;
+    }
+    ob_start( 'imonkeys_wpcb_before_bricks' );
 }, 1 );
 
+function imonkeys_wpcb_before_bricks( $buffer ) {
+    $head_end = stripos( $buffer, '</head>' );
+    if ( false === $head_end ) {
+        return $buffer;
+    }
+
+    $head = substr( $buffer, 0, $head_end );
+    $rest = substr( $buffer, $head_end );
+
+    // First Bricks stylesheet in the head (Bricks core, child theme, post CSS, etc.).
+    // Bricks Advanced Themer is skipped because it is a separate plugin.
+    $anchor_regex = '/<(?:link|style)\b[^>]*\sid=["\']bricks-(?!advanced-themer)[^"\']*["\'][^>]*>/i';
+    if ( ! preg_match( $anchor_regex, $head, $anchor, PREG_OFFSET_CAPTURE ) ) {
+        return $buffer;
+    }
+    $anchor_pos = $anchor[0][1];
+
+    $before = substr( $head, 0, $anchor_pos );
+    $after  = substr( $head, $anchor_pos );
+
+    // Pull WPCodeBox links out of the part of the head that follows the Bricks anchor.
+    $moved = array();
+    $after = preg_replace_callback(
+        '/[ \t]*<link\b[^>]*\bclass=["\'][^"\']*\bwpcb2-external-style\b[^"\']*["\'][^>]*>[ \t]*\R?/i',
+        function ( $m ) use ( &$moved ) {
+            $moved[] = trim( $m[0] );
+            return '';
+        },
+        $after
+    );
+
+    if ( empty( $moved ) ) {
+        return $buffer;
+    }
+
+    return $before . implode( "\n", $moved ) . "\n" . $after . $rest;
+}
