@@ -2,26 +2,31 @@
 /**
  * Front-end script loading.
  *
- * Loads jQuery, underscore, wp-util and every script that depends on jQuery with
- * the defer attribute, so they stop blocking the first render.
+ * Loads jQuery, underscore, wp-util and every script that depends on any of
+ * them with the defer attribute, so they stop blocking the first render.
  *
  * Deferred scripts run in document order after the HTML is parsed and before
  * DOMContentLoaded. A script printed in the footer therefore still runs after
  * jQuery in the head, but only if it is deferred too. A blocking script that
- * needs jQuery would run first and fail, which is why dependents are deferred
- * along with jQuery itself.
+ * needs jQuery or underscore would run first and fail, which is why dependents
+ * are deferred along with the libraries themselves.
  *
- * Inline scripts cannot be deferred. An inline script that calls jQuery while
- * the page is still being parsed would fail, so a leading
- * jQuery( document ).ready( ... ) or jQuery( function ... ) in an inline script
- * is rewritten to imdgReady( ... ), which waits for DOMContentLoaded.
+ * Inline scripts attached to a deferred handle with wp_add_inline_script()
+ * ("before" and "after") cannot simply stay inline, because they would run
+ * while the page is still being parsed, ahead of the deferred file they belong
+ * to. They are re-emitted as deferred data: URI scripts, which keeps them in
+ * the same position in the deferred queue (before script, file, after script).
+ *
+ * Inline scripts that are not attached to a handle, and that start with a
+ * leading jQuery( document ).ready( ... ) or jQuery( function ... ), are
+ * rewritten to imdgReady( ... ), which waits for DOMContentLoaded.
  *
  * Per-site changes go through these filters:
- *   imdg_defer_scripts          handles always deferred
- *   imdg_defer_scripts_exclude  handles that must stay blocking
- *   imdg_defer_scripts_enabled  return false to turn the feature off
- *   imdg_keep_jquery_blocking_on_products  return false to defer jQuery on
- *                               single product pages too (default: blocking)
+ * imdg_defer_scripts handles always deferred
+ * imdg_defer_scripts_exclude handles that must stay blocking
+ * imdg_defer_scripts_enabled return false to turn the feature off
+ * imdg_keep_jquery_blocking_on_products return false to defer jQuery on
+ * single product pages too (default: blocking)
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,22 +37,22 @@ defined( 'ABSPATH' ) || exit;
  * @return bool
  */
 function imdg_scripts_skip_request() {
-    if ( is_admin() || is_customize_preview() || is_feed() ) {
-        return true;
-    }
+	if ( is_admin() || is_customize_preview() || is_feed() ) {
+		return true;
+	}
 
-    if ( ! apply_filters( 'imdg_defer_scripts_enabled', true ) ) {
-        return true;
-    }
+	if ( ! apply_filters( 'imdg_defer_scripts_enabled', true ) ) {
+		return true;
+	}
 
-    // Leave the Bricks builder and its preview iframe untouched.
-    foreach ( array( 'bricks_is_builder', 'bricks_is_builder_main', 'bricks_is_builder_iframe' ) as $fn ) {
-        if ( function_exists( $fn ) && $fn() ) {
-            return true;
-        }
-    }
+	// Leave the Bricks builder and its preview iframe untouched.
+	foreach ( array( 'bricks_is_builder', 'bricks_is_builder_main', 'bricks_is_builder_iframe' ) as $fn ) {
+		if ( function_exists( $fn ) && $fn() ) {
+			return true;
+		}
+	}
 
-    return false;
+	return false;
 }
 
 /**
@@ -56,12 +61,12 @@ function imdg_scripts_skip_request() {
  * @return string[]
  */
 function imdg_scripts_to_defer() {
-    return apply_filters( 'imdg_defer_scripts', array(
-        'jquery-core',
-        'jquery-migrate',
-        'underscore',
-        'wp-util',
-    ) );
+	return apply_filters( 'imdg_defer_scripts', array(
+		'jquery-core',
+		'jquery-migrate',
+		'underscore',
+		'wp-util',
+	) );
 }
 
 /**
@@ -70,13 +75,13 @@ function imdg_scripts_to_defer() {
  * @return string[]
  */
 function imdg_scripts_to_keep_blocking() {
-    $handles = array();
+	$handles = array();
 
-    if ( imdg_keep_jquery_blocking() ) {
-        $handles = array( 'jquery-core', 'jquery-migrate' );
-    }
+	if ( imdg_keep_jquery_blocking() ) {
+		$handles = array( 'jquery-core', 'jquery-migrate' );
+	}
 
-    return apply_filters( 'imdg_defer_scripts_exclude', $handles );
+	return apply_filters( 'imdg_defer_scripts_exclude', $handles );
 }
 
 /**
@@ -95,9 +100,20 @@ function imdg_scripts_to_keep_blocking() {
  * @return bool
  */
 function imdg_keep_jquery_blocking() {
-    $is_product = function_exists( 'is_product' ) && is_product();
+	$is_product = function_exists( 'is_product' ) && is_product();
 
-    return (bool) apply_filters( 'imdg_keep_jquery_blocking_on_products', $is_product );
+	return (bool) apply_filters( 'imdg_keep_jquery_blocking_on_products', $is_product );
+}
+
+/**
+ * Handles whose dependents must be deferred: jQuery plus every handle that is
+ * itself deferred (underscore, wp-util and anything added by the
+ * imdg_defer_scripts filter).
+ *
+ * @return string[]
+ */
+function imdg_defer_targets() {
+	return array_values( array_unique( array_merge( array( 'jquery' ), imdg_scripts_to_defer() ) ) );
 }
 
 /**
@@ -110,29 +126,57 @@ function imdg_keep_jquery_blocking() {
  * @return bool
  */
 function imdg_script_depends_on( $handle, array $targets, array &$seen = array() ) {
-    if ( isset( $seen[ $handle ] ) ) {
-        return false;
-    }
-    $seen[ $handle ] = true;
+	if ( isset( $seen[ $handle ] ) ) {
+		return false;
+	}
+	$seen[ $handle ] = true;
 
-    $registered = wp_scripts()->registered;
-    if ( empty( $registered[ $handle ] ) ) {
-        return false;
-    }
+	$registered = wp_scripts()->registered;
+	if ( empty( $registered[ $handle ] ) ) {
+		return false;
+	}
 
-    foreach ( (array) $registered[ $handle ]->deps as $dep ) {
-        if ( in_array( $dep, $targets, true ) || imdg_script_depends_on( $dep, $targets, $seen ) ) {
-            return true;
-        }
-    }
+	foreach ( (array) $registered[ $handle ]->deps as $dep ) {
+		if ( in_array( $dep, $targets, true ) || imdg_script_depends_on( $dep, $targets, $seen ) ) {
+			return true;
+		}
+	}
 
-    return false;
+	return false;
+}
+
+/**
+ * Re-emits an inline script as a deferred script so it stays in order with the
+ * deferred file it belongs to. Empty scripts and scripts carrying a CSP nonce
+ * are returned unchanged.
+ *
+ * The sourceURL comment keeps the original id (for example
+ * editor-js-after) in console errors.
+ *
+ * @param string $open_tag Opening script tag, with its attributes.
+ * @param string $code     Script body.
+ * @return string
+ */
+function imdg_inline_to_deferred( $open_tag, $code ) {
+	if ( '' === trim( $code ) || preg_match( '/\snonce=/i', $open_tag ) ) {
+		return $open_tag . $code . '</script>';
+	}
+
+	$id = 'imdg-inline';
+	if ( preg_match( '/\sid=["\']([^"\']+)["\']/i', $open_tag, $id_match ) ) {
+		$id = $id_match[1];
+	}
+
+	$code .= "\n//# sourceURL=" . $id . '.js';
+
+	return '<script defer id="' . esc_attr( $id ) . '" src="data:text/javascript;base64,' . base64_encode( $code ) . '"></script>';
 }
 
 /**
  * Adds defer to the script tag. The filter receives the tag together with any
  * inline "before" and "after" scripts for the handle, so only the tag that has
- * a src attribute is changed.
+ * a src attribute gets the defer attribute, and the inline scripts around it
+ * are converted to deferred scripts so the order is kept.
  *
  * @param string $tag    Script markup.
  * @param string $handle Script handle.
@@ -140,53 +184,66 @@ function imdg_script_depends_on( $handle, array $targets, array &$seen = array()
  * @return string
  */
 function imdg_defer_script_tag( $tag, $handle, $src ) {
-    if ( imdg_scripts_skip_request() ) {
-        return $tag;
-    }
+	if ( imdg_scripts_skip_request() ) {
+		return $tag;
+	}
 
-    if ( ! preg_match( '/<script\b[^>]*\ssrc=[^>]*>/i', $tag, $src_tag ) ) {
-        return $tag;
-    }
+	if ( ! preg_match( '/<script\b[^>]*\ssrc=[^>]*>/i', $tag, $src_tag ) ) {
+		return $tag;
+	}
 
-    // Already deferred, async, a module, or handled by the Perfmatters delay.
-    if ( preg_match( '/\s(?:defer|async)(?=[\s=>])|\stype=["\']module["\']|pmdelayedscript/i', $src_tag[0] ) ) {
-        return $tag;
-    }
+	// Already deferred, async, a module, or handled by the Perfmatters delay.
+	if ( preg_match( '/\s(?:defer|async)(?=[\s=>])|\stype=["\']module["\']|pmdelayedscript/i', $src_tag[0] ) ) {
+		return $tag;
+	}
 
-    if ( in_array( $handle, imdg_scripts_to_keep_blocking(), true ) ) {
-        return $tag;
-    }
+	if ( in_array( $handle, imdg_scripts_to_keep_blocking(), true ) ) {
+		return $tag;
+	}
 
-    $needs_defer = in_array( $handle, imdg_scripts_to_defer(), true )
-        || imdg_script_depends_on( $handle, array( 'jquery', 'jquery-core', 'jquery-migrate' ) );
+	$needs_defer = in_array( $handle, imdg_scripts_to_defer(), true )
+		|| imdg_script_depends_on( $handle, imdg_defer_targets() );
 
-    if ( ! $needs_defer ) {
-        return $tag;
-    }
+	if ( ! $needs_defer ) {
+		return $tag;
+	}
 
-    $tag = preg_replace( '/<script\b(?=[^>]*\ssrc=)/i', '<script defer', $tag, 1 );
+	$tag = preg_replace( '/<script\b(?=[^>]*\ssrc=)/i', '<script defer', $tag, 1 );
 
-    // Inline "after" scripts run while the page is still parsing, before the deferred
-    // file has executed. Hold back the ones that use jQuery until DOMContentLoaded.
-    if ( ! preg_match( '/<script\b[^>]*\ssrc=[^>]*>\s*<\/script>/i', $tag, $full, PREG_OFFSET_CAPTURE ) ) {
-        return $tag;
-    }
-    $pos = $full[0][1] + strlen( $full[0][0] );
-    $head = substr( $tag, 0, $pos );
-    $tail = substr( $tag, $pos );
+	if ( ! preg_match( '/<script\b[^>]*\ssrc=[^>]*>\s*<\/script>/i', $tag, $full, PREG_OFFSET_CAPTURE ) ) {
+		return $tag;
+	}
 
-    $tail = preg_replace_callback(
-        '/(<script\b(?![^>]*\bsrc=)(?![^>]*pmdelayedscript)(?![^>]*\btype=["\'](?!text\/javascript)[^"\']*["\'])[^>]*>)(.*?)(<\/script>)/is',
-        function ( $m ) {
-            if ( ! preg_match( '/\bjQuery\b/', $m[2] ) || false !== strpos( $m[2], 'imdgReady' ) ) {
-                return $m[0];
-            }
-            return $m[1] . 'document.addEventListener("DOMContentLoaded",function(){' . $m[2] . "\n" . '});' . $m[3];
-        },
-        $tail
-    );
+	$pos  = $full[0][1] + strlen( $full[0][0] );
+	$head = substr( $tag, 0, $pos );
+	$tail = substr( $tag, $pos );
 
-    return $head . $tail;
+	$inline = '/(<script\b(?![^>]*\bsrc=)(?![^>]*pmdelayedscript)(?![^>]*\btype=["\'](?!text\/javascript)[^"\']*["\'])[^>]*>)(.*?)(<\/script>)/is';
+
+	// "before" scripts sit ahead of the file. The data (-js-extra) and
+	// translation (-js-translations) scripts are left inline: they only set
+	// variables or call a script that is not deferred.
+	$head = preg_replace_callback(
+		$inline,
+		function ( $m ) {
+			if ( ! preg_match( '/\sid=["\'][^"\']*-js-before["\']/i', $m[1] ) ) {
+				return $m[0];
+			}
+			return imdg_inline_to_deferred( $m[1], $m[2] );
+		},
+		$head
+	);
+
+	// Everything after the file is an "after" script.
+	$tail = preg_replace_callback(
+		$inline,
+		function ( $m ) {
+			return imdg_inline_to_deferred( $m[1], $m[2] );
+		},
+		$tail
+	);
+
+	return $head . $tail;
 }
 add_filter( 'script_loader_tag', 'imdg_defer_script_tag', 20, 3 );
 
@@ -195,11 +252,11 @@ add_filter( 'script_loader_tag', 'imdg_defer_script_tag', 20, 3 );
  * DOMContentLoaded, by which time the deferred scripts have run.
  */
 function imdg_print_ready_helper() {
-    if ( imdg_scripts_skip_request() ) {
-        return;
-    }
+	if ( imdg_scripts_skip_request() ) {
+		return;
+	}
 
-    echo '<script id="imdg-ready">window.imdgReady=function(f){document.addEventListener("DOMContentLoaded",function(){window.jQuery(f);},{once:true});};</script>' . "\n";
+	echo '<script id="imdg-ready">window.imdgReady=function(f){document.addEventListener("DOMContentLoaded",function(){window.jQuery(f);},{once:true});};</script>' . "\n";
 }
 add_action( 'wp_head', 'imdg_print_ready_helper', 1 );
 
@@ -212,26 +269,26 @@ add_action( 'wp_head', 'imdg_print_ready_helper', 1 );
  * @return string
  */
 function imdg_rewrite_inline_jquery_ready( $html ) {
-    // The helper must be on the page, otherwise there is nothing to call.
-    if ( false === strpos( $html, 'id="imdg-ready"' ) ) {
-        return $html;
-    }
+	// The helper must be on the page, otherwise there is nothing to call.
+	if ( false === strpos( $html, 'id="imdg-ready"' ) ) {
+		return $html;
+	}
 
-    $pattern = '/(<script\b(?![^>]*\bsrc=)(?![^>]*pmdelayedscript)(?![^>]*\btype=["\'](?!text\/javascript)[^"\']*["\'])[^>]*>\s*)jQuery\(\s*(document\s*\)\s*\.ready\(|function)/i';
+	$pattern = '/(<script\b(?![^>]*\bsrc=)(?![^>]*pmdelayedscript)(?![^>]*\btype=["\'](?!text\/javascript)[^"\']*["\'])[^>]*>\s*)jQuery\(\s*(document\s*\)\s*\.ready\(|function)/i';
 
-    return preg_replace_callback(
-        $pattern,
-        function ( $m ) {
-            $replacement = 0 === stripos( $m[2], 'document' ) ? 'imdgReady(' : 'imdgReady(function';
-            return $m[1] . $replacement;
-        },
-        $html
-    );
+	return preg_replace_callback(
+		$pattern,
+		function ( $m ) {
+			$replacement = 0 === stripos( $m[2], 'document' ) ? 'imdgReady(' : 'imdgReady(function';
+			return $m[1] . $replacement;
+		},
+		$html
+	);
 }
 
 add_action( 'template_redirect', function () {
-    if ( imdg_scripts_skip_request() ) {
-        return;
-    }
-    ob_start( 'imdg_rewrite_inline_jquery_ready' );
+	if ( imdg_scripts_skip_request() ) {
+		return;
+	}
+	ob_start( 'imdg_rewrite_inline_jquery_ready' );
 }, 2 );
