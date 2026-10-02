@@ -35,3 +35,4 @@ require_once IMDG_PLUGIN_DIR . 'includes/desktop-mode-plugins-editor-tab.php';
 require_once IMDG_PLUGIN_DIR . 'includes/desktop-mode-os-settings-seed.php';
 require_once IMDG_PLUGIN_DIR . 'includes/block-list-shortcut.php';
 require_once IMDG_PLUGIN_DIR . 'includes/desktop-mode-accent-swatch.php';
+require_once IMDG_PLUGIN_DIR . 'includes/cdn-purge.php';
