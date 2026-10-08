@@ -159,6 +159,19 @@ add_action( 'admin_enqueue_scripts', function () {
         true // Load in footer
     );
 
+    // Desktop right-click menu: trims the wallpaper context menu down to
+    // New URL / Show desktop / OpenStation Preferences and adds a "Close all
+    // windows" item (see file header). Depends on wp-hooks, which
+    // OpenStation's own filters run through. Self-guards on body.os-active.
+    $desktop_mode_wallpaper_menu_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-wallpaper-menu.js';
+    wp_enqueue_script(
+        'imdg-desktop-mode-wallpaper-menu',
+        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-wallpaper-menu.js',
+        [ 'wp-hooks' ],
+        file_exists( $desktop_mode_wallpaper_menu_path ) ? filemtime( $desktop_mode_wallpaper_menu_path ) : IMDG_VERSION,
+        true // Load in footer
+    );    
+
     // Bricks builder new-tab handoff (see file header). Enqueued
     // unconditionally; attaches its click listener immediately regardless
     // of DOM readiness, checking body.desktop-mode-chromeless fresh on
