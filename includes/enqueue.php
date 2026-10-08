@@ -77,39 +77,12 @@ add_action( 'wp_enqueue_scripts', function () {
 
 add_action( 'admin_enqueue_scripts', function () {
 
-    /*
-     * TEMPORARY MOBILE COMPATIBILITY SHIM — remove this wp_is_mobile()
-     * guard once Desktop Mode ships native mobile support (see the
-     * matching block in admin.css). Not used on mobile there anyway.
-     */
-    if ( ! wp_is_mobile() ) {
-        // Frosted-glass overlay for admin bar and sidebar submenus
-        wp_enqueue_script(
-            'imdg-frosted-glass',
-            IMDG_PLUGIN_URL . 'assets/js/frosted-glass.js',
-            [],
-            IMDG_VERSION,
-            true // Load in footer
-        );
-    }
-
-    /*
-     * TEMPORARY MOBILE COMPATIBILITY SHIM — enqueued unconditionally,
-     * NOT gated by wp_is_mobile() like frosted-glass.js above. Confirmed
-     * live that server-side UA sniffing and the client-side @media
-     * query this script checks internally can disagree for a real
-     * device (the CSS mobile fixes reached the device fine while this
-     * script, when gated by wp_is_mobile(), silently never loaded) —
-     * see the file header for the full explanation. It's a no-op on
-     * desktop since it bails out immediately if the media query
-     * doesn't match.
-     */
-    $desktop_mode_mobile_shim_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-mobile-shim.js';
+    // Frosted-glass overlay for admin bar and sidebar submenus
     wp_enqueue_script(
-        'imdg-desktop-mode-mobile-shim',
-        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-mobile-shim.js',
+        'imdg-frosted-glass',
+        IMDG_PLUGIN_URL . 'assets/js/frosted-glass.js',
         [],
-        file_exists( $desktop_mode_mobile_shim_path ) ? filemtime( $desktop_mode_mobile_shim_path ) : IMDG_VERSION,
+        IMDG_VERSION,
         true // Load in footer
     );
 
