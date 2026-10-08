@@ -579,3 +579,8 @@ div.wp-link-input input {
 	background: var(--color-white-trans-50) !important;
 	box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--color-white-trans-80) !important;
 }
+
+/* Add buffer to allow element panel to scroll up fully when pinned panel is present */
+.bricks-panel .regular-controls-wrapper .controls.open {
+  margin-bottom: 166px;
+}
