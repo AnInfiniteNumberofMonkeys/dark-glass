@@ -1656,6 +1656,13 @@ select.wsf-field:not([multiple]):not([size]).wsf-field-small {
 	padding-right: 14px !important;
 }
 
+.wsf-list-inline input[data-attribute="multiple"] ~ label {
+  position: relative !important;
+  top: 0 !important;
+  margin-top: 4px !important;
+  margin-left: 10px;
+}
+
 /*****************************/
 /*** Admin Columns Pro *******/
 /*****************************/
