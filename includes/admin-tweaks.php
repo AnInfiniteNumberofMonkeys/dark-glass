@@ -102,30 +102,40 @@ add_filter( 'pre_get_posts', function ( $query ) {
 /**
  * Restrict generated image size variants to an explicit allowlist.
  *
- * Keeps: thumbnail, medium, large, cfw_cart_thumb, and the original upload.
- * All other registered sizes (medium_large, 1536x1536, 2048x2048, WooCommerce
- * sizes, theme sizes, etc.) are suppressed at generation time.
+ * Keeps: thumbnail, medium, large, cfw_cart_thumb, the three WooCommerce
+ * sizes (woocommerce_thumbnail, woocommerce_single,
+ * woocommerce_gallery_thumbnail), and the original upload.
+ * All other registered sizes (medium_large, 1536x1536, 2048x2048, theme
+ * sizes, etc.) are suppressed at generation time.
+ *
+ * The WooCommerce sizes must stay on this list. When a product image is
+ * missing one, WooCommerce builds it during the page request, and that
+ * build runs through this filter too. If the size is removed here it is
+ * never stored, and the build repeats on every uncached request.
  *
  * Hooks into intermediate_image_sizes_advanced so the filter fires for both
  * new uploads and any manual regeneration via WP-CLI or a plugin.
  */
- 
+
 add_filter( 'intermediate_image_sizes_advanced', 'imonkeys_restrict_image_sizes', 99 );
- 
+
 function imonkeys_restrict_image_sizes( $new_sizes ) {
     $allowed = [
         'thumbnail',
         'medium',
         'large',
         'cfw_cart_thumb',
+        'woocommerce_thumbnail',
+        'woocommerce_single',
+        'woocommerce_gallery_thumbnail',
     ];
- 
+
     foreach ( $new_sizes as $size_name => $size_data ) {
         if ( ! in_array( $size_name, $allowed, true ) ) {
             unset( $new_sizes[ $size_name ] );
         }
     }
- 
+
     return $new_sizes;
 }
 
