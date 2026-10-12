@@ -70,6 +70,17 @@ add_action( 'admin_enqueue_scripts', function () {
 add_action( 'wp_enqueue_scripts', function () {
     if ( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) {
         wp_enqueue_style( 'imdg-bricks-editor', IMDG_PLUGIN_URL . 'assets/css/bricks-editor.css', [], IMDG_VERSION );
+        // TinyMCE list shortcuts (Shift+Cmd/Ctrl+B and Shift+Cmd/Ctrl+1) for the
+        // rich text controls in the builder's left panel. The admin-side enqueue
+        // does not run in the builder, which loads as a front-end template.
+        $imdg_tinymce_list_path = IMDG_PLUGIN_DIR . 'assets/js/tinymce-list-shortcuts.js';
+        wp_enqueue_script(
+            'imdg-tinymce-list-shortcuts',
+            IMDG_PLUGIN_URL . 'assets/js/tinymce-list-shortcuts.js',
+            [],
+            file_exists( $imdg_tinymce_list_path ) ? filemtime( $imdg_tinymce_list_path ) : IMDG_VERSION,
+            true
+        );
     }
 } );
 
@@ -227,15 +238,15 @@ add_action( 'admin_enqueue_scripts', function () {
 // live; reported upstream as github.com/WordPress/openstation/issues/817).
 // See the file header for the full explanation. Enqueued unconditionally
 // like the other structural fixes above; self-guards on body.os-active.
-add_action( 'admin_enqueue_scripts', function () {
+// add_action( 'admin_enqueue_scripts', function () {
 
-    $desktop_mode_table_scroll_fix_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-table-scroll-fix.js';
-    wp_enqueue_script(
-        'imdg-desktop-mode-table-scroll-fix',
-        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-table-scroll-fix.js',
-        [],
-        file_exists( $desktop_mode_table_scroll_fix_path ) ? filemtime( $desktop_mode_table_scroll_fix_path ) : IMDG_VERSION,
-        true // Load in footer
-    );
+//     $desktop_mode_table_scroll_fix_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-table-scroll-fix.js';
+//     wp_enqueue_script(
+//         'imdg-desktop-mode-table-scroll-fix',
+//         IMDG_PLUGIN_URL . 'assets/js/desktop-mode-table-scroll-fix.js',
+//         [],
+//         file_exists( $desktop_mode_table_scroll_fix_path ) ? filemtime( $desktop_mode_table_scroll_fix_path ) : IMDG_VERSION,
+//         true // Load in footer
+//     );
 
-} );
+// } );
