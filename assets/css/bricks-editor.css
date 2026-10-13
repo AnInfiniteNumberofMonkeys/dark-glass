@@ -156,31 +156,10 @@ body #bricks-structure main.panel-content {
     color: var(--dark-color);
 }
 
-
-/* Structure item icons when structure item is hovered */
-/* #bricks-structure  .element.active>.structure-item:hover .actions, #bricks-structure .element.active>.structure-item:hover .ti-link:before {
-    color: var(--builder-color-accent);
-} */
-
-/* Move preview panel to far right */
-/* #bricks-preview {
-    order: 1;
-} */
-
-/* #bricks-structure {
-    padding-left: 0 !important;
-} */
-
-
-/* Position structure panel shortcut bar to left of preview panel */
-/* .brxce-panel-shortcut__wrapper {
-    right: unset !important;
-    width: 51px !important;
-} */
-
-/* body[data-has-shortcuts-sidebar="true"] #bricks-structure .brxce-panel-shortcut__wrapper li {
-    width: 40px;
-} */
+/* Disable close editor panel button */
+#bricks-panel-toggle {
+	display: none;
+}
 
 /* Remove coloured border around structure panel contents */
 #bricks-structure .bricks-structure-list {
@@ -345,11 +324,6 @@ div.wp-link-input label {
 #bricks-toolbar-top .save:has(.has-unsaved-changes) .bricks-svg-wrapper:before {
     opacity: 1;
 }
-
-/* Fix for elements panel 2nd level not opening */
-/* #bricks-structure {
-    z-index: 999 !important;
-} */
 
 /* Prominent element actions button highlight */
 #bricks-panel-header .actions li.highlight {
