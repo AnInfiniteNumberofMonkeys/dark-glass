@@ -82,22 +82,39 @@ add_filter( 'pre_http_request', function ( $ret, array $request, string $url ) {
     return $ret;
 }, 10, 3 );
 
-// Restrict Gutenberg's internal link-search dropdown to useful post types only
-// (removes attachments / media items from suggestions).
-// Guarded to REST API requests only so AJAX-based plugins (e.g. Admin Columns
-// Pro) are not affected by this post type restriction.
-add_filter( 'pre_get_posts', function ( $query ) {
-    if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
-        return $query;
+// Restrict Gutenberg's internal link-search dropdown to useful post types only,
+// and keep media items out of the suggestions.
+//
+// Scoped to the two REST requests the link search makes, so other REST searches
+// (front-end search endpoints, the inserter's Media tab, page-parent and Query Loop
+// pickers, /wp/v2/posts and /wp/v2/pages) keep their normal post types.
+
+// 1. Post suggestions come from /wp/v2/search. Limit them to the allowlist,
+//    keeping any narrower subtype the request asked for. A request that names
+//    only types outside the allowlist is left as it is.
+add_filter( 'rest_post_search_query', function ( $query_args, $request ) {
+    $allowed   = [ 'post', 'page', 'product', 'faq' ];
+    $requested = (array) ( $query_args['post_type'] ?? [] );
+    $narrowed  = array_values( array_intersect( $requested, $allowed ) );
+
+    if ( $narrowed ) {
+        $query_args['post_type'] = $narrowed;
     }
-    if ( wp_doing_ajax() ) {
-        return $query;
+
+    return $query_args;
+}, 10, 2 );
+
+// 2. Media suggestions come from /wp/v2/media?search=... with no media type.
+//    The block inserter's Media tab always sends media_type, so it is unaffected.
+add_filter( 'rest_attachment_query', function ( $args, $request ) {
+    if ( '' !== (string) $request->get_param( 'search' )
+        && empty( $request->get_param( 'media_type' ) )
+        && empty( $request->get_param( 'mime_type' ) ) ) {
+        $args['post__in'] = [ 0 ];
     }
-    if ( $query->is_search() ) {
-        $query->set( 'post_type', [ 'post', 'page', 'product', 'faq' ] );
-    }
-    return $query;
-} );
+
+    return $args;
+}, 10, 2 );
 
 /**
  * Restrict generated image size variants to an explicit allowlist.
