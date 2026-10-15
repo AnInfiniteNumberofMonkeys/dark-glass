@@ -22,11 +22,6 @@ add_filter( 'bricks/elements/svg/controls', function ( $controls ) {
     return $controls;
 }, 10 );
 
-// ── External links plugin ─────────────────────────────────────────────────────
-// Prevents the WP External Links plugin from rewriting links inside the
-// Bricks editor, which can cause builder UI issues.
-
-add_filter( 'wpel_apply_settings', '__return_false' );
 
 // ── Link / post picker ────────────────────────────────────────────────────────
 // Removes media attachment posts from the Bricks link-picker dropdown so only
@@ -111,3 +106,25 @@ add_action( 'admin_footer-edit.php', function () {
     <?php
  
 } );
+
+// ── Advanced Themer: double-click to edit component ───────────────────────────
+// Advanced Themer's "Double-click to edit component" tweak opens a component
+// without its instance, so Bricks shows the isolated component preview, which
+// rebuilds every panel control 400 ms after each change and drops focus from
+// the field being typed in. The script passes the instance instead, the same
+// way Bricks' own Edit button does.
+// See assets/js/bricks-component-focus-fix.js for details.
+
+add_action( 'wp_enqueue_scripts', function () {
+    if ( ! ( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'imdg-bricks-component-focus-fix',
+        IMDG_PLUGIN_URL . 'assets/js/bricks-component-focus-fix.js',
+        [],
+        IMDG_VERSION,
+        true
+    );
+}, 20 );
