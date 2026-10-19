@@ -182,11 +182,6 @@ body.brxc-has-panel-shortcuts #bricks-panel-element > .brxce-panel-shortcut__wra
     color: #fff !important;
 }
 
-/* Fix ID setting indicator dots */
-.bricks-panel-controls .control-group-title.has-class-styles::before, .bricks-panel-controls .control-group-title.has-id-styles::before {
-    left: 12px !important;
-}
-
 /* --- Turn off 0.5 opacity of element states svgs --- */
 #bricks-structure .structure-item .element-states svg {
 	opacity: 1;
