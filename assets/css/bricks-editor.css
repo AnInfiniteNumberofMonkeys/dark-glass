@@ -558,3 +558,12 @@ div.wp-link-input input {
 .bricks-panel .regular-controls-wrapper .controls.open {
   margin-bottom: 166px;
 }
+
+/* new v.2.4x media browser - file upload */
+.bricks-popup.browser .media-upload-workspace__upload-panel {
+	flex-grow: 1;
+}
+
+.bricks-popup.browser .media-upload-workspace__dropzone {
+	height: 100%;
+}
