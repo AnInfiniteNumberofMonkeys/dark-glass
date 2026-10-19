@@ -171,22 +171,11 @@ body #bricks-structure main.panel-content {
     left: -20px !important;
 }
 
-/* Don't display View Admin As menu */
-#vaa_toolbar {
-    display: none;
-}
-
 /* Elements panel shortcut button has-setting indicator */
 .brxce-panel-shortcut__container li.has-settings:before {
     border-left: 6px solid var(--highlight-color) !important;
     opacity: 1 !important;
 }
-
-/* Make sure link icon is visible even if node is selected */
-#bricks-structure .element.active>.structure-item .ti-link:before, #bricks-structure .element.dragging>.structure-item .ti-link:before {
-	color: #000 !important;
-}
-
 
 /* Don't colour active shortcut item yellow */
 body.brxc-has-panel-shortcuts #bricks-panel-element > .brxce-panel-shortcut__wrapper li.active i {
@@ -245,12 +234,12 @@ body.brxc-has-panel-shortcuts #bricks-panel-element > .brxce-panel-shortcut__wra
 }
 
 /*Toolbar icon hover */
-#bricks-toolbar li:focus-visible, #bricks-toolbar li:hover {
+#bricks-toolbar-top li:focus-visible, #bricks-toolbar-top li:hover {
    color: var(--highlight-color) !important;
 }
 
 /* Toolbar icon breakpoint has-settings indicator */
-#bricks-toolbar li.has-settings.active>span:after, #bricks-toolbar li.has-settings:hover>span:after {
+#bricks-toolbar-top li.has-settings.active>span:after, #bricks-toolbar-top li.has-settings:hover>span:after {
     background-color: var(--faded-color) !important;
 }
 
@@ -430,7 +419,7 @@ ul.controls li[data-controlkey="classConverterSeparator"], ul.controls li[data-c
 	display: none !important;
 }
 
-#bricks-popup.templates li.bricks-layout-item {
+.browser-content.templates li.bricks-layout-item {
     padding: 10px !important;
     border: 1px solid var(--builder-border-color) !important;
 }
