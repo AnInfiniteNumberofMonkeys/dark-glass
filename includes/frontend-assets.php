@@ -34,6 +34,23 @@ function imdg_styles_to_dequeue() {
 /**
  * Handles to print in the footer instead of the head.
  *
+ * Only styles for things that are not part of the first paint belong here:
+ * cart, checkout and currency widgets, popovers. A style that lays out
+ * visible page content must stay in the head. The browser paints the page
+ * progressively as the HTML streams in, so anything a footer stylesheet
+ * styles is shown unstyled until the very end of the document arrives.
+ *
+ * Kept in the head on purpose (moving them caused a visible flash of
+ * unstyled content on long pages, confirmed on superscoots.ca):
+ *   bricks-color-palettes, bricks-global-variables,
+ *   bricks-theme-style-default, bricks-frontend-inline - Bricks' design
+ *     tokens, theme style and per-page element CSS. Without them every
+ *     element on the page renders unstyled.
+ *   bricks-splide, x-pro-slider - slider layout. Without them every slide
+ *     stacks full height down the page until the footer loads.
+ *   x-read-more-less - collapses long text. Without it the full text shows,
+ *     then snaps shut.
+ *
  * @return string[]
  */
 function imdg_styles_to_footer() {
@@ -43,18 +60,11 @@ function imdg_styles_to_footer() {
         'cfw-blocks-styles',
         'woocommerce-inline',
         'bricks-woocommerce',
-        'bricks-color-palettes',
-        'bricks-global-variables',
-        'bricks-theme-style-default',
         'x-notification-bar',
         'x-popover',
-        'bricks-splide',
-        'x-pro-slider',
-        'x-read-more-less',
         'x-ws-forms',
         'cfw-grid',
         'cfw-side-cart-styles',
-        'bricks-frontend-inline',
     ) );
 }
 
