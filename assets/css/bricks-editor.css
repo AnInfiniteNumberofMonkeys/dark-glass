@@ -551,3 +551,13 @@ div.wp-link-input input {
 .bricks-popup.browser .media-upload-workspace__dropzone {
 	height: 100%;
 }
+
+/* color picker */
+.color-picker-popup .body {
+	background-color: var(--builder-bg-2) !important;
+}
+
+.color-picker-popup .vc-input-input {
+	color: #fff !important;
+}
+	
