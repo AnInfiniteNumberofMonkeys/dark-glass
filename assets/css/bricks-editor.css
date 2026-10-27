@@ -562,3 +562,6 @@ div.wp-link-input input {
 	background-color: var(--builder-bg-3) !important;
 }
 	
+.color-picker-popup .toggle-icon svg {
+	color: var(--color-foreground) !important;
+}
