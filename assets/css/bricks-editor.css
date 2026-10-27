@@ -559,5 +559,6 @@ div.wp-link-input input {
 
 .color-picker-popup .vc-input-input {
 	color: #fff !important;
+	background-color: var(--builder-bg-3) !important;
 }
 	
