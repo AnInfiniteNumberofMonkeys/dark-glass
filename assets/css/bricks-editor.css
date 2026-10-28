@@ -468,7 +468,7 @@ body.at-expand-spacing #bricks-panel-element [data-control=number].has-variables
 
 /* Extra bottom padding in controls panel so last control isn't cramped against the bottom edge */
 .regular-controls-wrapper {
-    padding-bottom: 500px !important;
+    padding-bottom: 50vh !important;
 }
 
 /* MCE dropdown menu (WYSIWYG editor toolbar menus) legibility on dark theme */
