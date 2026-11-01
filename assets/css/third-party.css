@@ -4425,3 +4425,37 @@ body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_b
 #viwec-email-editor-wrapper #viwec-quick-add-layout .viwec-quick-add-layout-btn:hover {
 	background: var(--color-primary);	
 }
+
+.mce-window .mce-window-head {
+	background: none;
+}
+
+.mce-textbox {
+	background: var(--color-white-trans-5);
+}
+
+.mce-btn .mce-txt {
+	background: var(--color-white-trans-10);
+}
+
+.mce-window .mce-btn {
+	box-shadow: none;
+	border: none;
+}
+
+.mce-btn button {
+	  border-radius: 3px;
+}
+
+.mce-btn {
+	background: var(--color-white-trans-10);
+}
+
+.mce-window .mce-foot, .mce-window .mce-window-head {
+	border: none;
+}
+
+.mce-btn-flat:hover, .mce-btn-flat.mce-active, .mce-btn-flat:focus, .mce-btn-flat:active, .mce-btn-flat:hover button {
+	background: none;
+	color: var(--color-primary) !important;
+}
