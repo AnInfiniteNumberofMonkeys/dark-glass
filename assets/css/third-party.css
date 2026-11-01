@@ -22,14 +22,8 @@
 /*** Bricks Builder **********/
 /*** Fluent SMTP *************/
 /*** PDF Invoices ************/
-/*** Infinite Monkeys Google Reviews */
+/* Mailonix Email Customizer */
 /*****************************/
-
-
-
-#viwec-in-all-email-page, .wpmet-notice {
- display:none;
-}
 
 
 /*****************************/
@@ -4356,4 +4350,78 @@ body.os-chromeless.imdg-window-unfocused .bricks-admin-inner .box-wrapper::after
 
 .imgr-tags-reference .imgr-tags-group-header {
 	  background: var(--color-background-hover);
+}
+
+
+/*****************************/
+/* Mailonix Email Customizer */
+/*****************************/
+
+#viwec-in-all-email-page, .wpmet-notice {
+ display:none;
+}
+
+body.post-type-viwec_template #poststuff .clear {
+	display: none;
+}
+
+#viwec-control-panel {
+	font-family: inherit;
+}
+
+#viwec-control-panel .viwec-control-panel-fixed, #viwec-right-sidebar {
+	background-color: var(--color-white-trans-5);
+}
+
+#viwec-main-actions #viwec-publishing-action {
+	  padding: 4px 9px;
+}
+
+#viwec-control-panel #viwec-element-search, .vi-ui.styled.accordion, .vi-ui.styled.accordion .accordion, .vi-ui.menu {
+	background: none;
+}
+
+#viwec-control-panel #viwec-components-list {
+  padding-top: 50px;
+}
+
+#viwec-control-panel .viwec-control-panel-fixed .vi-ui.accordion.styled {
+	border-color: var(--color-border);
+}
+
+#viwec-control-panel .vi-ui.menu .active.item, #viwec-control-panel .viwec-control-panel-fixed .section .title {
+	background: var(--color-white-trans-10);
+}
+
+#viwec-control-panel .vi-ui.menu .item {
+  background: none;
+  border-color: var(--color-border);
+}
+
+.vi-ui.menu .item {
+	color: var(--color-foreground);
+}
+
+.vi-ui.styled.accordion .accordion .title, .vi-ui.styled.accordion .title {
+	color: var(--color-foreground);
+}
+
+.vi-ui.styled.accordion .accordion .active.title, .vi-ui.styled.accordion .accordion .title:hover, .vi-ui.styled.accordion .active.title, .vi-ui.styled.accordion .title:hover {
+	color: var(--color-primary);
+}
+
+.vi-ui.menu .active.item, .vi-ui.styled.accordion .active.title {
+	color: var(--color-white);
+}
+
+#viwec-control-panel ul li .viwec-control-btn {
+	color: var(--color-foreground);
+}
+
+#viwec-email-editor-wrapper #viwec-quick-add-layout .viwec-quick-add-layout-btn {
+	background: var(--color-white-trans-10);
+}
+
+#viwec-email-editor-wrapper #viwec-quick-add-layout .viwec-quick-add-layout-btn:hover {
+	background: var(--color-primary);	
 }
