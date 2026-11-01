@@ -4361,7 +4361,7 @@ body.os-chromeless.imdg-window-unfocused .bricks-admin-inner .box-wrapper::after
  display:none;
 }
 
-body.post-type-viwec_template #poststuff .clear {
+body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_block #poststuff .clear {
 	display: none;
 }
 
