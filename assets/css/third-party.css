@@ -4430,7 +4430,7 @@ body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_b
 	background: none;
 }
 
-.mce-textbox {
+.mce-textbox, .mce-combobox input, .mce-textbox {
 	background: var(--color-white-trans-5);
 }
 
@@ -4455,7 +4455,20 @@ body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_b
 	border: none;
 }
 
+.mce-window-body .mce-btn, .mce-foot .mce-btn {
+	box-shadow: none;
+	background: var(--color-white-trans-5);
+}
+
+.mce-window .mce-btn:hover {
+	boder-color: var(--color-primary);
+}
+
 .mce-btn-flat:hover, .mce-btn-flat.mce-active, .mce-btn-flat:focus, .mce-btn-flat:active, .mce-btn-flat:hover button {
 	background: none;
 	color: var(--color-primary) !important;
+}
+
+.mce-window .mce-btn:focus, .mce-window .mce-btn:hover {
+	background: var(--color-diffused);
 }
