@@ -4851,6 +4851,15 @@ body.os-active os-tabpanel:has( [data-desktop-mode-plugins-editor-host] ) > .os-
 .os-dock__pinned .os-dock__separator {
 	display: none !important;
 }
+
+.os-posts-desk__hero {
+	padding-bottom: 0 !important;
+  	margin-bottom: -48px;
+}
+
+header.os-people__hero > div {
+    display: none;
+}
 	
 /*** 20. User profile                                            */
 
