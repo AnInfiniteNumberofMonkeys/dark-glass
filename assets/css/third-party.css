@@ -4431,11 +4431,11 @@ body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_b
 }
 
 .mce-textbox, .mce-combobox input, .mce-textbox {
-	background: var(--color-white-trans-5);
+	background: var(--color-white-trans-5) !important;
 }
 
 .mce-btn .mce-txt {
-	background: var(--color-white-trans-10);
+	background: var(--color-white-trans-10) !important;
 }
 
 .mce-window .mce-btn {
@@ -4471,4 +4471,8 @@ body.post-type-viwec_template #poststuff .clear, body.post-type-viwec_template_b
 
 .mce-window .mce-btn:focus, .mce-window .mce-btn:hover {
 	background: var(--color-diffused);
+}
+
+.viwec-admin-bar-hidden.folded #wpbody-content form#post {
+	margin-left: 320px;
 }
