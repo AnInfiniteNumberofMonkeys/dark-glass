@@ -230,4 +230,18 @@ add_action( 'admin_enqueue_scripts', function () {
         true // Load in footer
     );
 
+    // OpenStation's native Pages and Users windows always open on their
+    // card layouts (view state is hard-coded in memory, no setting). This
+    // switches each newly opened window to "Details table" once, via
+    // OpenStation's own os-pick event (see file header). Self-guards on
+    // body.os-active.
+    $desktop_mode_default_table_view_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-default-table-view.js';
+    wp_enqueue_script(
+        'imdg-desktop-mode-default-table-view',
+        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-default-table-view.js',
+        [],
+        file_exists( $desktop_mode_default_table_view_path ) ? filemtime( $desktop_mode_default_table_view_path ) : IMDG_VERSION,
+        true // Load in footer
+    );
+
 } );
