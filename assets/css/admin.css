@@ -4138,9 +4138,12 @@ body.js.block-editor-page #wpcontent {
   	font-size: 10px;
 }
 
+.media-frame .spinner {
+	background: none !important;
+}
 
 /*****************************************************************/
-/*** 19. DESKTOP MODE — SHELL CHROME                             */
+/*** 19. OpenStation — SHELL CHROME                              */
 /*****************************************************************/
  
 /*
