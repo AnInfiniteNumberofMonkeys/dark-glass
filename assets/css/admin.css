@@ -2216,6 +2216,10 @@ body.user-edit-php p.submit, body.profile-php p.submit {
     color: var(--color-primary);
 }
 
+.media-modal .delete-attachment, .media-modal .trash-attachment, .media-modal .untrash-attachment, .wp-core-ui .button-link.button-link-delete {
+  color: #d63638 !important;
+}
+
 .wp-core-ui .button-link:focus {
     box-shadow: 0 0 0 2px var(--color-primary);
     color: var(--color-primary-faded);
