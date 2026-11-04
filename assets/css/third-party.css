@@ -768,8 +768,13 @@ body.os-chromeless .acf-admin-toolbar {
 	background: var(--color-primary);
 }
 
+.acf-media-modal.-edit .media-sidebar .attachment-details .attachment-info {
+	background: none;
+	borderr: none;
+}
+
 /*****************************/
-/* Advanced Themer 3.2+ ******/
+/*** Advanced Themer 3.2+ ****/
 /*****************************/
 
 
