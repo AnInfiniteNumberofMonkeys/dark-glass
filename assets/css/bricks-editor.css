@@ -565,3 +565,13 @@ div.wp-link-input input {
 .color-picker-popup .toggle-icon svg {
 	color: var(--color-foreground) !important;
 }
+
+#bricks-element-shortcuts-bar {
+	position: absolute !important;
+	right: 0 !important;
+	top: 71px !important;
+}
+
+#bricks-workspace {
+	padding-right: 0 !important;
+}
