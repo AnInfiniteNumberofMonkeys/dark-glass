@@ -37,22 +37,51 @@ div.mce-edit-area, div.mce-panel {
     background: #25252a !important;
 }
 
-
-/* Re-position Bricks Boost shortcut bar */
-#bricks-element-shortcuts-bar {
-    display: flex  !important;
-    right: unset !important;
-    grid-column: 2 / 3;
-    width: 51px !important;
-    border-right: 1px solid #555;
+/* Bricks Boost Quick Add bar: attach to the structure panel's right edge.
+   Bricks Boost fixes the bar to the viewport's right edge and pads
+   #bricks-workspace to make room, which only lines up when the structure
+   panel is docked on the far right. With CSS anchor positioning the bar
+   follows the structure panel wherever it is docked in a side dock.
+   The panel reserves the room inside its own saved width (Bricks sizes the
+   workspace grid from that width, so the panel must not grow). */
+@supports (anchor-name: --a) {
+    .bricks-side-dock #bricks-structure {
+        anchor-name: --imdg-structure;
+        box-sizing: border-box;
+        padding-right: var(--brxbo-bar-width, 44px);
+    }
+ 
+    /* Docked left, the resize handle sits on the panel's right edge, under
+       the bar. Move it to the bar's inner edge so it stays usable. */
+    .bricks-side-dock #bricks-structure.dock-left #bricks-structure-resizable {
+        right: var(--brxbo-bar-width, 44px);
+    }
+ 
+    /* Fallback values keep Bricks Boost's own placement when the structure
+       panel is not in a side dock (e.g. bottom dock). */
+    #bricks-element-shortcuts-bar {
+        position-anchor: --imdg-structure;
+        top: 107px !important;
+        bottom: anchor(bottom, 0px) !important;
+        right: anchor(right, 0px) !important;
+        height: auto !important;
+    }
+ 
+    /* The bar no longer needs a reserved strip on the workspace */
+    #bricks-workspace:has(.bricks-side-dock #bricks-structure) {
+        padding-right: 0 !important;
+    }
+ 
+    /* Structure panel collapsed: drop the reserved room and hide the bar */
+    .bricks-side-dock #bricks-structure.minimize {
+        padding-right: 0;
+    }
+ 
+    body:has(.bricks-side-dock #bricks-structure.minimize) #bricks-element-shortcuts-bar {
+        display: none !important;
+    }
 }
 
-body #bricks-structure {
-    margin-right: 0 !important;
-    display: grid;
-    grid-template-columns: calc(100% - 50px) 50px;
-    grid-template-rows: auto auto auto 1fr;
-}
 
 body #bricks-structure #bricks-panel-header, body.at-has-shortcuts-sidebar #bricks-structure main.panel-content {
     grid-column: 1/2;
@@ -564,12 +593,6 @@ div.wp-link-input input {
 	
 .color-picker-popup .toggle-icon svg {
 	color: var(--color-foreground) !important;
-}
-
-#bricks-element-shortcuts-bar {
-	position: absolute !important;
-	right: 0 !important;
-	top: 71px !important;
 }
 
 #bricks-workspace {
