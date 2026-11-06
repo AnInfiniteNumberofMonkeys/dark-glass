@@ -61,10 +61,11 @@ div.mce-edit-area, div.mce-panel {
        panel is not in a side dock (e.g. bottom dock). */
     #bricks-element-shortcuts-bar {
         position-anchor: --imdg-structure;
-        top: 107px !important;
+        top: anchor(top, var(--builder-toolbar-height, 48px)) !important;
         bottom: anchor(bottom, 0px) !important;
         right: anchor(right, 0px) !important;
         height: auto !important;
+		padding-top: 60px !important;
     }
  
     /* The bar no longer needs a reserved strip on the workspace */
