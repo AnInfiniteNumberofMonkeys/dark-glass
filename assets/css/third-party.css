@@ -3899,6 +3899,10 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
 	box-shadow: none;
 }
 
+#happyfiles-subfolders-container {
+	display: none !important;
+}
+
 /*****************************/
 /*** Bricks Builder **********/
 /*****************************/
