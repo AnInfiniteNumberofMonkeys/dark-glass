@@ -2964,6 +2964,11 @@ ul.order_notes li .note_header {
 	display: none;
 }
 
+body.woocommerce_page_wc-settings #mainform .subsubsub li:first-child a {
+	padding: 8px 12px !important;
+}
+	
+
 /*****************************/
 /*** Tablepress **************/
 /*****************************/
