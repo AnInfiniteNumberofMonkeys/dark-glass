@@ -183,24 +183,6 @@ add_action( 'admin_enqueue_scripts', function () {
         true // Load in footer
     );    
 
-    // Bricks builder new-tab handoff (see file header). Enqueued
-    // unconditionally; attaches its click listener immediately regardless
-    // of DOM readiness, checking body.desktop-mode-chromeless fresh on
-    // every click rather than once at load time (this used to load in
-    // the footer with a load-time-only check, which left a race window
-    // where a slow-to-load footer script meant the listener never
-    // attached at all for that page). Loaded in the head now that the
-    // guard no longer depends on document.body existing yet, closing
-    // that race as early as possible.
-    $desktop_mode_bricks_newtab_path = IMDG_PLUGIN_DIR . 'assets/js/desktop-mode-bricks-newtab.js';
-    wp_enqueue_script(
-        'imdg-desktop-mode-bricks-newtab',
-        IMDG_PLUGIN_URL . 'assets/js/desktop-mode-bricks-newtab.js',
-        [],
-        file_exists( $desktop_mode_bricks_newtab_path ) ? filemtime( $desktop_mode_bricks_newtab_path ) : IMDG_VERSION,
-        false // Load in head
-    );
-
     // Groups .page-title-action buttons living directly inside .wrap into
     // a shared flex container (see the file header for why a stylesheet
     // alone can't do this). Enqueued unconditionally like the other
