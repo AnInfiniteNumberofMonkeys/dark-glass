@@ -71,6 +71,16 @@ html:has(#bricks-workspace) #bricks-popup {
 	max-height: calc(100vh / var(--imdg-ui-zoom));
 }
 
+/* --- CodeMirror: undo the zoom, scale with font-size instead ---
+   CodeMirror 5 measures text positions itself and doesn't account for
+   CSS zoom on an ancestor, so the cursor drifts away from the text.
+   Resetting the editor to an effective zoom of 1 fixes the measuring.
+   The font-size and height are scaled up so the editor still matches
+   the enlarged UI around it. */
+html:has(#bricks-workspace) .CodeMirror {
+	zoom: calc(1 / var(--imdg-ui-zoom));
+	font-size: calc(1em * var(--imdg-ui-zoom));
+}
 
 
 .regular-controls-wrapper li[data-controlkey="text"] .input-wrapper input {
@@ -95,13 +105,13 @@ div.mce-edit-area, div.mce-panel {
     .bricks-side-dock #bricks-structure {
         anchor-name: --imdg-structure;
         box-sizing: border-box;
-        padding-right: var(--brxbo-bar-width, 44px);
+        padding-right: 56px;
     }
  
     /* Docked left, the resize handle sits on the panel's right edge, under
        the bar. Move it to the bar's inner edge so it stays usable. */
     .bricks-side-dock #bricks-structure.dock-left #bricks-structure-resizable {
-        right: var(--brxbo-bar-width, 44px);
+        right: var(--brxbo-bar-width, 56px);
     }
  
     /* Fallback values keep Bricks Boost's own placement when the structure
