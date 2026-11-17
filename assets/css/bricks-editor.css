@@ -26,7 +26,7 @@
     --radius-lg: 1rem;	
 }
 
-/ * Increase zoom level of Bricks UI */
+/* Increase zoom level of Bricks UI */
 html:has(#bricks-workspace) {
 	--imdg-ui-zoom: 1.20;
 }
