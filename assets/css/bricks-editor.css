@@ -26,6 +26,53 @@
     --radius-lg: 1rem;	
 }
 
+/ * Increase zoom level of Bricks UI */
+html:has(#bricks-workspace) {
+	--imdg-ui-zoom: 1.20;
+}
+
+/* --- Side panels and docks: zoom the contents, not the column itself --- */
+html:has(#bricks-workspace) #bricks-panel > :not(#bricks-panel-resizable),
+html:has(#bricks-workspace) #bricks-structure > :not(#bricks-structure-resizable),
+html:has(#bricks-workspace) #bricks-pinned-controls-dock > * {
+	zoom: var(--imdg-ui-zoom);
+}
+
+/* --- Toolbar ---
+   The toolbar is fixed to the window edge and isn't placed with mouse
+   coordinates, so it's safe to zoom it directly. The workspace padding
+   that reserves room for the toolbar is scaled to match. */
+html:has(#bricks-workspace) #bricks-workspace .bricks-toolbar {
+	zoom: var(--imdg-ui-zoom);
+}
+
+html:has(#bricks-workspace) #bricks-workspace.toolbar-top {
+	padding-top: calc(var(--builder-toolbar-height) * var(--imdg-ui-zoom));
+}
+
+html:has(#bricks-workspace) #bricks-workspace.toolbar-left {
+	padding-inline-start: calc(var(--builder-toolbar-side-width) * var(--imdg-ui-zoom));
+}
+
+html:has(#bricks-workspace) #bricks-workspace.toolbar-right {
+	padding-inline-end: calc(var(--builder-toolbar-side-width) * var(--imdg-ui-zoom));
+}
+
+/* --- Right-click menu: zoom the list, not the positioned wrapper --- */
+html:has(#bricks-workspace) #bricks-builder-context-menu > * {
+	zoom: var(--imdg-ui-zoom);
+}
+
+/* --- Popups (templates, components, query editor, etc.) ---
+   Centred overlays that don't follow the mouse, so zooming them is safe.
+   Cap the height so tall popups still fit in the window. */
+html:has(#bricks-workspace) #bricks-popup {
+	zoom: var(--imdg-ui-zoom);
+	max-height: calc(100vh / var(--imdg-ui-zoom));
+}
+
+
+
 .regular-controls-wrapper li[data-controlkey="text"] .input-wrapper input {
 	padding-right: 25px !important;
 }
