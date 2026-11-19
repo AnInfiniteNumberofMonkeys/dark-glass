@@ -528,15 +528,15 @@ ul.controls li[data-controlkey="classConverterSeparator"], ul.controls li[data-c
 }
 
 #bricks-panel-controls-search {
-	display: none;
+	display: none !important;
 }
 
 #brxcSuperPowerCSSAIpromptContainer {
-    display: none;
+    display: none !important;
 }
 
 .plain-classes-icon {
-    display: none;
+    display: none !important;
 }
 
 #bricks-panel-header input {
