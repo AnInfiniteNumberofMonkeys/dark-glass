@@ -1,0 +1,318 @@
+/* Bricks builder tools: Quick Add Bar and Variable Picker.
+   Adapted from Bricks Boost (James Lively) with permission.
+   Dark Glass placement overrides for the bar live in bricks-editor.css. */
+
+/* ── Quick Add Bar ─────────────────────────────────────────────────────── */
+
+#bricks-element-shortcuts-bar.brxbo-hidden {
+	display: none !important;
+}
+
+#bricks-element-shortcuts-bar {
+	position: fixed;
+	top: var(--builder-toolbar-height, 48px);
+	right: 0;
+	width: 44px;
+	height: calc(100vh - var(--builder-toolbar-height, 48px));
+	background: var(--builder-bg, #2d2d2d);
+	border-left: 1px solid var(--builder-border-color, #404040);
+	z-index: 2999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8px 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
+}
+
+#bricks-element-shortcuts-bar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Bricks 1.x: structure panel is fixed at right: 0, so a margin moves it. */
+#bricks-structure {
+	margin-right: var(--brxbo-bar-width, 44px) !important;
+}
+
+/* Bricks 2.x: reserve the room on the workspace grid instead. */
+#bricks-workspace {
+	box-sizing: border-box;
+	padding-right: var(--brxbo-bar-width, 44px);
+	background-color: var(--builder-bg, #2d2d2d);
+}
+
+#bricks-workspace #bricks-structure {
+	margin-right: 0 !important;
+}
+
+.brxbo-bar-separator {
+	width: 28px;
+	height: 1px;
+	background: var(--builder-border-color, #555);
+	margin: 6px 0;
+	flex-shrink: 0;
+}
+
+.brxbo-bar-item {
+	width: 34px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border-radius: var(--builder-border-radius, 4px);
+	margin: 1px 0;
+	transition: background 0.15s ease, color 0.15s ease;
+	color: var(--builder-color, #999);
+	opacity: 0.6;
+	position: relative;
+	flex-shrink: 0;
+}
+
+.brxbo-bar-item:hover {
+	background: var(--builder-bg-3, #404040);
+	color: var(--builder-color-accent, #ffd54d);
+	opacity: 1;
+}
+
+.brxbo-bar-item:active {
+	opacity: 1;
+	transform: scale(0.92);
+}
+
+.brxbo-bar-item i {
+	font-size: 18px;
+	line-height: 1;
+}
+
+.brxbo-bar-tooltip {
+	position: fixed;
+	background: var(--builder-bg-2, #1e1e1e);
+	color: var(--builder-color, #ccc);
+	padding: 5px 10px;
+	border-radius: var(--builder-border-radius, 4px);
+	font-size: 12px;
+	white-space: nowrap;
+	pointer-events: none;
+	font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	z-index: 100000;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Variable Picker popup ─────────────────────────────────────────────── */
+
+.brxbo-vp-popup {
+	position: fixed;
+	z-index: 100002;
+	background: #1e1e1e;
+	border: 1px solid #444;
+	border-radius: 8px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+	min-width: 240px;
+	max-width: 340px;
+	max-height: 360px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-size: 13px;
+	scrollbar-width: thin;
+}
+
+.brxbo-vp-popup-grid {
+	min-width: 320px;
+	max-width: 420px;
+	max-height: 720px;
+}
+
+.brxbo-vp-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 14px;
+	border-bottom: 1px solid #333;
+	position: sticky;
+	top: 0;
+	background: #1e1e1e;
+	z-index: 1;
+}
+
+.brxbo-vp-title {
+	font-weight: 600;
+	color: #fff;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.brxbo-vp-close {
+	cursor: pointer;
+	color: #888;
+	font-size: 22px;
+	line-height: 1;
+	border: none;
+	background: none;
+	padding: 4px 8px;
+	min-width: 30px;
+	min-height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.brxbo-vp-close:hover {
+	color: #fff;
+}
+
+.brxbo-vp-search {
+	width: 100%;
+	padding: 2px 14px;
+	line-height: 20px;
+	border: none;
+	border-bottom: 1px solid #333;
+	background: #252525;
+	color: #ccc;
+	font-size: 13px;
+	outline: none;
+	box-sizing: border-box;
+	position: sticky;
+	top: 41px;
+	z-index: 1;
+}
+
+.brxbo-vp-search::placeholder {
+	color: #666;
+}
+
+.brxbo-vp-list,
+.brxbo-vp-grid {
+	list-style: none;
+	margin: 0;
+	padding: 6px;
+}
+
+.brxbo-vp-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 7px 10px;
+	cursor: pointer;
+	border-radius: 4px;
+	color: #ccc;
+	transition: background 0.1s;
+}
+
+.brxbo-vp-item:hover {
+	background: #2a2d2e;
+	color: #fff;
+}
+
+.brxbo-vp-item.is-current {
+	background: rgba(75, 148, 255, 0.15);
+	border-left: 3px solid #4b94ff;
+}
+
+.brxbo-vp-item-name {
+	flex: 1;
+	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+	font-size: 12px;
+}
+
+.brxbo-vp-item-preview {
+	width: 18px;
+	height: 18px;
+	border-radius: 4px;
+	border: 1px solid #555;
+	flex-shrink: 0;
+}
+
+.brxbo-vp-group-header {
+	padding: 6px 10px 3px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #888;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.brxbo-vp-group-header:not(:first-child) {
+	border-top: 1px solid #333;
+	margin-top: 4px;
+	padding-top: 8px;
+}
+
+.brxbo-vp-header-swatch {
+	width: 22px;
+	height: 22px;
+	flex-shrink: 0;
+}
+
+.brxbo-vp-grid-wrap {
+	list-style: none;
+	padding: 0 4px 4px;
+}
+
+.brxbo-vp-grid-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	align-items: center;
+}
+
+.brxbo-vp-shade-label {
+	font-size: 14px;
+	font-weight: 700;
+	color: #888;
+	width: 18px;
+	flex-shrink: 0;
+	text-transform: uppercase;
+}
+
+.brxbo-vp-grid-item {
+	width: 28px;
+	height: 28px;
+	border-radius: 4px;
+	cursor: pointer;
+	border: 2px solid transparent;
+	transition: border-color 0.1s, transform 0.1s;
+	position: relative;
+	flex-shrink: 0;
+}
+
+.brxbo-vp-grid-item:hover {
+	border-color: #fff;
+	transform: scale(1.15);
+	z-index: 1;
+}
+
+.brxbo-vp-grid-item.is-current {
+	border-color: #fff;
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 2px 8px rgba(0, 0, 0, 0.5);
+	z-index: 1;
+}
+
+.brxbo-vp-float-tooltip {
+	position: fixed;
+	background: #111;
+	color: #fff;
+	padding: 3px 8px;
+	border-radius: 3px;
+	font-size: 10px;
+	white-space: nowrap;
+	pointer-events: none;
+	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+	z-index: 2147483647;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.brxbo-vp-empty {
+	padding: 16px 14px;
+	color: #666;
+	text-align: center;
+	font-size: 12px;
+	list-style: none;
+}
