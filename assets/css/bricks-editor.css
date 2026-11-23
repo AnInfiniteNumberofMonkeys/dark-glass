@@ -28,7 +28,7 @@
 
 /* Increase zoom level of Bricks UI */
 html:has(#bricks-workspace) {
-	--imdg-ui-zoom: 1.20;
+	--imdg-ui-zoom: 1.15;
 }
 
 /* --- Side panels and docks: zoom the contents, not the column itself --- */
