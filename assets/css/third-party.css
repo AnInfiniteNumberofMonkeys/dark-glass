@@ -3786,7 +3786,7 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
 }
 
 #rcp-customer-notes {
-  background-color: var(--color-bkgrd-highlight);
+  background-color: var(--color-bkgrd-highlight) !important;
   border: 1px solid var(--color-border);
   border-radius: 12px;
 }
