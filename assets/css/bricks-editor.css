@@ -82,6 +82,9 @@ html:has(#bricks-workspace) .CodeMirror {
 	font-size: calc(1em * var(--imdg-ui-zoom));
 }
 
+#bricks-panel-element #bricks-pinned-section {
+	bottom: 0 !important;
+}
 
 .regular-controls-wrapper li[data-controlkey="text"] .input-wrapper input {
 	padding-right: 25px !important;
