@@ -4092,7 +4092,7 @@ body.js.block-editor-page #wpcontent {
 
 .wp-core-ui .attachment:not(:has(.filename))::after {
   background-color: var(--color-background-trans-50);
-  color: var(--color-foreground);
+  color: var(--color-white);
   line-height: 1.2;
   max-height: 33%;
   box-shadow: none;
