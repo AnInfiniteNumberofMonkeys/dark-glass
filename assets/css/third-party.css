@@ -3509,6 +3509,11 @@ div.rank-math-modal .components-modal__header, .rank-math-editor>.components-tab
 }
 
 
+#rank-math-metabox-wrapper {
+	background: none !important;
+}
+
+
 /*****************************/
 /*** WP Offload Media ********/
 /*****************************/
