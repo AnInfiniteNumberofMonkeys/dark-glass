@@ -1027,6 +1027,7 @@ body.admin_page_ws-form-edit #wsf-sidebars .wsf-sidebar .wsf-sidebar-tabs-panel 
   border: 1px solid transparent !important;
   padding: 0 4px !important;
   width: calc(100% - 76px) !important;
+	-webkit-text-fill-color: inherit;
 }
 
 #wsf-form .wsf-section-inner > .wsf-section-label > input[type=text]:hover, #wsf-form .wsf-section-inner > .wsf-field-label > input[type=text]:hover, #wsf-form .wsf-field-inner > .wsf-section-label > input[type=text]:hover, #wsf-form .wsf-field-inner > .wsf-field-label > input[type=text]:hover {
@@ -1661,6 +1662,8 @@ select.wsf-field:not([multiple]):not([size]).wsf-field-small {
   margin-top: 4px !important;
   margin-left: 10px;
 }
+
+
 
 /*****************************/
 /*** Admin Columns Pro *******/
