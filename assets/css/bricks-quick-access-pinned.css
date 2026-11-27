@@ -1,0 +1,111 @@
+/**
+ * Quick Access -> Pinned panel switcher for the Bricks builder.
+ * Companion to assets/js/bricks-quick-access-pinned.js.
+ * The mode class is only present while a style group is pinned.
+ */
+#bricks-panel-element.imdg-qa-pinned-mode #bricks-panel-element-quick-access li:has(> .bricks-svg-wrapper[data-name="box"]):not(.imdg-qa-all) {
+	display: none;
+}
+
+#bricks-panel-element:not(.imdg-qa-pinned-mode) #bricks-panel-element-quick-access li.imdg-qa-all {
+	display: none;
+}
+
+#bricks-panel-element.imdg-qa-pinned-mode #bricks-panel-element-quick-access li.active:not(.imdg-qa-active):not(:hover) {
+	color: inherit;
+}
+
+#bricks-panel-element-quick-access li.imdg-qa-active {
+	color: var(--builder-color-accent);
+}
+
+#bricks-panel-element-quick-access li.imdg-qa-all .index {
+	display: none;
+}
+
+/* "All" mode: pinned groups as a collapsed list of titles, styled like the
+   Style tab rows. One group opens at a time (.imdg-open). */
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-groups-container {
+	padding-top: 6px;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group {
+	margin: 0 0 6px;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group.imdg-open {
+	margin-bottom: var(--builder-spacing);
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-controls {
+	display: none;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group.imdg-open .pinned-group-controls {
+	display: block;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title {
+	position: relative;
+	height: 50px;
+	margin: 0 16px;
+	padding: 0 10px 0 15px;
+	border-radius: var(--builder-border-radius);
+	background-color: var(--builder-bg-2);
+	cursor: pointer;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title:hover,
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group.imdg-open .pinned-group-title {
+	background-color: var(--builder-bg-3);
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group.imdg-open .pinned-group-title {
+	margin-bottom: var(--builder-spacing);
+	color: var(--builder-color);
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title .unpin {
+	display: none;
+}
+
+/* Chevron, rotated when open (matches the Style tab arrow) */
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title::after {
+	content: "";
+	flex: 0 0 auto;
+	width: 7px;
+	height: 7px;
+	margin-inline-start: auto;
+	margin-inline-end: 8px;
+	border-top: 1.5px solid currentColor;
+	border-right: 1.5px solid currentColor;
+	opacity: 0.5;
+	transform: rotate(45deg);
+	transition: transform 0.15s ease-out;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group.imdg-open .pinned-group-title::after {
+	opacity: 1;
+	transform: rotate(135deg);
+}
+
+/* Settings indicator: same yellow bar as the Style tab rows (bricks-editor.css) */
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title .has-setting {
+	position: absolute;
+	top: 1px;
+	left: 0 !important;
+	width: 8px !important;
+	height: 48px !important;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	background-color: var(--highlight-color) !important;
+	transform: none !important;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title .has-setting .indicator {
+	display: none;
+}
+
+#bricks-panel-element #bricks-pinned-section.imdg-pinned-collapsed .pinned-group-title .has-setting .reset {
+	left: 10px !important;
+}

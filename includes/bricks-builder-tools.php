@@ -169,3 +169,27 @@ add_action( 'wp_enqueue_scripts', function () {
 		wp_localize_script( 'imdg-bricks-var-picker', 'imdgVarPicker', $picker );
 	}
 }, 20 );
+
+// ── Quick Access -> Pinned panel switcher ───────────────────────────────
+// Independent of Bricks Boost, so it loads even when Boost is active.
+
+add_action( 'wp_enqueue_scripts', function () {
+	if ( ! ( function_exists( 'bricks_is_builder_main' ) && bricks_is_builder_main() ) ) {
+		return;
+	}
+	$qc = IMDG_PLUGIN_DIR . 'assets/css/bricks-quick-access-pinned.css';
+	wp_enqueue_style(
+		'imdg-bricks-quick-access-pinned',
+		IMDG_PLUGIN_URL . 'assets/css/bricks-quick-access-pinned.css',
+		[],
+		file_exists( $qc ) ? filemtime( $qc ) : IMDG_VERSION
+	);
+	$qp = IMDG_PLUGIN_DIR . 'assets/js/bricks-quick-access-pinned.js';
+	wp_enqueue_script(
+		'imdg-bricks-quick-access-pinned',
+		IMDG_PLUGIN_URL . 'assets/js/bricks-quick-access-pinned.js',
+		[],
+		file_exists( $qp ) ? filemtime( $qp ) : IMDG_VERSION,
+		true
+	);
+}, 20 );
