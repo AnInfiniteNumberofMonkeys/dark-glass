@@ -3789,7 +3789,7 @@ body.restrict_page_rcp-settings #tab_container .nav-tab-active,
 body.restrict_page_rcp-settings #tab_container .nav-tab-active:focus, 
 body.restrict_page_rcp-settings #tab_container .nav-tab-active:focus:active, 
 body.restrict_page_rcp-settings #tab_container .nav-tab-active:hover {
-  background: var(--color-bkgrd-1);
+  background: none !important;
   border: none;
 }
 
