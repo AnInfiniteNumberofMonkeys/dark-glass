@@ -791,7 +791,7 @@ wp-admin-bar-wp-logo-external {
     border-radius: var(--radius-md);
 }
 
-#adminmenu .wp-has-submenu.wp-not-current-submenu.opensub .wp-submenu {
+#adminmenu .wp-has-submenu.wp-not-current-submenu .wp-submenu {
     width: max-content;
 }
 
